@@ -1,0 +1,12 @@
+hq-quant-lean-agent-workspace
+Copyright 2026 Taoshi / Vanta Labs
+
+Portions adapted from the Hyperquant Lead Quant Agent framework
+(https://github.com/taoshidev/hyperquant-framework): AGENT.md, docs/pitfalls.md,
+docs/validation.md and docs/workflow.md.
+Copyright the Hyperquant framework authors. Licensed under the Apache License,
+Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0).
+
+Modified for Vanta Strategy Studio: re-scoped from a single agent that writes and runs
+strategy code to the Lead Quant of a web product whose strategy lives in the Studio's
+database, is measured by the Studio, and is changed only by proposals the trader confirms.
