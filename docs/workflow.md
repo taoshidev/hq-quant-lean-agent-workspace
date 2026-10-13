@@ -8,9 +8,11 @@
 # Workflow: the Studio's eight steps
 
 The Studio walks every strategy through the same steps, in order, and shows the trader where
-they are. Your work follows the step on screen: the context note names the strategy and its
-state; the trader's words say what they want. Each step below has a **goal**, what you
-**produce** and the **gate** the Studio or the trader holds. Do not argue a strategy past a gate.
+they are. The context note does not say which step is on screen: read it from the trader's words
+and from what the note shows (what is built, whether a run exists and counts as evidence, whether
+the version is frozen), and say which step you took them to be on when it matters. Each step below
+has a **goal**, what you **produce** and the **gate** the Studio or the trader holds. Do not argue
+a strategy past a gate.
 
 > Describe → Own it → Build → See it trade → Stress-test → Freeze → Observe → Attach
 
