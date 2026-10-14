@@ -21,7 +21,8 @@ with no instructions beyond the Studio's per-turn context note.
 - `.claude/agents/`: six Claude Code sub-agent personas the Lead Quant delegates to: `data-scout`,
   `signal-architect`, `risk-architect`, `research-engineer`, `skeptic` (the veto) and `advocate`.
   Each reports to the Lead Quant; none talks to the trader.
-- `README.md`, `VERSION`, `CHANGELOG.md`, `NOTICE`.
+- `README.md`, `VERSION`, `CHANGELOG.md`, `NOTICE`, and `LICENSE` (Apache License 2.0: the
+  licence this repository is under, and the one the adapted files came with).
 
 ### Known limits
 

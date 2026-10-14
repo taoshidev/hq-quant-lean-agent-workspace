@@ -32,6 +32,7 @@ is authoritative for the current state; this repository says who the agent is an
 | `.claude/agents/advocate.md`         | The steelman: the strongest honest case, answering the Skeptic by id.                                                             |
 | `VERSION`, `CHANGELOG.md`            | The workspace version (semver) and what changed.                                                                                  |
 | `NOTICE`                             | Upstream attribution.                                                                                                             |
+| `LICENSE`                            | Apache License 2.0: this repository's licence, and the one the adapted files came with.                                            |
 
 Only the Lead Quant talks to the trader. Each persona works from what the Lead Quant hands it and
 hands back a finding, a proposal or a verdict in a short structured block. None of them can read
@@ -57,27 +58,48 @@ re-provisioned or updated by hand.
 
 ## Versioning
 
-- `VERSION` holds the semver of this workspace; `CHANGELOG.md` says what changed. Bump both in the
-  same change, and tag the merge commit `v<VERSION>`.
-- The Studio records the version it expects its sessions to run with
-  (`STUDIO_AGENT_WORKSPACE_VERSION`, shown on a reply's hover and stored with each session). Set
-  it to the tag deployed; leave it unset and the Studio says `unversioned`.
-- The control plane does not report which commit a sandbox cloned. Until it does, the version the
-  Studio shows is what the deployment declares, not what the container holds.
+One token, two spellings, and which goes where:
+
+- `VERSION` holds the semver of this workspace, bare (`1.0.0`); `CHANGELOG.md` says what changed.
+  Bump both in the same change.
+- The git tag on the merge commit is `v` + the contents of `VERSION` (`v1.0.0`).
+- The Studio's `STUDIO_AGENT_WORKSPACE_VERSION` is the contents of `VERSION` of the tag its
+  sandboxes hold (`1.0.0`, no `v`). The Studio records it with each session it opens and shows it
+  on the reply's hover as "expected to run Lead Quant workspace 1.0.0". Unset, it records
+  `unversioned` and shows no version. Any declared value of `1.0.0` or later tells the Studio the
+  sandbox carries this `CLAUDE.md`, so its per-turn note stops repeating what *Where you are* says;
+  a value below `1.0.0`, or a commit hash, keeps the note saying it.
+- The control plane does not report which commit a sandbox cloned, and a sandbox clones once, when
+  it is created. Until both change, the version the Studio shows is what the deployment declares,
+  not what the container holds: set the variable only once every sandbox the deployment serves
+  holds the tag.
 
 ## Checking it locally
 
-With the Claude Code CLI installed, from a checkout of this repository:
+With the Claude Code CLI installed, from a checkout of this repository. Two checks, because they
+prove different things: a listing proves `CLAUDE.md` was loaded (its *The team* table names the
+six), and only a delegation proves `.claude/agents/` were registered as sub-agents.
 
 ```
 claude -p "Which sub-agents can you delegate to, by name?" --max-turns 2
 ```
 
-The answer should name the six personas above; the session reads `CLAUDE.md` and
-`.claude/agents/` from the working directory.
+The answer names the six personas above. Then:
+
+```
+claude -p "Delegate exactly one question to your skeptic sub-agent and wait for its report: the \
+candidate is a long-only breakout on ZEC-USD, 4-hour closed bars, entry on a close above the \
+20-bar high, stop 1% below the entry, no target, no research run yet. Then say what the Skeptic \
+handed back (its VERDICT line and the id of each objection) and which other sub-agents you have, \
+by name." --allowedTools Agent,Task,Read,Grep,Glob --max-turns 4 --output-format json
+```
+
+The JSON result's `subagent_stats.by_type` reads `{"skeptic": 1}` and the reply quotes a
+`VERDICT:` line; a result with `spawned: 0` means the personas were listed, not run.
 
 ## Licence and attribution
 
-`CLAUDE.md` and the three `docs/` files are adapted from the
-[Hyperquant Lead Quant Agent framework](https://github.com/taoshidev/hyperquant-framework)
-(Apache License 2.0). See `NOTICE` for the attribution and what changed on the way across.
+This repository is licensed under the Apache License 2.0; the text is in `LICENSE`. `CLAUDE.md`
+and the three `docs/` files are adapted from the
+[Hyperquant Lead Quant Agent framework](https://github.com/taoshidev/hyperquant-framework), under
+the same licence. See `NOTICE` for the attribution and what changed on the way across.

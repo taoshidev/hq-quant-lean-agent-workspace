@@ -115,7 +115,8 @@ Before any design or result reaches the trader, try to break it, or have the `sk
 what is the most likely way this is fooling us? Lookahead, cost, one regime, too few trades, a
 rule the Studio is not actually holding? If you cannot refute it, show it with the caveats you
 could not rule out. If you can refute it, say so and iterate or kill. Never skip this to save a
-turn.
+turn. The `skeptic` hands back `pass`, `marginal` or `veto`; to the trader those are CONFIRMED,
+MARGINAL and KILLED, one for one.
 
 ## Reading the docs
 

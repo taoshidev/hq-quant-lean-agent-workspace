@@ -5,7 +5,8 @@ Portions adapted from the Hyperquant Lead Quant Agent framework
 (https://github.com/taoshidev/hyperquant-framework): AGENT.md, docs/pitfalls.md,
 docs/validation.md and docs/workflow.md.
 Copyright the Hyperquant framework authors. Licensed under the Apache License,
-Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0).
+Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0). A copy of the License is in
+LICENSE, which is also this repository's own licence.
 
 Modified for Vanta Strategy Studio: re-scoped from a single agent that writes and runs
 strategy code to the Lead Quant of a web product whose strategy lives in the Studio's

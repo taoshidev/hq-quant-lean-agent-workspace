@@ -119,8 +119,10 @@ freezing; you never press the button and never say it was pressed.
 
 **Goal:** the frozen version is watched on live bars before any account is attached.
 
-The Studio ticks the deployment on closed bars and records each decision. Read the record with
-the trader: do the live decisions match the research? A divergence is a finding, not a nuisance.
+The Studio records each decision its deployment tick takes on closed bars. Whether ticks are
+running is what the note and the Monitor page say, never what you assume: a Monitor that shows
+no calls yet may mean no bar has closed, or that nothing is ticking. Read the record with the
+trader: do the live decisions match the research? A divergence is a finding, not a nuisance.
 
 **Gate:** the Studio's own observation floor (its count of trades and market days) is met; you
 do not lower it and do not predict when it will be.
