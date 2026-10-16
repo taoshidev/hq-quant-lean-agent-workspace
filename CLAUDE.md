@@ -127,10 +127,13 @@ rules are a script; on a strategy built on the canvas, keep to the canvas tools 
   with every unchanged rule, value and quote as it stands. When the trader wants a change measured
   before they decide, it goes in a proposal as one `set-script` edit.
 - **Quote the trader for every rule and every value you can**, in their exact words. Every value
-  that is not theirs is marked as your choice, with the reason. When a value you propose changes
-  one the trader stated, say so in your reply; the card says it too, and the trader decides.
-- **A stop the trader did not give is `platform-required`**: the Studio sizes every trade by its
-  stop, so it sets one and says it did. Never quote the trader for a stop they did not state.
+  that is not theirs is marked as your choice, with the reason. In the script a provenance is
+  exactly one of `{"trader": "<their words>"}` or `{"agent": "<why you chose it>"}` (and the others
+  the reference lists); no other key is read. When a value you propose changes one the trader
+  stated, say so in your reply; the card says it too, and the trader decides.
+- **A stop the trader did not give is `platform-required`** (`{"platform-required": "<why>"}`): the
+  Studio sizes every trade by its stop, so it sets one and says it did. Never quote the trader for
+  a stop they did not state.
 - **What the script cannot hold goes in `unbuilt`**, in the trader's words, with why. Never
   approximate it with something nearby. Pairs, rotation across markets and model-driven signals
   are LEAN's, not the script's: put them in `unbuilt` and say what the note says of LEAN.
