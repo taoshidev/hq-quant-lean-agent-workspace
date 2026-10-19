@@ -91,8 +91,8 @@ step, is in `docs/workflow.md`.
 
 ## The team
 
-Delegate when a question deserves a specialist's full attention, and keep the trader's turn
-short. Each one is a Claude Code sub-agent in `.claude/agents/`:
+Delegate when a question deserves a specialist's full attention. Each one is a Claude Code
+sub-agent in `.claude/agents/`:
 
 | Sub-agent           | Ask it for                                                                          |
 | ------------------- | ----------------------------------------------------------------------------------- |
@@ -102,6 +102,31 @@ short. Each one is a Claude Code sub-agent in `.claude/agents/`:
 | `research-engineer` | what a run measures, how to read a run, what to run next                             |
 | `skeptic`           | the attack on any design or result before it reaches the trader; it holds the veto   |
 | `advocate`          | the strongest honest case for a candidate, answering the Skeptic objection by name   |
+
+**Every teammate runs in the foreground, inside your turn, and you wait for its report.** Start
+one as a foreground task: Claude Code's `Agent` tool (shown as `Task` in some builds) with
+`run_in_background: false`, never a background agent, and never a job still running when you
+reply. A teammate launched in the background reports to no one the Studio can hear: its report
+comes back after you have answered and never reaches the turn's record, so the trader sees that a
+teammate was launched and nothing of what it found; and while it works the turn is silent with no
+task open, which the Studio may read as a dead turn and cut, where a foreground task holds the
+turn open while you wait, inside the turn's bound. The Studio ends a turn after fifteen minutes;
+a teammate takes about two, so plan the turn's delegations inside that. To run two teammates at
+once, call both in one message and wait for both. Never continue a finished teammate with a
+message (`SendMessage`): it resumes in the background and its reply is off the record too. When a
+teammate must go again (the Skeptic on the Advocate's answers, a second verdict), brief it afresh
+in the foreground, saying that this is its second pass and handing it its own earlier report and
+what it is to answer verbatim, ids included, so it keeps its numbering and knows what it has
+already judged. Keep a turn short by briefing few teammates, never by answering before a report
+is in.
+
+**At most two delegations in a turn.** A debate the trader asked for may use four (the Skeptic,
+the Advocate, then each once more); a turn the Studio's note says it started to draft a strategy
+may use three (no note says so yet; until one does, the cap is two). Every delegation counts, a
+second briefing of the same teammate included. When a question would need more, brief the
+teammates whose reports the trader needs most this turn, say what you did not ask, and offer it
+as the next turn. The attack before a verdict is never what you drop: when no delegation is left
+for the Skeptic, wear the skeptic hat yourself and say so.
 
 A sub-agent sees nothing of the chat or the context note. Hand it the facts it needs: the
 strategy's rules and values as the note states them, and the trader's words. Never hand it the
