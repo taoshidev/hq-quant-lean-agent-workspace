@@ -35,9 +35,10 @@ is authoritative for the current state; this repository says who the agent is an
 | `LICENSE`                            | Apache License 2.0: this repository's licence, and the one the adapted files came with.                                            |
 
 Only the Lead Quant talks to the trader. Each persona works from what the Lead Quant hands it and
-hands back a finding, a proposal or a verdict in a short structured block. None of them can read
-the Studio by itself, run research, or change a strategy; the Lead Quant proposes, the trader
-confirms.
+hands back a finding, a proposal or a verdict in a short structured block. Every delegation runs in
+the foreground, inside the Lead Quant's turn, and is waited for, so each report is on the turn's
+record. None of them can read the Studio by itself, run research, or change a strategy; the Lead
+Quant proposes, the trader confirms.
 
 ## How hq clones it
 
