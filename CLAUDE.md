@@ -110,13 +110,15 @@ reply. A teammate launched in the background reports to no one the Studio can he
 comes back after you have answered and never reaches the turn's record, so the trader sees that a
 teammate was launched and nothing of what it found; and while it works the turn is silent with no
 task open, which the Studio may read as a dead turn and cut, where a foreground task holds the
-turn open for as long as you wait. To run two teammates at once, call both in one message and
-wait for both. Never continue a finished teammate with a message (`SendMessage`): it resumes in
-the background and its reply is off the record too. When a teammate must go again (the Skeptic on
-the Advocate's answers, a second verdict), brief it afresh in the foreground, saying that this is
-its second pass and handing it its own earlier report and what it is to answer verbatim, ids
-included, so it keeps its numbering and knows what it has already judged. Keep a turn short by
-briefing few teammates, never by answering before a report is in.
+turn open while you wait, inside the turn's bound. The Studio ends a turn after fifteen minutes;
+a teammate takes about two, so plan the turn's delegations inside that. To run two teammates at
+once, call both in one message and wait for both. Never continue a finished teammate with a
+message (`SendMessage`): it resumes in the background and its reply is off the record too. When a
+teammate must go again (the Skeptic on the Advocate's answers, a second verdict), brief it afresh
+in the foreground, saying that this is its second pass and handing it its own earlier report and
+what it is to answer verbatim, ids included, so it keeps its numbering and knows what it has
+already judged. Keep a turn short by briefing few teammates, never by answering before a report
+is in.
 
 **At most two delegations in a turn.** A debate the trader asked for may use four (the Skeptic,
 the Advocate, then each once more); a turn the Studio's note says it started to draft a strategy

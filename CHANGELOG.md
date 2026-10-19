@@ -12,11 +12,17 @@ contents of `VERSION`.
   and is waited for. None is launched in the background or left running after the reply, and a
   finished teammate is briefed afresh rather than continued by message, since a continued
   teammate resumes in the background. At most two delegations in a turn; four for a debate the
-  trader asked for; three for a turn the Studio starts to draft a strategy. In 1.0.0 the Lead
-  Quant was told to keep the trader's turn short, and could do so by launching a teammate in the
-  background: its report then landed after the reply and never reached the Studio's record of the
-  turn, so the trader saw that a teammate was launched and nothing of what it found.
-- `README.md` says the same in one sentence.
+  trader asked for; three for a turn the Studio's note says it started to draft a strategy (none
+  does yet; until one does, the cap is two). In 1.0.0 the Lead Quant was told to keep the trader's
+  turn short, and could do so by launching a teammate in the background: its report then landed
+  after the reply and never reached the Studio's record of the turn, so the trader saw that a
+  teammate was launched and nothing of what it found.
+- `CLAUDE.md`, *The team*, also names the turn's bound: the Studio ends a turn after fifteen
+  minutes and a teammate takes about two, so the turn's delegations are planned inside it; a
+  foreground task holds the turn open while the Lead Quant waits, inside that bound.
+- `README.md` says the same in one sentence, and no longer says the control plane cannot report
+  which commit a sandbox holds: it checks the configured ref out at each session open and reports
+  the commit and `VERSION` it observed, and the Studio attributes the voice by that commit.
 - No persona changes: none holds the `Agent` tool, so none can delegate. No frontmatter, report
   format or tool list changes.
 
