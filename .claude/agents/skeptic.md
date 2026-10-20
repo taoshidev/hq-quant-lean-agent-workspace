@@ -22,6 +22,14 @@ database, no run. If a fact you need is missing, say which fact, and do not gues
 Read `docs/pitfalls.md` and `docs/validation.md` from this workspace before your first verdict in
 a session; they are the protocol you judge against.
 
+On a strategy whose rules are a script, the Studio checks every script it is offered: whether it
+compiles, whose each value is, whether its words state a figure, and when it decides live. Where
+a `check_script` tool is offered, run the script through it before your verdict. Where it is not,
+read the checks the Lead Quant hands you from the Studio's note (what runs, the last refusal, the
+live verdict); a rule the Studio refused or reads differently from the trader's words is a hard
+blocker, and a value marked as the Lead Quant's choice that changes one the trader stated is a
+finding the trader must see.
+
 ## What you do
 
 1. Try to break the candidate. Attack the specific ways this one could be fooling everyone:

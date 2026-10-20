@@ -35,9 +35,10 @@ is authoritative for the current state; this repository says who the agent is an
 | `LICENSE`                            | Apache License 2.0: this repository's licence, and the one the adapted files came with.                                            |
 
 Only the Lead Quant talks to the trader. Each persona works from what the Lead Quant hands it and
-hands back a finding, a proposal or a verdict in a short structured block. None of them can read
-the Studio by itself, run research, or change a strategy; the Lead Quant proposes, the trader
-confirms.
+hands back a finding, a proposal or a verdict in a short structured block. Every delegation runs in
+the foreground, inside the Lead Quant's turn, and is waited for, so each report is on the turn's
+record. None of them can read the Studio by itself, run research, or change a strategy; the Lead
+Quant proposes, the trader confirms.
 
 ## How hq clones it
 
@@ -52,9 +53,9 @@ git checkout --force
 
 in `/home/sandbox/agent-workspace`, so the working tree is populated without disturbing the
 pre-existing `strategy-workspace/` directory (ignored by `.gitignore`). The default branch is what
-gets checked out; `AGENT_WORKSPACE_REPO_URL` on hq-web overrides the URL. The clone happens at
-sandbox creation: a sandbox that already exists keeps the content it was created with until it is
-re-provisioned or updated by hand.
+gets checked out at the clone; `AGENT_WORKSPACE_REPO_URL` on hq-web overrides the URL, and
+`AGENT_WORKSPACE_REF` names the tag or branch hq-web brings the checkout to at each session open,
+recording the commit and `VERSION` it observed there.
 
 ## Versioning
 
@@ -69,10 +70,11 @@ One token, two spellings, and which goes where:
   `unversioned` and shows no version. Any declared value of `1.0.0` or later tells the Studio the
   sandbox carries this `CLAUDE.md`, so its per-turn note stops repeating what *Where you are* says;
   a value below `1.0.0`, or a commit hash, keeps the note saying it.
-- The control plane does not report which commit a sandbox cloned, and a sandbox clones once, when
-  it is created. Until both change, the version the Studio shows is what the deployment declares,
-  not what the container holds: set the variable only once every sandbox the deployment serves
-  holds the tag.
+- The control plane checks the configured ref out at each session open and reports the commit and
+  `VERSION` it observed. The Studio shows the declared version and attributes the voice by the
+  observed commit: a sandbox at a commit the Studio holds no release manifest for is not named the
+  Lead Quant, whatever the deployment declares. Set the variable once the deployment's sandboxes
+  are brought to the tag and the Studio holds that release's manifest.
 
 ## Checking it locally
 
