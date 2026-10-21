@@ -10,6 +10,7 @@
 import { createHash } from 'node:crypto';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
+import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 
 /** Hard rule 1's sentence, carried word for word by every persona that holds `dry_run_script`. */
