@@ -45,7 +45,8 @@ against it. The product is named Glitch.
   teammate with the check's words once: one retry for each teammate in a turn, which does not
   count against the delegation caps (so a requested two-round debate keeps its second round), and
   a retried report that fails the check again is not retried, the Lead Quant saying it did not
-  follow its format; a teammate's
+  follow its format (and when that is the Skeptic's, no Advocate is briefed and the trader is told
+  no debate could be held); a teammate's
   question ends the reply as a `studio-question` block carrying `"from"` with its id, and the
   trader's answer is relayed to the teammate that asked; never ask the trader how strict the team
   should be. After the release's first walk: the checks block and the Skeptic's objection lines
