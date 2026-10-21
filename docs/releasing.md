@@ -45,7 +45,8 @@ On a branch `release/<version>` off `main`:
    `model: inherit`; a format file's digest, id or version is not what `release.json` records; a
    persona's hand-back block is not its format's template, or it does not say its report is shown
    to the trader verbatim; **a persona whose `tools:` list holds `dry_run_script` does not carry
-   hard rule 1's sentence word for word in its body**: "A dry run's figures are in-sample drafts,
+   hard rule 1's sentence word for word in its body** (the check reads the bare name and the name
+   a `tools:` line gives the bridge's tool, `mcp__<server>__dry_run_script`): "A dry run's figures are in-sample drafts,
    not results: you never quote them."; or the README lacks the control-plane check.
 6. Check a teammate through the control plane at the branch (README, *Through the control
    plane*): a captured brief carries no fence line and no internal id, a report passes

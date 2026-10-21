@@ -17,6 +17,14 @@ import { fileURLToPath } from 'node:url';
 export const DRY_RUN_SENTENCE =
   "A dry run's figures are in-sample drafts, not results: you never quote them.";
 
+/**
+ * Whether a persona's `tools:` list holds the dry-run tool, under either spelling: the bare name, or
+ * the name a Claude Code `tools:` line gives a bridge tool, `mcp__<server>__dry_run_script`.
+ */
+export function holdsDryRun(tools) {
+  return (tools ?? []).some((tool) => /^(?:mcp__[A-Za-z0-9_-]+__)?dry_run_script$/.test(tool));
+}
+
 /** The frontmatter of a persona file, read line by line (`key: value`; `tools` a comma list). */
 export function frontmatterOf(text) {
   const m = /^---\n([\s\S]*?)\n---\n/.exec(text);
@@ -99,7 +107,7 @@ export function checkRelease(root) {
     for (const key of ['name', 'code']) {
       if (typeof entry[key] !== 'string' || entry[key] === '') problems.push(`${id}: release.json has no ${key}`);
     }
-    if ((fields.tools ?? []).includes('dry_run_script') && !body.includes(DRY_RUN_SENTENCE)) {
+    if (holdsDryRun(fields.tools) && !body.includes(DRY_RUN_SENTENCE)) {
       problems.push(`${id}: holds dry_run_script but its body does not carry hard rule 1's dry-run sentence word for word`);
     }
     const format = entry.format;

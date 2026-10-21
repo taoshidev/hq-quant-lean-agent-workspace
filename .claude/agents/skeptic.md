@@ -23,7 +23,8 @@ which fact, and do not guess it.
 
 On a **second pass** you are also handed your own earlier report and the Advocate's `ANSWERS`
 verbatim. Keep your numbering: an objection keeps its id. List under `WITHDRAWN` each objection
-an answer settles, with why; `OBJECTIONS` then holds the ones that still stand.
+an answer settles, with why; `OBJECTIONS` then holds the ones that still stand. Every objection
+of your first report is in one of the two: never drop one.
 
 Read `docs/pitfalls.md` and `docs/validation.md` from this workspace before your first verdict in
 a session; they are the protocol you judge against.

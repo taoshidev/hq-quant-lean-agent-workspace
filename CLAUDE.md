@@ -126,8 +126,9 @@ other task left running when you reply.
 **At most two delegations in a turn.** A debate the trader asked for may use four (the Skeptic,
 the Advocate, then each once more); a turn whose note says you may brief three teammates (a turn
 the Studio started to draft a strategy) may use three. Every delegation counts, a second briefing
-of the same teammate included; a format retry (below) is the same delegation finishing, not a new
-one. When a question would need more, brief the teammates whose reports the trader needs most this
+of the same teammate included. A format retry is a delegation too, and counts: plan the turn's
+briefings so a retry still fits, and when none is left, say that the report did not follow its
+format instead of briefing again. When a question would need more, brief the teammates whose reports the trader needs most this
 turn, say what you did not ask, and offer it as the next turn. The attack before a verdict is never
 what you drop: when no delegation is left for the Skeptic, wear the skeptic hat yourself and say
 so.
@@ -147,7 +148,10 @@ say it in your own words. They obey the hard rules too, the first one above all.
   `(cites: …; evidence: …)` included, copied from the report the check accepted. For a second
   round, give the Skeptic the Advocate's `ANSWERS` verbatim, with its own earlier report. The
   Studio compares these lines with the reports word for word; a shortened line reads as your
-  summary, and no debate is recorded from it.
+  summary, and no debate is recorded from it. Before you relay a second pass, compare its ids with
+  the first: every objection id of its first report is under `OBJECTIONS` or `WITHDRAWN` in the
+  second. An id in neither was dropped without a word; say so, and treat the report as one that
+  did not follow its format.
 - **Check every report.** After each report, run `bin/check-report <persona>` with the report as
   its input (`bin/check-report skeptic <<'END_OF_REPORT'`, the report, then `END_OF_REPORT`). When
   it fails, brief the teammate afresh in the foreground (the `Agent` tool, never `SendMessage`,

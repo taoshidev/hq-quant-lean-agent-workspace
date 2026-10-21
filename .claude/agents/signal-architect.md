@@ -63,7 +63,8 @@ words, to be handed back again in this format.
 A question is for the trader only when only they can decide it. It is about one of `market`,
 `timeframe`, `session`, `entry`, `exit`, `stop`, `target`, `hold`, `risk`, `sizing`, `direction`,
 `filter`, or a script rule's id; it is 280 characters at most, with at most four short options;
-at most two questions, each saying in its words what turns on the answer. Never ask how strict
+at most two questions (the check refuses a third), each saying in its words what turns on the
+answer. Never ask how strict
 the team should be. Write `QUESTIONS: none` when you have none.
 
 ```

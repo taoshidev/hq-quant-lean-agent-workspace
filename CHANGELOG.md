@@ -20,8 +20,11 @@ against it. The product is named Glitch.
   Format version 2 for each (version 1 is the reading of the 1.0.x blocks, which had no file).
 - `bin/check-report <persona> [file]` (the report on standard input without a file): exit 0 when
   the report follows its format; exit 1 with every reason and the template when it does not.
-  `bin/check-release.mjs`: the release's consistency before a tag. Both run when reached through a
-  symlinked path.
+  Exit 2 when it cannot judge the report: no format, an unreadable report, or the check itself
+  failed. `bin/check-release.mjs`: the release's consistency before a tag, including the dry-run
+  sentence in every persona whose `tools:` hold `dry_run_script` under either spelling (the bare
+  name or the bridge's `mcp__<server>__dry_run_script`). Both run when reached through a
+  symlinked directory, and `bin/check-report` through a symlink to the file itself.
 - `release.json`: the release's id, version and tag, the Lead Quant, and per persona its id, name,
   code, description, tools, model and format (id, version, file, sha256).
 - `test/`: `node --test test/release.test.mjs` checks sample reports in the old and new shapes,
@@ -39,22 +42,26 @@ against it. The product is named Glitch.
   and the Advocate are handed the note's Studio checks block verbatim; the Advocate the Skeptic's
   `OBJECTIONS` verbatim, and on a second round the Skeptic the Advocate's `ANSWERS` verbatim;
   every report is checked with `bin/check-report`, and a report off its format goes back to its
-  teammate with the check's words at most twice (a retry is not a new delegation); a teammate's
+  teammate with the check's words at most twice, and a retry counts against the turn's delegations
+  like any briefing; a teammate's
   question ends the reply as a `studio-question` block carrying `"from"` with its id, and the
   trader's answer is relayed to the teammate that asked; never ask the trader how strict the team
   should be. After the release's first walk: the checks block and the Skeptic's objection lines
   are copied whole, never shortened; a format retry is a fresh foreground briefing, never
   `SendMessage`; the Advocate is briefed only once the Skeptic's report has passed the check; a
-  teammate's question is copied word for word when it carries `"from"`.
+  teammate's question is copied word for word when it carries `"from"`; before relaying a
+  second pass, every objection id of the first report is under `OBJECTIONS` or `WITHDRAWN`.
 - `skeptic`: each objection carries `(cites: <Studio check ids, or none>; evidence: …)`; a second
   pass lists `WITHDRAWN: S-n — why`; its sorting step: a hard blocker cites the Studio gate check
   that refuses it at this step, and anything else it would block on is a protocol rejection,
   reported in full (the label changes, never what is found); with a hard blocker standing the
-  VERDICT is veto; an objection is never both standing and withdrawn, nor listed twice.
+  VERDICT is veto; an objection is never both standing and withdrawn, nor listed twice, and a
+  second pass never drops one. Prose after an objection's `(cites: …; evidence: …)` is accepted
+  and is not its evidence.
 - `advocate`: `PROPOSAL: <key> from "<a>" to "<b>" — why` (both values quoted) or
   `PROPOSAL: none`, and a second-pass `CLOSE:`; it is handed the Studio checks block and the Skeptic's `OBJECTIONS` verbatim.
 - `signal-architect`: `QUESTIONS` items `Q-n <about> — <question> [options: a | b | c]`, about a
-  strategy key or a script rule's id, at most two, never about how strict the team should be, the
+  strategy key or a script rule's id, at most two (the check refuses a third), never about how strict the team should be, the
   Skeptic or the Advocate, and never offering a Studio check or an objection id as an answer;
   its `RULES` items are read field by field (`from: trader "…"` or `from: your choice (…)`).
 - Every persona: "Your report is shown to the trader verbatim", the exact block to hand back,

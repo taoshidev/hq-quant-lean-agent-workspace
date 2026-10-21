@@ -37,7 +37,8 @@
       "required": true,
       "item": {
         "id": "Q-\\d+",
-        "pattern": "^(?<id>Q-\\d+)\\s+(?<about>[A-Za-z][A-Za-z0-9_-]{0,31})\\s+[—–-]+\\s+(?<text>[^\\[\\]]*?\\S)\\s*(?:\\[options:\\s*(?<options>[^\\[\\]]*?)\\s*\\])?\\s*$"
+        "pattern": "^(?<id>Q-\\d+)\\s+(?<about>[A-Za-z][A-Za-z0-9_-]{0,31})\\s+[—–-]+\\s+(?<text>[^\\[\\]]*?\\S)\\s*(?:\\[options:\\s*(?<options>[^\\[\\]]*?)\\s*\\])?\\s*$",
+        "maxItems": 2
       }
     }
   ],

@@ -5,7 +5,8 @@
 //   bin/check-report <persona> [file]      (the report on standard input when no file is given)
 //
 // Exit 0: the report follows its format. Exit 1: it does not; every reason is printed, then the
-// format's template. Exit 2: the persona has no format, or the report could not be read.
+// format's template. Exit 2: the persona has no format, the report could not be read, or the check
+// itself failed.
 //
 // The grammar is data: each format names its sections (a label as the persona writes it, at the
 // start of a line), the kind of each (enum, items, lines, text), whether it is required, and for an
@@ -243,6 +244,12 @@ export function checkReport(text, format) {
           got.push({ ...f, displayId: f.id ?? item.displayId });
         }
         fields[section.key] = got;
+        const most = section.item.maxItems;
+        if (typeof most === 'number' && read.items.length > most) {
+          errors.push(
+            `${section.label} holds ${read.items.length} items: ${most === 2 ? 'two' : String(most)} at most. Keep the ones only the trader can decide.`,
+          );
+        }
         break;
       }
       case 'lines':
@@ -404,5 +411,12 @@ function isMain() {
 }
 
 if (isMain()) {
-  process.exitCode = main(process.argv.slice(2));
+  try {
+    process.exitCode = main(process.argv.slice(2));
+  } catch (err) {
+    // A broken check never reads as a report off its format (exit 1): the Lead Quant would brief
+    // the teammate again over the check's own fault.
+    process.stdout.write(`check-report: the check itself failed (${err instanceof Error ? err.message : String(err)}).\n`);
+    process.exitCode = 2;
+  }
 }

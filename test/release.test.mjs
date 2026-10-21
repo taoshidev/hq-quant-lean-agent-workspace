@@ -1,4 +1,4 @@
-// The release's own checks: run with `node --test test/`. No network, no dependencies.
+// The release's own checks: run with `node --test test/release.test.mjs`. No network, no dependencies.
 
 import assert from 'node:assert/strict';
 import { readdirSync, readFileSync } from 'node:fs';
@@ -7,7 +7,7 @@ import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 import { loadFormat, reasons } from '../bin/check-report.mjs';
-import { DRY_RUN_SENTENCE, checkRelease, handBackBlock, personaFiles } from '../bin/check-release.mjs';
+import { DRY_RUN_SENTENCE, checkRelease, handBackBlock, holdsDryRun, personaFiles } from '../bin/check-release.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const REPORTS = join(ROOT, 'test', 'reports');
@@ -17,6 +17,7 @@ const EXPECTED = {
   'skeptic.v1.1.0.txt': null,
   'skeptic.v1.1.0-second-pass.txt': null,
   'skeptic.v1.1.0-nested-parens.txt': null,
+  'skeptic.v1.1.0-trailing-prose.txt': null,
   'skeptic.v1.0.x.txt': 'S-1 does not follow the item\'s shape',
   'skeptic.hard-without-gate.txt': 'a hard blocker cites the Studio gate check that refuses it',
   'skeptic.placeholder.txt': "template's placeholders <what>",
@@ -32,6 +33,7 @@ const EXPECTED = {
   'signal-architect.posture.txt': 'never ask how strict or critical the team should be',
   'signal-architect.posture-words.txt': 'never ask how strict or critical the team should be',
   'signal-architect.check-id-option.txt': 'never offer a Studio check or an objection',
+  'signal-architect.three-questions.txt': 'QUESTIONS holds 3 items: two at most',
   'data-scout.v1.1.0.txt': null,
   'data-scout.merged.txt': 'It has no FIT section',
   'risk-architect.v1.1.0.txt': null,
@@ -91,13 +93,19 @@ test('the command runs its check when reached through a symlinked path', async (
       [join(dir, 'ws', 'bin', 'check-report'), 'skeptic', bad],
       [process.execPath, join(dir, 'ws', 'bin', 'check-report.mjs'), 'skeptic', bad],
       [process.execPath, join(dir, 'ws', 'bin', 'check-release.mjs')],
+      // A link to the command itself, as a model may make one beside its work.
+      [join(dir, 'cr'), 'skeptic', bad],
     ];
+    symlinkSync(join(ROOT, 'bin', 'check-report'), join(dir, 'cr'));
     for (const argv of runs) {
       const run = spawnSync(argv[0], argv.slice(1));
       assert.notEqual(run.stdout.toString(), '', `${argv.join(' ')} printed its result`);
     }
     assert.equal(spawnSync(runs[0][0], runs[0].slice(1)).status, 1);
     assert.equal(spawnSync(runs[1][0], runs[1].slice(1)).status, 1);
+    const linked = spawnSync(runs[3][0], runs[3].slice(1));
+    assert.equal(linked.status, 1, linked.stderr.toString());
+    assert.match(linked.stdout.toString(), /does not follow its format/);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
@@ -144,4 +152,67 @@ test('the constitution carries the 1.1.0 delegation and report rules, and names 
     assert.ok(!/Vanta Strategy Studio|Strategy Studio/.test(body), `${id} names the product Glitch`);
   }
   assert.ok(!/Vanta Strategy Studio|Strategy Studio/.test(lead));
+});
+
+test('a persona holding the dry-run tool by its bridge name is held to the dry-run sentence too', async () => {
+  const { cpSync, mkdtempSync, rmSync, writeFileSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  assert.equal(holdsDryRun(['Read', 'dry_run_script']), true);
+  assert.equal(holdsDryRun(['Read', 'mcp__studio__dry_run_script']), true);
+  assert.equal(holdsDryRun(['Read', 'Grep']), false);
+  assert.equal(holdsDryRun(['mcp__studio__dry_run_script_v2']), false);
+  const dir = mkdtempSync(join(tmpdir(), 'check-release-'));
+  try {
+    cpSync(ROOT, dir, { recursive: true, filter: (src) => !src.includes(`${'/'}.git`) });
+    const persona = join(dir, '.claude', 'agents', 'signal-architect.md');
+    const text = readFileSync(persona, 'utf8');
+    const tools = /^tools:\s*(.*)$/m.exec(text)[1];
+    const withTool = text.replace(/^tools:.*$/m, `tools: ${tools}, mcp__studio__dry_run_script`);
+    writeFileSync(persona, withTool);
+    const release = JSON.parse(readFileSync(join(dir, 'release.json'), 'utf8'));
+    const entry = release.personas.find((p) => p.id === 'signal-architect');
+    entry.tools = [...entry.tools, 'mcp__studio__dry_run_script'];
+    writeFileSync(join(dir, 'release.json'), `${JSON.stringify(release, null, 2)}\n`);
+    const refused = checkRelease(dir);
+    assert.ok(
+      refused.some((p) => p.startsWith('signal-architect: holds dry_run_script')),
+      JSON.stringify(refused),
+    );
+    writeFileSync(persona, withTool.replace(/\n## What you hand back/, `\n${DRY_RUN_SENTENCE}\n\n## What you hand back`));
+    assert.deepEqual(checkRelease(dir), []);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('check-report exits 2, never 1, when the check itself breaks', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const { cpSync, mkdtempSync, rmSync, writeFileSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const dir = mkdtempSync(join(tmpdir(), 'check-report-broken-'));
+  try {
+    cpSync(join(ROOT, 'bin'), join(dir, 'bin'), { recursive: true });
+    cpSync(join(ROOT, 'formats'), join(dir, 'formats'), { recursive: true });
+    // A format the grammar cannot compile: the check breaks, the report is not judged.
+    const format = JSON.parse(readFileSync(join(dir, 'formats', 'skeptic.json'), 'utf8'));
+    format.sections[1].item.pattern = '(';
+    writeFileSync(join(dir, 'formats', 'skeptic.json'), JSON.stringify(format));
+    const run = spawnSync(join(dir, 'bin', 'check-report'), ['skeptic', join(REPORTS, 'skeptic.v1.1.0.txt')]);
+    assert.equal(run.status, 2, run.stdout.toString() + run.stderr.toString());
+    assert.match(run.stdout.toString(), /check-report: the check itself failed/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('a format retry counts against the delegation caps, and a second pass names every first-pass id', () => {
+  const lead = readFileSync(join(ROOT, 'CLAUDE.md'), 'utf8').replace(/\s+/g, ' ');
+  assert.ok(!lead.includes('is the same delegation finishing'), 'no uncounted retry');
+  assert.ok(lead.includes('A format retry is a delegation too, and counts'), 'a retry counts');
+  assert.ok(
+    lead.includes('every objection id of its first report is under `OBJECTIONS` or `WITHDRAWN`'),
+    'the Lead Quant compares the ids before relaying',
+  );
+  const skeptic = readFileSync(join(ROOT, '.claude', 'agents', 'skeptic.md'), 'utf8').replace(/\s+/g, ' ');
+  assert.ok(skeptic.includes('never drop one'), 'the Skeptic never drops an objection silently');
 });
