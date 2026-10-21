@@ -46,7 +46,7 @@
         "id": "signal-architect-report",
         "version": 2,
         "file": "formats/signal-architect.json",
-        "sha256": "6e1979a476343055e470f910d7e4b46bacf66b153588608661aec2cddaaa4b43"
+        "sha256": "8fee13340e149a1272425aabc81547048f241d611c504981d2728638c61d6ed9"
       }
     },
     {
@@ -100,7 +100,7 @@
         "id": "skeptic-report",
         "version": 2,
         "file": "formats/skeptic.json",
-        "sha256": "d8adbb828d3100b8b9194548bf698656a0117bcaccc9b79ba343eafd7020fde9"
+        "sha256": "d9f456dfd0d4b2efb0b560a522841d9e5d69e3c71a676a4c87bf89866e9d8efc"
       }
     },
     {
@@ -118,7 +118,7 @@
         "id": "advocate-report",
         "version": 2,
         "file": "formats/advocate.json",
-        "sha256": "9516205d44a14c94824da24cd6e3a6af52aa1fefa02ca848d2de644a0c66fec4"
+        "sha256": "0eee22374f571f313419b50d49d21ac29f43fcbcad02dc01f74ae44b1f47dc3e"
       }
     }
   ]

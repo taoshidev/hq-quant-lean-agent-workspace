@@ -19,12 +19,17 @@ const EXPECTED = {
   'skeptic.v1.0.x.txt': 'S-1 does not follow the item\'s shape',
   'skeptic.hard-without-gate.txt': 'a hard blocker cites the Studio gate check that refuses it',
   'skeptic.placeholder.txt': "template's placeholders <what>",
+  'skeptic.dup-withdrawn.txt': 'S-1 is listed twice',
+  'skeptic.pass-with-hard.txt': 'a hard blocker ends it',
   'advocate.v1.1.0.txt': null,
   'advocate.v1.1.0-second-pass.txt': null,
   'advocate.v1.0.x.txt': 'PROPOSAL does not follow its shape',
+  'advocate.proposal-unquoted.txt': 'PROPOSAL does not follow its shape',
   'signal-architect.v1.1.0.txt': null,
   'signal-architect.v1.0.1.txt': 'Q1 Should the stop',
   'signal-architect.posture.txt': 'never ask how strict or critical the team should be',
+  'signal-architect.posture-words.txt': 'never ask how strict or critical the team should be',
+  'signal-architect.check-id-option.txt': 'never offer a Studio check or an objection',
   'data-scout.v1.1.0.txt': null,
   'data-scout.merged.txt': 'It has no FIT section',
   'risk-architect.v1.1.0.txt': null,
@@ -70,6 +75,30 @@ test('the command exits 0 on a report that follows its format and 1 with the tem
   const viaNode = spawnSync(process.execPath, [join(ROOT, 'bin', 'check-report'), 'skeptic', join(REPORTS, 'skeptic.v1.0.x.txt')]);
   assert.equal(viaNode.status, 1);
   assert.match(viaNode.stdout.toString(), /does not follow its format/);
+});
+
+test('the command runs its check when reached through a symlinked path', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const { mkdtempSync, symlinkSync, rmSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const dir = mkdtempSync(join(tmpdir(), 'check-report-'));
+  try {
+    symlinkSync(ROOT, join(dir, 'ws'));
+    const bad = join(REPORTS, 'skeptic.v1.0.x.txt');
+    const runs = [
+      [join(dir, 'ws', 'bin', 'check-report'), 'skeptic', bad],
+      [process.execPath, join(dir, 'ws', 'bin', 'check-report.mjs'), 'skeptic', bad],
+      [process.execPath, join(dir, 'ws', 'bin', 'check-release.mjs')],
+    ];
+    for (const argv of runs) {
+      const run = spawnSync(argv[0], argv.slice(1));
+      assert.notEqual(run.stdout.toString(), '', `${argv.join(' ')} printed its result`);
+    }
+    assert.equal(spawnSync(runs[0][0], runs[0].slice(1)).status, 1);
+    assert.equal(spawnSync(runs[1][0], runs[1].slice(1)).status, 1);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 test("every persona's hand-back block is its format's template, and says the trader reads it verbatim", () => {

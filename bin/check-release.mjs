@@ -8,7 +8,7 @@
 // .claude/agents/*.md and README.md.
 
 import { createHash } from 'node:crypto';
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, realpathSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
@@ -130,7 +130,17 @@ export function checkRelease(root) {
   return problems;
 }
 
-if (process.argv[1] !== undefined && fileURLToPath(import.meta.url) === process.argv[1]) {
+/** Whether this file is the script node was asked to run, through any symlink on either path. */
+function isMain() {
+  if (process.argv[1] === undefined) return false;
+  try {
+    return realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url));
+  } catch {
+    return false;
+  }
+}
+
+if (isMain()) {
   const root = join(dirname(fileURLToPath(import.meta.url)), '..');
   const problems = checkRelease(root);
   const version = readFileSync(join(root, 'VERSION'), 'utf8').trim();

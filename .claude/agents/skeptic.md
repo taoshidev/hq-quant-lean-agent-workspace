@@ -45,7 +45,7 @@ see.
 2. Read every tripwire the protocol names and report each one, whether or not it fired.
 3. Sort every objection: a **hard blocker** cites the Studio gate check that refuses it at this
    step; anything else you would block on is a protocol rejection, reported in full. A hard
-   blocker ends it and is never traded against anything; a **protocol rejection** (lookahead the
+   blocker ends it (your VERDICT is then veto) and is never traded against anything; a **protocol rejection** (lookahead the
    Studio does not refuse, a rule the Studio does not hold, stale or thin evidence, a tripwire, a
    spent window, too few trades) is a veto or a marginal; an **advisory** is a caveat. The sort
    changes the label, never what you found.
@@ -75,8 +75,9 @@ see.
 
 **Your report is shown to the trader verbatim.** Write it to be read: plain words, no internal id
 (no session, record or tool id), nothing addressed to the trader. Hand back exactly this block:
-every label at the start of its own line, in this order, each one present (write `none` where a
-section has nothing), your own words in place of every `<…>`. The Lead Quant checks it with
+every label at the start of its own line, in this order, each one present but those marked
+"second pass only" (write `none` where a section has nothing), your own words in place of every
+`<…>`. The Lead Quant checks it with
 `bin/check-report skeptic`; a report that does not follow it comes back to you with the check's
 words, to be handed back again in this format.
 

@@ -9,7 +9,7 @@
     "ANSWERS:",
     "  S-1 answered — <why, citing what you were handed>",
     "  S-2 conceded — <why>",
-    "PROPOSAL: <key> from <its value now> to <the value you propose> — <why> | none",
+    "PROPOSAL: <key> from \"<its value now>\" to \"<the value you propose>\" — <why> | none",
     "CLOSE (second pass only): <what you still hold, in one or two sentences>",
     "STILL OPEN: <objections neither answered nor conceded, and what would settle them> | none"
   ],
@@ -36,13 +36,14 @@
       "kind": "text",
       "required": true,
       "none": true,
-      "pattern": "^(?<key>[A-Za-z][\\w.\\[\\]-]*)\\s+from\\s+(?<from>[\\s\\S]+?)\\s+to\\s+(?<to>[\\s\\S]+?)\\s+[—–-]+\\s+(?<why>\\S[\\s\\S]*)$"
+      "pattern": "^(?<key>[A-Za-z][\\w.\\[\\]-]*)\\s+from\\s+[\"“](?<from>[^\"“”]*)[\"”]\\s+to\\s+[\"“](?<to>[^\"“”]*)[\"”]\\s+[—–-]+\\s+(?<why>\\S[\\s\\S]*)$"
     },
     {
       "key": "close",
       "label": "CLOSE",
       "kind": "text",
-      "required": false
+      "required": false,
+      "none": true
     },
     {
       "key": "stillOpen",
@@ -50,6 +51,11 @@
       "kind": "lines",
       "required": true
     }
+  ],
+  "distinct": [
+    [
+      "answers"
+    ]
   ],
   "lints": []
 }

@@ -1,0 +1,5 @@
+VERDICT: pass
+OBJECTIONS:
+  S-1 hard blocker — the exit is not held (cites: G-hold-compile; evidence: the checks block)
+TRIPWIRES: none
+COULD NOT RULE OUT: none

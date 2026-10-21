@@ -1,0 +1,7 @@
+VERDICT: marginal
+OBJECTIONS:
+  S-1 protocol — no run yet (cites: G-freeze-evidence; evidence: no run, as handed)
+WITHDRAWN:
+  S-1 — the Advocate's answer settles it
+TRIPWIRES: none
+COULD NOT RULE OUT: none

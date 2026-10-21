@@ -1,9 +1,10 @@
 I read docs/pitfalls.md and docs/validation.md before this verdict.
 
-VERDICT: marginal
+VERDICT: veto
 OBJECTIONS:
-  S-1 hard blocker — the exit on the opposite cross is not one the Studio holds today (cites: G-hold-compile; evidence: the Studio checks say G-hold-compile refuses Hold for the exit rule)
+  S-1 hard blocker — the exit on the opposite cross is not one the Studio holds today (cites: G-hold-compile; evidence: the Studio checks say G-hold-compile refuses Hold for the exit rule (exit_long))
   S-2 protocol — no research run exists yet, so nothing can be read as evidence (cites: G-freeze-evidence; evidence: "no research run yet", as handed)
   S-3 advisory — a 20/50 EMA cross on 4h bars trades rarely, so one window may hold one regime (cites: none; evidence: the rule's lengths 20 and 50, as handed)
+WITHDRAWN: none
 TRIPWIRES: lookahead: clear (the rule reads closed bars); costs: unknown (no run); trade count: unknown (no run)
 COULD NOT RULE OUT: that the cross only works in trending regimes

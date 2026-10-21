@@ -12,7 +12,7 @@
 // item or a text the regular expression its content follows. `lints` are further checks of the
 // fields those expressions name. Nothing here knows a persona by name.
 
-import { readFileSync } from 'node:fs';
+import { readFileSync, realpathSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
@@ -168,6 +168,7 @@ function templateItemLine(format, section) {
 export function checkReport(text, format) {
   const errors = [];
   const fields = {};
+  const enums = {};
   const raw = splitSections(text, format, errors);
   for (const section of format.sections) {
     const found = raw.get(section.key);
@@ -189,6 +190,7 @@ export function checkReport(text, format) {
       case 'enum': {
         const values = section.values ?? [];
         const word = enumWordOf(found, values);
+        enums[section.key] = word;
         if (word === null) {
           errors.push(
             `${section.label} names none, or more than one, of ${values.join(' | ')}: write exactly one, first on its line.`,
@@ -250,7 +252,8 @@ export function checkReport(text, format) {
           errors.push(`${section.label} is empty.`);
           break;
         }
-        if (section.pattern !== undefined && value !== '' && !(section.none === true && NONE.test(value))) {
+        if (section.none === true && NONE.test(value)) break;
+        if (section.pattern !== undefined && value !== '') {
           const f = fieldsOf(value, section.pattern);
           if (f === null) {
             const line = (format.template ?? []).find((l) => l.trim().startsWith(section.label));
@@ -267,13 +270,38 @@ export function checkReport(text, format) {
         errors.push(`The format names a section kind this check does not know: ${section.kind}.`);
     }
   }
-  return { errors, fields };
+  // Ids the format says are one objection, answer or question each: never twice across the listed
+  // sections (an objection both standing and withdrawn, or listed twice).
+  for (const group of format.distinct ?? []) {
+    const seen = new Set();
+    for (const key of group) {
+      for (const f of fields[key] ?? []) {
+        const id = String(f.displayId ?? '').toUpperCase();
+        if (seen.has(id)) {
+          const labels = group.map((k) => format.sections.find((s) => s.key === k)?.label ?? k);
+          errors.push(`${f.displayId} is listed twice (${labels.join(', ')}): give each its place once.`);
+        }
+        seen.add(id);
+      }
+    }
+  }
+  return { errors, fields, enums };
 }
 
 /** The lints' reasons over the fields the grammar read. */
-export function lintReport(format, fields) {
+export function lintReport(format, fields, enums = {}) {
   const errors = [];
   for (const lint of format.lints ?? []) {
+    if (lint.enum !== undefined) {
+      // A value another section must hold when an item is of a kind ("a hard blocker ends it").
+      const hit = (fields[lint.section] ?? []).find((f) =>
+        new RegExp(lint.when.matches, lint.flags).test(f[lint.when.field] ?? ''),
+      );
+      if (hit !== undefined && enums[lint.enum] !== lint.equals) {
+        errors.push(`${hit.displayId}: ${lint.message}.`);
+      }
+      continue;
+    }
     for (const f of fields[lint.section] ?? []) {
       if (lint.when !== undefined && !new RegExp(lint.when.matches, lint.flags).test(f[lint.when.field] ?? '')) {
         continue;
@@ -305,9 +333,9 @@ export function placeholdersIn(text, format) {
 
 /** The whole check: every reason, in order. */
 export function reasons(text, format) {
-  const { errors, fields } = checkReport(text, format);
+  const { errors, fields, enums } = checkReport(text, format);
   const out = [...errors];
-  if (errors.length === 0) out.push(...lintReport(format, fields));
+  if (errors.length === 0) out.push(...lintReport(format, fields, enums));
   const left = placeholdersIn(text, format);
   if (left.length > 0) {
     out.push(`It still holds the template's placeholder${left.length > 1 ? 's' : ''} ${left.join(', ')}: write your own words in place of each.`);
@@ -361,6 +389,16 @@ function main(argv) {
   return 1;
 }
 
-if (process.argv[1] !== undefined && fileURLToPath(import.meta.url) === process.argv[1]) {
+/** Whether this file is the script node was asked to run, through any symlink on either path. */
+function isMain() {
+  if (process.argv[1] === undefined) return false;
+  try {
+    return realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url));
+  } catch {
+    return false;
+  }
+}
+
+if (isMain()) {
   process.exitCode = main(process.argv.slice(2));
 }

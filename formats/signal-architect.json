@@ -41,6 +41,14 @@
       }
     }
   ],
+  "distinct": [
+    [
+      "rules"
+    ],
+    [
+      "questions"
+    ]
+  ],
   "lints": [
     {
       "section": "questions",
@@ -48,6 +56,36 @@
       "notMatches": "^(?:posture|tone|strictness|strict|critical|criticism|harsh|lenient|team|skeptic|advocate)$",
       "flags": "i",
       "message": "a question is about the strategy (one of market, timeframe, session, entry, exit, stop, target, hold, risk, sizing, direction, filter, or a script rule's id); never ask how strict or critical the team should be"
+    },
+    {
+      "section": "questions",
+      "field": "text",
+      "optional": true,
+      "notMatches": "\\b(?:skeptic|advocate|strict(?:er|ly|ness)?|lenient|leniency|go(?:es)? easy|easier on|harder on|softer on|tone down|veto(?:es|ed)?|objections?)\\b",
+      "flags": "i",
+      "message": "never ask how strict or critical the team should be, nor about the Skeptic or the Advocate"
+    },
+    {
+      "section": "questions",
+      "field": "text",
+      "optional": true,
+      "notMatches": "\\b(?:G-[A-Za-z0-9][\\w-]*|F-\\d+|S-\\d+)\\b",
+      "message": "never offer a Studio check or an objection (G-…, F-n, S-n) in a question or as an answer"
+    },
+    {
+      "section": "questions",
+      "field": "options",
+      "optional": true,
+      "notMatches": "\\b(?:skeptic|advocate|strict(?:er|ly|ness)?|lenient|leniency|go(?:es)? easy|easier on|harder on|softer on|tone down|veto(?:es|ed)?|objections?)\\b",
+      "flags": "i",
+      "message": "never ask how strict or critical the team should be, nor about the Skeptic or the Advocate"
+    },
+    {
+      "section": "questions",
+      "field": "options",
+      "optional": true,
+      "notMatches": "\\b(?:G-[A-Za-z0-9][\\w-]*|F-\\d+|S-\\d+)\\b",
+      "message": "never offer a Studio check or an objection (G-…, F-n, S-n) in a question or as an answer"
     },
     {
       "section": "questions",

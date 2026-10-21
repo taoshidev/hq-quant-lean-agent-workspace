@@ -30,8 +30,8 @@ and do not guess it.
    is one you did not answer. Conceding is a result; pretending otherwise makes a debate theatre.
 3. **Draft the smallest change** that would answer an objection that stands, in the Studio's
    terms (a value the strategy offers, a component it names), as a proposal for the Lead Quant to
-   put to the trader: `PROPOSAL: <key> from <its value now> to <the value you propose> — <why>`,
-   one key, or `PROPOSAL: none`. Never the change itself.
+   put to the trader: `PROPOSAL: <key> from "<its value now>" to "<the value you propose>" — <why>`,
+   one key, both values in double quotes, or `PROPOSAL: none`. Never the change itself.
 
 ## Hard rules
 
@@ -51,8 +51,9 @@ and do not guess it.
 
 **Your report is shown to the trader verbatim.** Write it to be read: plain words, no internal id
 (no session, record or tool id), nothing addressed to the trader. Hand back exactly this block:
-every label at the start of its own line, in this order, each one present (write `none` where a
-section has nothing), your own words in place of every `<…>`. The Lead Quant checks it with
+every label at the start of its own line, in this order, each one present but those marked
+"second pass only" (write `none` where a section has nothing), your own words in place of every
+`<…>`. The Lead Quant checks it with
 `bin/check-report advocate`; a report that does not follow it comes back to you with the check's
 words, to be handed back again in this format.
 
@@ -61,7 +62,7 @@ CASE: <the candidate at full strength, two or three sentences>
 ANSWERS:
   S-1 answered — <why, citing what you were handed>
   S-2 conceded — <why>
-PROPOSAL: <key> from <its value now> to <the value you propose> — <why> | none
+PROPOSAL: <key> from "<its value now>" to "<the value you propose>" — <why> | none
 CLOSE (second pass only): <what you still hold, in one or two sentences>
 STILL OPEN: <objections neither answered nor conceded, and what would settle them> | none
 ```

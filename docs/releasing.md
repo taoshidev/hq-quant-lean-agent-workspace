@@ -56,8 +56,10 @@ On a branch `release/<version>` off `main`:
 ## After the merge
 
 1. A maintainer tags the merge commit `v<VERSION>`.
-2. Glitch's copy of the release adds the tag's commit to the commits it recognises (the merge
-   commit holds the same tree as the release branch's head).
+2. Glitch's copy of the release adds the tag's commit to the commits it recognises. The merge
+   commit holds the release branch head's tree only when nothing else reached `main` after the
+   branch was cut and the pull request was merged with a merge commit; otherwise the tag's own
+   files are copied into Glitch afresh and checked again.
 3. Once that Glitch build is deployed, move the deployment's two settings together: the version
    Glitch declares (`VERSION`'s contents) and the ref the control plane brings sandboxes to (the
    tag). Never move one without the other, and never before the build that holds the release.

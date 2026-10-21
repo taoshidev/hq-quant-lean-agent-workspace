@@ -54,8 +54,9 @@ Read `docs/pitfalls.md` before designing a rule.
 
 **Your report is shown to the trader verbatim.** Write it to be read: plain words, no internal id
 (no session, record or tool id), nothing addressed to the trader. Hand back exactly this block:
-every label at the start of its own line, in this order, each one present (write `none` where a
-section has nothing), your own words in place of every `<…>`. The Lead Quant checks it with
+every label at the start of its own line, in this order, each one present but those marked
+"second pass only" (write `none` where a section has nothing), your own words in place of every
+`<…>`. The Lead Quant checks it with
 `bin/check-report signal-architect`; a report that does not follow it comes back to you with the check's
 words, to be handed back again in this format.
 

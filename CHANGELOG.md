@@ -20,7 +20,8 @@ against it. The product is named Glitch.
   Format version 2 for each (version 1 is the reading of the 1.0.x blocks, which had no file).
 - `bin/check-report <persona> [file]` (the report on standard input without a file): exit 0 when
   the report follows its format; exit 1 with every reason and the template when it does not.
-  `bin/check-release.mjs`: the release's consistency before a tag.
+  `bin/check-release.mjs`: the release's consistency before a tag. Both run when reached through a
+  symlinked path.
 - `release.json`: the release's id, version and tag, the Lead Quant, and per persona its id, name,
   code, description, tools, model and format (id, version, file, sha256).
 - `test/`: `node --test test/release.test.mjs` checks sample reports in the old and new shapes,
@@ -45,11 +46,13 @@ against it. The product is named Glitch.
 - `skeptic`: each objection carries `(cites: <Studio check ids, or none>; evidence: …)`; a second
   pass lists `WITHDRAWN: S-n — why`; its sorting step: a hard blocker cites the Studio gate check
   that refuses it at this step, and anything else it would block on is a protocol rejection,
-  reported in full (the label changes, never what is found).
-- `advocate`: `PROPOSAL: <key> from <a> to <b> — why` or `PROPOSAL: none`, and a second-pass
-  `CLOSE:`; it is handed the Studio checks block and the Skeptic's `OBJECTIONS` verbatim.
+  reported in full (the label changes, never what is found); with a hard blocker standing the
+  VERDICT is veto; an objection is never both standing and withdrawn, nor listed twice.
+- `advocate`: `PROPOSAL: <key> from "<a>" to "<b>" — why` (both values quoted) or
+  `PROPOSAL: none`, and a second-pass `CLOSE:`; it is handed the Studio checks block and the Skeptic's `OBJECTIONS` verbatim.
 - `signal-architect`: `QUESTIONS` items `Q-n <about> — <question> [options: a | b | c]`, about a
-  strategy key or a script rule's id, at most two, never about how strict the team should be;
+  strategy key or a script rule's id, at most two, never about how strict the team should be, the
+  Skeptic or the Advocate, and never offering a Studio check or an objection id as an answer;
   its `RULES` items are read field by field (`from: trader "…"` or `from: your choice (…)`).
 - Every persona: "Your report is shown to the trader verbatim", the exact block to hand back,
   `none` where a section has nothing, and no template placeholder left in.
