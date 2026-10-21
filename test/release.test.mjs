@@ -16,6 +16,7 @@ const REPORTS = join(ROOT, 'test', 'reports');
 const EXPECTED = {
   'skeptic.v1.1.0.txt': null,
   'skeptic.v1.1.0-second-pass.txt': null,
+  'skeptic.v1.1.0-nested-parens.txt': null,
   'skeptic.v1.0.x.txt': 'S-1 does not follow the item\'s shape',
   'skeptic.hard-without-gate.txt': 'a hard blocker cites the Studio gate check that refuses it',
   'skeptic.placeholder.txt': "template's placeholders <what>",
@@ -27,6 +28,7 @@ const EXPECTED = {
   'advocate.proposal-unquoted.txt': 'PROPOSAL does not follow its shape',
   'signal-architect.v1.1.0.txt': null,
   'signal-architect.v1.0.1.txt': 'Q1 Should the stop',
+  'signal-architect.trailing-prose.txt': 'end the report after its last section',
   'signal-architect.posture.txt': 'never ask how strict or critical the team should be',
   'signal-architect.posture-words.txt': 'never ask how strict or critical the team should be',
   'signal-architect.check-id-option.txt': 'never offer a Studio check or an objection',

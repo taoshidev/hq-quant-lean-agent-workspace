@@ -50,7 +50,7 @@ Read `docs/validation.md` before reading your first run in a session.
 (no session, record or tool id), nothing addressed to the trader. Hand back exactly this block:
 every label at the start of its own line, in this order, each one present but those marked
 "second pass only" (write `none` where a section has nothing), your own words in place of every
-`<…>`. The Lead Quant checks it with
+`<…>`, and nothing after the last section. The Lead Quant checks it with
 `bin/check-report research-engineer`; a report that does not follow it comes back to you with the check's
 words, to be handed back again in this format.
 

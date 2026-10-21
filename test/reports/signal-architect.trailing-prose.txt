@@ -1,0 +1,7 @@
+RULES (in order of proposal):
+  R-1 long entry — ta.crossover(ta.ema(close, 20), ta.ema(close, 50)) — placed: entry — from: trader "go long on the cross"
+CANNOT HOLD TODAY (unbuilt): none
+QUESTIONS:
+  Q-1 exit — Keep the death cross as the only exit? [options: keep it | add a target]
+
+Files referenced: docs/pitfalls.md.

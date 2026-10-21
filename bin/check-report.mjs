@@ -231,8 +231,12 @@ export function checkReport(text, format) {
           const f = fieldsOf(item.text, section.item.pattern);
           if (f === null) {
             const line = templateItemLine(format, section);
+            // Lines under an item continue it: prose after the report's last section runs on
+            // into its last item, and a line that alone would follow the shape no longer does.
+            const first = item.text.split('\n')[0] ?? '';
+            const runsOn = first !== item.text && fieldsOf(first, section.item.pattern) !== null;
             errors.push(
-              `${section.label}: ${item.displayId} does not follow the item's shape ("${clip(item.text)}").${line === null ? '' : ` Write it as: ${line}`}`,
+              `${section.label}: ${item.displayId} does not follow the item's shape ("${clip(item.text)}").${runsOn ? ' Its first line does: the lines under it run on into it; end the report after its last section, with nothing below it.' : ''}${line === null ? '' : ` Write it as: ${line}`}`,
             );
             continue;
           }

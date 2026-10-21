@@ -33,7 +33,7 @@
       "required": true,
       "item": {
         "id": "S-\\d+",
-        "pattern": "^(?<id>S-\\d+)\\s*(?:(?:[—–-]+|[,:;])\\s*)?(?<kind>hard blocker|protocol|advisory)\\b\\s*[—–-]+\\s*(?<text>[\\s\\S]*?\\(cites:\\s*(?<cites>none|[A-Z]-[A-Za-z0-9-]+(?:\\s*,\\s*[A-Z]-[A-Za-z0-9-]+)*)\\s*;\\s*evidence:\\s*(?<evidence>[^\\s()](?:[^()]|\\([^()]*\\))*?)\\)[\\s\\S]*)$"
+        "pattern": "^(?<id>S-\\d+)\\s*(?:(?:[—–-]+|[,:;])\\s*)?(?<kind>hard blocker|protocol|advisory)\\b\\s*[—–-]+\\s*(?<text>[\\s\\S]*?\\(cites:\\s*(?<cites>none|[A-Z]-[A-Za-z0-9-]+(?:\\s*,\\s*[A-Z]-[A-Za-z0-9-]+)*)\\s*;\\s*evidence:\\s*(?<evidence>[^\\s)][\\s\\S]*)\\)[^)]*)$"
       }
     },
     {

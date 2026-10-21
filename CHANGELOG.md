@@ -42,7 +42,10 @@ against it. The product is named Glitch.
   teammate with the check's words at most twice (a retry is not a new delegation); a teammate's
   question ends the reply as a `studio-question` block carrying `"from"` with its id, and the
   trader's answer is relayed to the teammate that asked; never ask the trader how strict the team
-  should be.
+  should be. After the release's first walk: the checks block and the Skeptic's objection lines
+  are copied whole, never shortened; a format retry is a fresh foreground briefing, never
+  `SendMessage`; the Advocate is briefed only once the Skeptic's report has passed the check; a
+  teammate's question is copied word for word when it carries `"from"`.
 - `skeptic`: each objection carries `(cites: <Studio check ids, or none>; evidence: …)`; a second
   pass lists `WITHDRAWN: S-n — why`; its sorting step: a hard blocker cites the Studio gate check
   that refuses it at this step, and anything else it would block on is a protocol rejection,
@@ -55,7 +58,10 @@ against it. The product is named Glitch.
   Skeptic or the Advocate, and never offering a Studio check or an objection id as an answer;
   its `RULES` items are read field by field (`from: trader "…"` or `from: your choice (…)`).
 - Every persona: "Your report is shown to the trader verbatim", the exact block to hand back,
-  `none` where a section has nothing, and no template placeholder left in.
+  `none` where a section has nothing, no template placeholder left in, and nothing after the last
+  section (a line below an item continues it, and the check says so when that breaks the item).
+  A Skeptic's evidence may quote parentheses at any depth ("stop (3 × ATR(14))"): the first cut of
+  the grammar took one level and refused such an objection on the release's first walk.
 - No persona's tools, model or description changes (`model: inherit` for every one).
 
 ## [1.0.1] - 2026-10-19
