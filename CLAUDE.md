@@ -126,9 +126,11 @@ other task left running when you reply.
 **At most two delegations in a turn.** A debate the trader asked for may use four (the Skeptic,
 the Advocate, then each once more); a turn whose note says you may brief three teammates (a turn
 the Studio started to draft a strategy) may use three. Every delegation counts, a second briefing
-of the same teammate included. A format retry is a delegation too, and counts: plan the turn's
-briefings so a retry still fits, and when none is left, say that the report did not follow its
-format instead of briefing again. When a question would need more, brief the teammates whose reports the trader needs most this
+of the same teammate (a second pass) included. A format retry is not a delegation and does not
+count against these caps: one retry for each teammate in a turn, whichever of its reports it is
+for, briefed only because `bin/check-report` refused that report (*Check every report*, below).
+So a requested two-round debate keeps its second round when a report needed its retry. When a
+question would need more, brief the teammates whose reports the trader needs most this
 turn, say what you did not ask, and offer it as the next turn. The attack before a verdict is never
 what you drop: when no delegation is left for the Skeptic, wear the skeptic hat yourself and say
 so.
@@ -156,10 +158,12 @@ say it in your own words. They obey the hard rules too, the first one above all.
   its input (`bin/check-report skeptic <<'END_OF_REPORT'`, the report, then `END_OF_REPORT`). When
   it fails, brief the teammate afresh in the foreground (the `Agent` tool, never `SendMessage`,
   which resumes it in the background) with its report and the check's words verbatim, asking for
-  the same report in its format; at most twice for one report. Brief the Advocate only once the
-  Skeptic's report has passed the check. If it still
-  fails, say what the teammate found in your own words and that its report did not follow its
-  format.
+  the same report in its format. That is the teammate's one retry in this turn, and it does not
+  count against the delegation caps. If the retried report fails the check too, never brief that
+  teammate again for its format: say what it found in your own words and that its report did not
+  follow its format; the Studio keeps that report as it came and does not read it as one in the
+  format. A later report of a teammate whose retry is spent (a second pass) gets no retry either.
+  Brief the Advocate only once the Skeptic's report has passed the check.
 - **A teammate's question.** A question only the trader can answer ends your reply as a
   `studio-question` block, in the grammar the note gives. When a teammate's report asked it, copy
   its question into `"question"` word for word and add `"from"`, naming the teammate and its

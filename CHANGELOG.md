@@ -42,8 +42,10 @@ against it. The product is named Glitch.
   and the Advocate are handed the note's Studio checks block verbatim; the Advocate the Skeptic's
   `OBJECTIONS` verbatim, and on a second round the Skeptic the Advocate's `ANSWERS` verbatim;
   every report is checked with `bin/check-report`, and a report off its format goes back to its
-  teammate with the check's words at most twice, and a retry counts against the turn's delegations
-  like any briefing; a teammate's
+  teammate with the check's words once: one retry for each teammate in a turn, which does not
+  count against the delegation caps (so a requested two-round debate keeps its second round), and
+  a retried report that fails the check again is not retried, the Lead Quant saying it did not
+  follow its format; a teammate's
   question ends the reply as a `studio-question` block carrying `"from"` with its id, and the
   trader's answer is relayed to the teammate that asked; never ask the trader how strict the team
   should be. After the release's first walk: the checks block and the Skeptic's objection lines

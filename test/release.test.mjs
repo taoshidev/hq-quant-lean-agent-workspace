@@ -135,7 +135,7 @@ test('the constitution carries the 1.1.0 delegation and report rules, and names 
     'You are the **Lead Quant** of Glitch',
     'run_in_background: false',
     'bin/check-report',
-    'at most twice',
+    'one retry in this turn',
     'studio-question',
     '"from"',
     'Studio checks',
@@ -205,14 +205,33 @@ test('check-report exits 2, never 1, when the check itself breaks', async () => 
   }
 });
 
-test('a format retry counts against the delegation caps, and a second pass names every first-pass id', () => {
+test('a format retry is uncounted, one per teammate per turn, and a second pass names every first-pass id', () => {
+  // The maintainers' decision, 2026-10-21: a teammate's one format retry does not count against the
+  // delegation caps, so a requested two-round debate keeps its second round; a second report off
+  // its format is not retried again.
   const lead = readFileSync(join(ROOT, 'CLAUDE.md'), 'utf8').replace(/\s+/g, ' ');
-  assert.ok(!lead.includes('is the same delegation finishing'), 'no uncounted retry');
-  assert.ok(lead.includes('A format retry is a delegation too, and counts'), 'a retry counts');
+  assert.ok(!lead.includes('A format retry is a delegation too, and counts'), 'a retry no longer counts');
+  assert.ok(!lead.includes('at most twice'), 'never two retries for one report');
+  assert.ok(
+    lead.includes('A format retry is not a delegation and does not count against these caps'),
+    'a retry is uncounted',
+  );
+  assert.ok(lead.includes('one retry for each teammate in a turn'), 'one retry per teammate per turn');
+  assert.ok(
+    lead.includes('a requested two-round debate keeps its second round'),
+    'the debate keeps its second round',
+  );
+  assert.ok(
+    lead.includes('If the retried report fails the check too, never brief that teammate again for its format'),
+    'a second report off its format is not retried',
+  );
   assert.ok(
     lead.includes('every objection id of its first report is under `OBJECTIONS` or `WITHDRAWN`'),
     'the Lead Quant compares the ids before relaying',
   );
   const skeptic = readFileSync(join(ROOT, '.claude', 'agents', 'skeptic.md'), 'utf8').replace(/\s+/g, ' ');
   assert.ok(skeptic.includes('never drop one'), 'the Skeptic never drops an objection silently');
+  const changelog = readFileSync(join(ROOT, 'CHANGELOG.md'), 'utf8').replace(/\s+/g, ' ');
+  assert.ok(!changelog.includes('a retry counts against the turn'), 'the changelog no longer says a retry counts');
+  assert.ok(changelog.includes('one retry for each teammate in a turn'), 'the changelog states the rule');
 });

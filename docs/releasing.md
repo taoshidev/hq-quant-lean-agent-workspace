@@ -50,7 +50,9 @@ On a branch `release/<version>` off `main`:
    not results: you never quote them."; or the README lacks the control-plane check.
 6. Check a teammate through the control plane at the branch (README, *Through the control
    plane*): a captured brief carries no fence line and no internal id, a report passes
-   `bin/check-report`, and the reply's questions carry `"from"` where a teammate asked them.
+   `bin/check-report`, a report the check refuses is retried once at most for its teammate in
+   the turn (a retry is outside the delegation caps), and the reply's questions carry `"from"`
+   where a teammate asked them.
 7. Open the pull request into `main`. Glitch's copy of the release (its `release.json`,
    `formats/*.json` and the commits that hold its tree) goes in Glitch's own pull request.
 
