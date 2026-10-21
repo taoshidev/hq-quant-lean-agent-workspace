@@ -135,7 +135,7 @@ test('the constitution carries the 1.1.0 delegation and report rules, and names 
     'You are the **Lead Quant** of Glitch',
     'run_in_background: false',
     'bin/check-report',
-    'one retry in this turn',
+    'one retry in a turn',
     'studio-question',
     '"from"',
     'Studio checks',
@@ -224,6 +224,14 @@ test('a format retry is uncounted, one per teammate per turn, and a second pass 
   assert.ok(
     lead.includes('If the retried report fails the check too, never brief that teammate again for its format'),
     'a second report off its format is not retried',
+  );
+  assert.ok(
+    lead.includes('When the check fails and that teammate\'s retry is unspent'),
+    'the retry is conditional on the bound, before it is described',
+  );
+  assert.ok(
+    lead.includes('when the Skeptic\'s retry fails too, brief no Advocate'),
+    'a Skeptic whose retry fails leaves no debate, said',
   );
   assert.ok(
     lead.includes('every objection id of its first report is under `OBJECTIONS` or `WITHDRAWN`'),

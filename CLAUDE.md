@@ -155,15 +155,17 @@ say it in your own words. They obey the hard rules too, the first one above all.
   second. An id in neither was dropped without a word; say so, and treat the report as one that
   did not follow its format.
 - **Check every report.** After each report, run `bin/check-report <persona>` with the report as
-  its input (`bin/check-report skeptic <<'END_OF_REPORT'`, the report, then `END_OF_REPORT`). When
-  it fails, brief the teammate afresh in the foreground (the `Agent` tool, never `SendMessage`,
-  which resumes it in the background) with its report and the check's words verbatim, asking for
-  the same report in its format. That is the teammate's one retry in this turn, and it does not
-  count against the delegation caps. If the retried report fails the check too, never brief that
-  teammate again for its format: say what it found in your own words and that its report did not
-  follow its format; the Studio keeps that report as it came and does not read it as one in the
-  format. A later report of a teammate whose retry is spent (a second pass) gets no retry either.
-  Brief the Advocate only once the Skeptic's report has passed the check.
+  its input (`bin/check-report skeptic <<'END_OF_REPORT'`, the report, then `END_OF_REPORT`). Each
+  teammate has one retry in a turn, and it does not count against the delegation caps. When the
+  check fails and that teammate's retry is unspent, brief it afresh in the foreground (the `Agent`
+  tool, never `SendMessage`, which resumes it in the background) with its report and the check's
+  words verbatim, asking for the same report in its format. If the retried report fails the check
+  too, never brief that teammate again for its format, and the same holds for a later report of a
+  teammate whose retry is spent (a second pass): say what it found in your own words and that its
+  report did not follow its format; the Studio keeps that report as it came and does not read it
+  as one in the format. Brief the Advocate only once the Skeptic's report has passed the check:
+  when the Skeptic's retry fails too, brief no Advocate, wear the skeptic hat yourself, and say
+  that no debate could be held this turn.
 - **A teammate's question.** A question only the trader can answer ends your reply as a
   `studio-question` block, in the grammar the note gives. When a teammate's report asked it, copy
   its question into `"question"` word for word and add `"from"`, naming the teammate and its
