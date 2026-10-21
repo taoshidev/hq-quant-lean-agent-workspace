@@ -1,0 +1,5 @@
+RISK DRAFT: stop 2 × ATR(14) below entry — your choice (platform-required: the trader gave none); risk per trade 1% — trader "risking 1% of the account per trade"
+NOT ENFORCED: none, as far as I was told
+EXPOSURE: one position at a time on one market; no session rule on a 24/7 market
+CONCERNS:
+  - whether the stop is held by the script's entry

@@ -1,0 +1,40 @@
+{
+  "id": "risk-architect-report",
+  "version": 2,
+  "persona": "risk-architect",
+  "source": ".claude/agents/risk-architect.md — \"What you hand back\"",
+  "shown": "Your report is shown to the trader verbatim.",
+  "template": [
+    "RISK DRAFT: <stop, target, hold, discipline, risk per trade, each as an offered value or a script value, with whose it is and the reason>",
+    "NOT ENFORCED: <a stated stop or limit the Studio is not holding, as far as you were told> | none",
+    "EXPOSURE: <concurrent positions, correlation, session, time limit>",
+    "CONCERNS: <what the Skeptic should look at>"
+  ],
+  "sections": [
+    {
+      "key": "riskDraft",
+      "label": "RISK DRAFT",
+      "kind": "text",
+      "required": true
+    },
+    {
+      "key": "notEnforced",
+      "label": "NOT ENFORCED",
+      "kind": "text",
+      "required": true
+    },
+    {
+      "key": "exposure",
+      "label": "EXPOSURE",
+      "kind": "text",
+      "required": true
+    },
+    {
+      "key": "concerns",
+      "label": "CONCERNS",
+      "kind": "lines",
+      "required": true
+    }
+  ],
+  "lints": []
+}

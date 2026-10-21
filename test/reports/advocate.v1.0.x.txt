@@ -1,0 +1,5 @@
+CASE: The candidate at full strength.
+ANSWERS:
+  S-1 answered — the exit can be expressed another way
+PROPOSAL (optional): change the exit to a close below the 50 EMA
+STILL OPEN: none

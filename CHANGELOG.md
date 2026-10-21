@@ -6,28 +6,59 @@ contents of `VERSION`.
 
 ## [Unreleased]
 
-### Changed (authoring the strategy script)
+## [1.1.0] - 2026-10-21
 
-- `CLAUDE.md` gains *Authoring the strategy script*: read the language reference; check with
-  `check_script` when it is offered; propose the whole script (`author_strategy`,
-  `revise_strategy`, or a proposal's `set-script` edit to measure it first); quote the trader for
-  every rule and value, or mark the value as your choice, and say when one changes a value the
-  trader stated; a stop the trader did not give is `platform-required`; what cannot be held goes
-  in `unbuilt`, never approximated, pairs, rotation and model-driven signals included; no figures;
-  what to do when the Studio says a script was not held.
-- `signal-architect` drafts entries, filters and exits as script rules (or canvas components),
-  value by value with whose each is. Its hard rule "Never invent a threshold, a lookback or a
-  market the trader did not state …" becomes "Mark every value that is not the trader's as your
-  choice, and say when one changes a value the trader stated": as written it forbade the choices
-  the script records as the Lead Quant's, and a proposed change to a stated value, which the
-  trader now decides on the card.
-- `risk-architect` drafts stops, targets, sizing and discipline, a stop the trader did not give as
-  `platform-required`.
-- `skeptic` runs `check_script` when it is offered, and otherwise reads the Studio's checks the
-  Lead Quant hands it.
-- No persona gains a tool, and no frontmatter changes.
+The first release with report formats: every teammate's report has a grammar in `formats/`, the
+one both `bin/check-report` and Glitch read reports with, and the Lead Quant checks each report
+against it. The product is named Glitch.
+
+### Added
+
+- `formats/<persona>.json` for the six personas: each report's sections (label, kind, whether it
+  is required), the regular expression an item or a value follows, the persona's template as its
+  "What you hand back" block shows it, and the further checks (`lints`) `bin/check-report` makes.
+  Format version 2 for each (version 1 is the reading of the 1.0.x blocks, which had no file).
+- `bin/check-report <persona> [file]` (the report on standard input without a file): exit 0 when
+  the report follows its format; exit 1 with every reason and the template when it does not.
+  `bin/check-release.mjs`: the release's consistency before a tag.
+- `release.json`: the release's id, version and tag, the Lead Quant, and per persona its id, name,
+  code, description, tools, model and format (id, version, file, sha256).
+- `test/`: `node --test test/release.test.mjs` checks sample reports in the old and new shapes,
+  the persona blocks against their templates, and the release's consistency.
+- `docs/releasing.md`: how a release is cut, and the checks each later one runs.
+- `README.md`: the check through the control plane (ACP) beside the CLI one.
+
+### Changed
+
+- The product is **Glitch**: `CLAUDE.md` and every persona name it, and say "the Studio" for it
+  after that.
+- `CLAUDE.md`, *The team*: the trader sees every brief and report verbatim, so a brief carries no
+  fence line of the note and no internal id; no background delegation and no detached job inside
+  a team turn; a turn whose note says three teammates (a drafting turn) may use three; the Skeptic
+  and the Advocate are handed the note's Studio checks block verbatim; the Advocate the Skeptic's
+  `OBJECTIONS` verbatim, and on a second round the Skeptic the Advocate's `ANSWERS` verbatim;
+  every report is checked with `bin/check-report`, and a report off its format goes back to its
+  teammate with the check's words at most twice (a retry is not a new delegation); a teammate's
+  question ends the reply as a `studio-question` block carrying `"from"` with its id, and the
+  trader's answer is relayed to the teammate that asked; never ask the trader how strict the team
+  should be.
+- `skeptic`: each objection carries `(cites: <Studio check ids, or none>; evidence: …)`; a second
+  pass lists `WITHDRAWN: S-n — why`; its sorting step: a hard blocker cites the Studio gate check
+  that refuses it at this step, and anything else it would block on is a protocol rejection,
+  reported in full (the label changes, never what is found).
+- `advocate`: `PROPOSAL: <key> from <a> to <b> — why` or `PROPOSAL: none`, and a second-pass
+  `CLOSE:`; it is handed the Studio checks block and the Skeptic's `OBJECTIONS` verbatim.
+- `signal-architect`: `QUESTIONS` items `Q-n <about> — <question> [options: a | b | c]`, about a
+  strategy key or a script rule's id, at most two, never about how strict the team should be;
+  its `RULES` items are read field by field (`from: trader "…"` or `from: your choice (…)`).
+- Every persona: "Your report is shown to the trader verbatim", the exact block to hand back,
+  `none` where a section has nothing, and no template placeholder left in.
+- No persona's tools, model or description changes (`model: inherit` for every one).
 
 ## [1.0.1] - 2026-10-19
+
+The tag `v1.0.1` names the merge of the authoring delta (`313da73`), so this release carries both
+sections below; the second was listed under *Unreleased* when the tag was cut.
 
 ### Changed
 
@@ -48,6 +79,27 @@ contents of `VERSION`.
   the commit and `VERSION` it observed, and the Studio attributes the voice by that commit.
 - No persona changes: none holds the `Agent` tool, so none can delegate. No frontmatter, report
   format or tool list changes.
+
+### Changed (authoring the strategy script)
+
+- `CLAUDE.md` gains *Authoring the strategy script*: read the language reference; check with
+  `check_script` when it is offered; propose the whole script (`author_strategy`,
+  `revise_strategy`, or a proposal's `set-script` edit to measure it first); quote the trader for
+  every rule and value, or mark the value as your choice, and say when one changes a value the
+  trader stated; a stop the trader did not give is `platform-required`; what cannot be held goes
+  in `unbuilt`, never approximated, pairs, rotation and model-driven signals included; no figures;
+  what to do when the Studio says a script was not held.
+- `signal-architect` drafts entries, filters and exits as script rules (or canvas components),
+  value by value with whose each is. Its hard rule "Never invent a threshold, a lookback or a
+  market the trader did not state …" becomes "Mark every value that is not the trader's as your
+  choice, and say when one changes a value the trader stated": as written it forbade the choices
+  the script records as the Lead Quant's, and a proposed change to a stated value, which the
+  trader now decides on the card.
+- `risk-architect` drafts stops, targets, sizing and discipline, a stop the trader did not give as
+  `platform-required`.
+- `skeptic` runs `check_script` when it is offered, and otherwise reads the Studio's checks the
+  Lead Quant hands it.
+- No persona gains a tool, and no frontmatter changes.
 
 ## [1.0.0] - 2026-10-13
 

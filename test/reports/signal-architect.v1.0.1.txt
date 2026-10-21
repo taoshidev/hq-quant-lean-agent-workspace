@@ -1,0 +1,6 @@
+RULES (in order of proposal):
+  R-1 long entry — script rule — placed: entry — from: trader "go long on the cross"
+      values: 20, 50 — from: trader "20 and 50"
+CANNOT HOLD TODAY (unbuilt): none
+QUESTIONS:
+  Q1 Should the stop sit 2 ATR below entry? Turns on: how wide each loss is.

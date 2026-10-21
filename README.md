@@ -1,8 +1,8 @@
 # hq-quant-lean-agent-workspace
 
-The agent workspace of **Vanta Strategy Studio**: the instructions the sandboxed **Lead Quant**
-runs with, and the Claude Code sub-agent personas it delegates to. This repository holds
-instructions, not application code.
+The agent workspace of **Glitch**, Vanta Labs' strategy studio: the instructions the sandboxed
+**Lead Quant** runs with, the Claude Code sub-agent personas it delegates to, and the formats their
+reports follow. This repository holds instructions and two small checks, not application code.
 
 ## What it is for
 
@@ -30,13 +30,20 @@ is authoritative for the current state; this repository says who the agent is an
 | `.claude/agents/research-engineer.md`| What a run measures and how to read it.                                                                                           |
 | `.claude/agents/skeptic.md`          | The veto: the attack before anything reaches the trader.                                                                          |
 | `.claude/agents/advocate.md`         | The steelman: the strongest honest case, answering the Skeptic by id.                                                             |
+| `formats/<persona>.json`             | Each persona's report format: its sections, the shape of each item, its template and further checks. Glitch reads reports with the same files. |
+| `bin/check-report`                   | `bin/check-report <persona> [file]`: whether a report follows its format; every reason and the template when it does not.        |
+| `bin/check-release.mjs`              | Whether a release is consistent before it is tagged (`docs/releasing.md`).                                                        |
+| `release.json`                       | The release: version, tag, and per persona its name, code, description, tools, model and format (with the file's sha256).         |
+| `docs/releasing.md`                  | How a release is cut, and the checks every later release runs.                                                                    |
+| `test/`                              | `node --test test/release.test.mjs`: sample reports in the old and new shapes, the persona blocks, the release's consistency.     |
 | `VERSION`, `CHANGELOG.md`            | The workspace version (semver) and what changed.                                                                                  |
 | `NOTICE`                             | Upstream attribution.                                                                                                             |
 | `LICENSE`                            | Apache License 2.0: this repository's licence, and the one the adapted files came with.                                            |
 
 Only the Lead Quant talks to the trader. Each persona works from what the Lead Quant hands it and
-hands back a finding, a proposal or a verdict in a short structured block. Every delegation runs in
-the foreground, inside the Lead Quant's turn, and is waited for, so each report is on the turn's
+hands back a finding, a proposal or a verdict in a short structured block, its report format, which
+the trader reads verbatim and the Lead Quant checks with `bin/check-report`. Every delegation runs
+in the foreground, inside the Lead Quant's turn, and is waited for, so each report is on the turn's
 record. None of them can read the Studio by itself, run research, or change a strategy; the Lead
 Quant proposes, the trader confirms.
 
@@ -75,6 +82,10 @@ One token, two spellings, and which goes where:
   observed commit: a sandbox at a commit the Studio holds no release manifest for is not named the
   Lead Quant, whatever the deployment declares. Set the variable once the deployment's sandboxes
   are brought to the tag and the Studio holds that release's manifest.
+- From 1.1.0 the manifest is this repository's `release.json` and `formats/*.json`, copied byte
+  for byte into Glitch for each tag. The tag, the version in `VERSION` and the deployment's two
+  settings move together, and only once the Glitch build that holds the release is deployed
+  (`docs/releasing.md`).
 
 ## Checking it locally
 
@@ -97,7 +108,23 @@ by name." --allowedTools Agent,Task,Read,Grep,Glob --max-turns 4 --output-format
 ```
 
 The JSON result's `subagent_stats.by_type` reads `{"skeptic": 1}` and the reply quotes a
-`VERDICT:` line; a result with `spawned: 0` means the personas were listed, not run.
+`VERDICT:` line; a result with `spawned: 0` means the personas were listed, not run. Newer CLI
+builds may run a teammate in the background unasked; the check that counts is the next one.
+
+### Through the control plane (ACP)
+
+The sandbox runs this workspace through the Agent Client Protocol adapter and the CLI it bundles,
+not the CLI on your PATH, so the delegation check that matters is the same prompt sent through
+the control plane to a sandbox brought to the ref under test. Read that session's recorded events
+(the Studio's capture script exports them as JSONL) and expect:
+
+- a `tool_call` whose `rawInput.subagent_type` is `skeptic` and whose `rawInput.run_in_background`
+  is `false`;
+- its completed `tool_call_update`, whose content is the Skeptic's report, which
+  `bin/check-report skeptic` accepts; content that reads "Async agent launched successfully" means
+  the teammate ran in the background and its report never reached the turn;
+- a Bash call that runs `bin/check-report skeptic` on that report before the reply;
+- a brief (`rawInput.prompt`) with no fence line of the note and no internal id.
 
 ## Licence and attribution
 

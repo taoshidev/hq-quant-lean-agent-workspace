@@ -1,0 +1,55 @@
+{
+  "id": "advocate-report",
+  "version": 2,
+  "persona": "advocate",
+  "source": ".claude/agents/advocate.md — \"What you hand back\"",
+  "shown": "Your report is shown to the trader verbatim.",
+  "template": [
+    "CASE: <the candidate at full strength, two or three sentences>",
+    "ANSWERS:",
+    "  S-1 answered — <why, citing what you were handed>",
+    "  S-2 conceded — <why>",
+    "PROPOSAL: <key> from <its value now> to <the value you propose> — <why> | none",
+    "CLOSE (second pass only): <what you still hold, in one or two sentences>",
+    "STILL OPEN: <objections neither answered nor conceded, and what would settle them> | none"
+  ],
+  "sections": [
+    {
+      "key": "case",
+      "label": "CASE",
+      "kind": "text",
+      "required": true
+    },
+    {
+      "key": "answers",
+      "label": "ANSWERS",
+      "kind": "items",
+      "required": true,
+      "item": {
+        "id": "S-\\d+",
+        "pattern": "^(?<id>S-\\d+)\\s*(?:(?:[—–-]+|[,:;])\\s*)?(?<stance>answered|conceded)\\b\\s*[—–-]+\\s*(?<why>[\\s\\S]+)$"
+      }
+    },
+    {
+      "key": "proposal",
+      "label": "PROPOSAL",
+      "kind": "text",
+      "required": true,
+      "none": true,
+      "pattern": "^(?<key>[A-Za-z][\\w.\\[\\]-]*)\\s+from\\s+(?<from>[\\s\\S]+?)\\s+to\\s+(?<to>[\\s\\S]+?)\\s+[—–-]+\\s+(?<why>\\S[\\s\\S]*)$"
+    },
+    {
+      "key": "close",
+      "label": "CLOSE",
+      "kind": "text",
+      "required": false
+    },
+    {
+      "key": "stillOpen",
+      "label": "STILL OPEN",
+      "kind": "lines",
+      "required": true
+    }
+  ],
+  "lints": []
+}

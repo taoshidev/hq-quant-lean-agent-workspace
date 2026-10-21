@@ -1,0 +1,10 @@
+RULES (in order of proposal):
+  R-1 long entry — ta.crossover(ta.ema(close, 20), ta.ema(close, 50)) — placed: entry — from: trader "go long when the 20-period EMA crosses above the 50-period EMA"
+      values: 20, 50 — from: trader "20-period EMA … 50-period EMA"
+  R-2 exit — ta.crossunder(ta.ema(close, 20), ta.ema(close, 50)) — placed: exit — from: trader "exit on the opposite cross"
+  R-3 stop — 2 × ATR(14) below entry — placed: exit — from: your choice (the trader gave no stop and the Studio sizes every trade by its stop)
+      values: 2, 14 — from: your choice (a common volatility stop) | platform-required
+CANNOT HOLD TODAY (unbuilt): none
+QUESTIONS:
+  Q-1 stop — Should the stop sit 2 ATR below entry, or under the last swing low? [options: 2 ATR below entry | under the last swing low]
+  Q-2 timeframe — Do you want the 4h bars kept, or should daily bars be tried too? [options: keep 4h | try daily]

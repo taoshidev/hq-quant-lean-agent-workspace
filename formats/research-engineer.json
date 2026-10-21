@@ -1,0 +1,47 @@
+{
+  "id": "research-engineer-report",
+  "version": 2,
+  "persona": "research-engineer",
+  "source": ".claude/agents/research-engineer.md — \"What you hand back\"",
+  "shown": "Your report is shown to the trader verbatim.",
+  "template": [
+    "RUN: <rules version, window, conditions, evidence state, as reported>",
+    "AGAINST CRITERIA: <met | not met | cannot tell, per criterion>",
+    "READING CHECKS: <replay matches rules | result moves the right way | concentration in the window>",
+    "NEXT RUN: <the one variant, and why>",
+    "TRIALS: <count on this data; whether the window is spent>"
+  ],
+  "sections": [
+    {
+      "key": "run",
+      "label": "RUN",
+      "kind": "text",
+      "required": true
+    },
+    {
+      "key": "againstCriteria",
+      "label": "AGAINST CRITERIA",
+      "kind": "lines",
+      "required": true
+    },
+    {
+      "key": "readingChecks",
+      "label": "READING CHECKS",
+      "kind": "lines",
+      "required": true
+    },
+    {
+      "key": "nextRun",
+      "label": "NEXT RUN",
+      "kind": "text",
+      "required": true
+    },
+    {
+      "key": "trials",
+      "label": "TRIALS",
+      "kind": "text",
+      "required": true
+    }
+  ],
+  "lints": []
+}

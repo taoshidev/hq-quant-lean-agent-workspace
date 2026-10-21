@@ -1,0 +1,5 @@
+VERDICT: pass
+OBJECTIONS:
+  S-1 advisory — <what> (cites: none; evidence: <the rule, value or figure you were handed>)
+TRIPWIRES: none
+COULD NOT RULE OUT: none

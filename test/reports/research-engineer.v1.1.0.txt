@@ -1,0 +1,5 @@
+RUN: no research run was handed to me, so there is no window, condition or evidence state to read
+AGAINST CRITERIA: cannot tell — no run and no pre-committed criteria were handed
+READING CHECKS: cannot tell — no run
+NEXT RUN: the rules as drafted, on the longest window the Studio offers, to see whether more than one regime is in it
+TRIALS: 0 on this data; the window is not spent

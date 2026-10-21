@@ -1,0 +1,5 @@
+RULES (in order of proposal):
+  R-1 long entry — ta.crossover(ta.ema(close, 20), ta.ema(close, 50)) — placed: entry — from: trader "go long on the cross"
+CANNOT HOLD TODAY (unbuilt): none
+QUESTIONS:
+  Q-1 posture — Should the team be less critical of this idea? [options: yes | no]

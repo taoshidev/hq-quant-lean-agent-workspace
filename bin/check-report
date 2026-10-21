@@ -1,0 +1,3 @@
+#!/bin/sh
+# Checks a teammate report against its format: bin/check-report <persona> [file]
+exec node "$(dirname "$0")/check-report.mjs" "$@"

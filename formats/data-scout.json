@@ -1,0 +1,40 @@
+{
+  "id": "data-scout-report",
+  "version": 2,
+  "persona": "data-scout",
+  "source": ".claude/agents/data-scout.md — \"What you hand back\"",
+  "shown": "Your report is shown to the trader verbatim.",
+  "template": [
+    "FIT: <which offered markets, timeframe and session fit the idea, and why>",
+    "NOT OFFERED: <what the trader named that the Studio does not offer> | none",
+    "COVERAGE: <what the window supports, as the Studio states it>",
+    "RISKS: <one-regime window, stale bars, a session rule on a 24/7 market, …>"
+  ],
+  "sections": [
+    {
+      "key": "fit",
+      "label": "FIT",
+      "kind": "text",
+      "required": true
+    },
+    {
+      "key": "notOffered",
+      "label": "NOT OFFERED",
+      "kind": "text",
+      "required": true
+    },
+    {
+      "key": "coverage",
+      "label": "COVERAGE",
+      "kind": "text",
+      "required": true
+    },
+    {
+      "key": "risks",
+      "label": "RISKS",
+      "kind": "lines",
+      "required": true
+    }
+  ],
+  "lints": []
+}
