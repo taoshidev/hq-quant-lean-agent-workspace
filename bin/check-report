@@ -1,3 +1,10 @@
 #!/bin/sh
-# Checks a teammate report against its format: bin/check-report <persona> [file]
-exec node "$(dirname "$0")/check-report.mjs" "$@"
+':' //; exec node "$(dirname "$0")/check-report.mjs" "$@"
+// Checks a teammate's report against its format: bin/check-report <persona> [file], the report on
+// standard input without a file. Runs as a shell script or under node (`node bin/check-report …`).
+const run = require('node:child_process').spawnSync(
+  process.execPath,
+  [require('node:path').join(__dirname, 'check-report.mjs'), ...process.argv.slice(2)],
+  { stdio: 'inherit' },
+);
+process.exitCode = run.status ?? 2;

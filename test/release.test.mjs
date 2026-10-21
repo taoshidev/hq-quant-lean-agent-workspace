@@ -28,7 +28,8 @@ const EXPECTED = {
   'data-scout.v1.1.0.txt': null,
   'data-scout.merged.txt': 'It has no FIT section',
   'risk-architect.v1.1.0.txt': null,
-  'risk-architect.placeholder.txt': "template's placeholder <stop, target",
+  'risk-architect.placeholder.txt': 'RISK DRAFT holds a template placeholder',
+  'risk-architect.old-placeholder.txt': 'RISK DRAFT holds a template placeholder',
   'research-engineer.v1.1.0.txt': null,
 };
 
@@ -65,6 +66,10 @@ test('the command exits 0 on a report that follows its format and 1 with the tem
   assert.match(out, /\(cites: <the ids of the Studio checks it stands on, or none>; evidence:/);
   const none = spawnSync(join(ROOT, 'bin', 'check-report'), ['nobody'], { input: '' });
   assert.equal(none.status, 2);
+  // Run under node too, as a model may call it.
+  const viaNode = spawnSync(process.execPath, [join(ROOT, 'bin', 'check-report'), 'skeptic', join(REPORTS, 'skeptic.v1.0.x.txt')]);
+  assert.equal(viaNode.status, 1);
+  assert.match(viaNode.stdout.toString(), /does not follow its format/);
 });
 
 test("every persona's hand-back block is its format's template, and says the trader reads it verbatim", () => {

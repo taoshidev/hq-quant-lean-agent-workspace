@@ -177,6 +177,13 @@ export function checkReport(text, format) {
       continue;
     }
     const body = bodyOf(found);
+    // A section whose first line is only a bracketed placeholder ("RISK DRAFT: <stop, target, …>")
+    // copied the template, this release's or an earlier one's, instead of answering it.
+    const opening = (body[0] ?? '').trim();
+    if (/^<[^<>]{2,}>$/.test(opening)) {
+      errors.push(`${section.label} holds a template placeholder ("${clip(opening, 60)}"), not your words.`);
+      continue;
+    }
     switch (section.kind) {
       case 'enum': {
         const values = section.values ?? [];
