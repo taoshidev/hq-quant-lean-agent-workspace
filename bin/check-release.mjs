@@ -25,6 +25,31 @@ export function holdsDryRun(tools) {
   return (tools ?? []).some((tool) => /^(?:mcp__[A-Za-z0-9_-]+__)?dry_run_script$/.test(tool));
 }
 
+/**
+ * The Studio's proposal tools (WD-bridge, 1.2.0). Only the Lead Quant proposes, so no persona's
+ * `tools:` list may hold one, under its bare name or the bridge's `mcp__<server>__<name>`.
+ */
+export const PROPOSAL_TOOLS = [
+  'author_strategy',
+  'revise_strategy',
+  'edit_markets',
+  'edit_assumption',
+  'wire_component',
+  'combine_components',
+  'release_component',
+  'set_feeds_role',
+  'unwire_component',
+  'set_component_gate',
+  'run_research',
+  'freeze',
+];
+
+/** The proposal a tool name is, under either spelling; null for any other tool. */
+export function proposalTool(tool) {
+  const m = /^(?:mcp__[A-Za-z0-9_-]+__)?([A-Za-z0-9_]+)$/.exec(tool);
+  return m !== null && PROPOSAL_TOOLS.includes(m[1]) ? m[1] : null;
+}
+
 /** The frontmatter of a persona file, read line by line (`key: value`; `tools` a comma list). */
 export function frontmatterOf(text) {
   const m = /^---\n([\s\S]*?)\n---\n/.exec(text);
@@ -106,6 +131,9 @@ export function checkRelease(root) {
     }
     for (const key of ['name', 'code']) {
       if (typeof entry[key] !== 'string' || entry[key] === '') problems.push(`${id}: release.json has no ${key}`);
+    }
+    for (const tool of fields.tools ?? []) {
+      if (proposalTool(tool) !== null) problems.push(`${id}: lists ${tool}, a proposal: only the Lead Quant proposes`);
     }
     if (holdsDryRun(fields.tools) && !body.includes(DRY_RUN_SENTENCE)) {
       problems.push(`${id}: holds dry_run_script but its body does not carry hard rule 1's dry-run sentence word for word`);

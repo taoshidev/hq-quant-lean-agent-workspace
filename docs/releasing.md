@@ -69,6 +69,7 @@ On a branch `release/<version>` off `main`:
 
 ## Later releases
 
-Each later release runs this procedure as written: the deltas expected next are the bridge's tool
-lists (with the dry-run sentence in every persona that holds `dry_run_script`), the team-check
-tools, and the LEAN delta, each after its Glitch prerequisite is deployed.
+Each later release runs this procedure as written. 1.2.0 carried the bridge's tool lists, with the
+dry-run sentence in every persona that holds `dry_run_script`; the deltas expected next are the
+team-check tools and the LEAN delta, each after its Glitch prerequisite is deployed. A persona never
+lists a proposal tool: `bin/check-release.mjs` refuses one.

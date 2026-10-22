@@ -1,7 +1,7 @@
 {
   "id": "hq-quant-lean-agent-workspace",
-  "version": "1.1.0",
-  "tag": "v1.1.0",
+  "version": "1.2.0",
+  "tag": "v1.2.0",
   "lead": {
     "id": "lead-quant",
     "name": "Lead Quant",
@@ -21,7 +21,10 @@
       "tools": [
         "Read",
         "Grep",
-        "Glob"
+        "Glob",
+        "mcp__studio__read_catalogue",
+        "mcp__studio__read_strategy",
+        "mcp__studio__read_screen"
       ],
       "model": "inherit",
       "format": {
@@ -39,7 +42,12 @@
       "tools": [
         "Read",
         "Grep",
-        "Glob"
+        "Glob",
+        "mcp__studio__read_dsl_reference",
+        "mcp__studio__read_components",
+        "mcp__studio__read_strategy",
+        "mcp__studio__check_script",
+        "mcp__studio__dry_run_script"
       ],
       "model": "inherit",
       "format": {
@@ -57,7 +65,10 @@
       "tools": [
         "Read",
         "Grep",
-        "Glob"
+        "Glob",
+        "mcp__studio__read_strategy",
+        "mcp__studio__check_script",
+        "mcp__studio__check_change"
       ],
       "model": "inherit",
       "format": {
@@ -75,7 +86,11 @@
       "tools": [
         "Read",
         "Grep",
-        "Glob"
+        "Glob",
+        "mcp__studio__list_runs",
+        "mcp__studio__read_run_window",
+        "mcp__studio__read_review",
+        "mcp__studio__read_observation"
       ],
       "model": "inherit",
       "format": {
@@ -93,7 +108,11 @@
       "tools": [
         "Read",
         "Grep",
-        "Glob"
+        "Glob",
+        "mcp__studio__check_script",
+        "mcp__studio__read_strategy",
+        "mcp__studio__list_runs",
+        "mcp__studio__read_run_window"
       ],
       "model": "inherit",
       "format": {
@@ -111,7 +130,9 @@
       "tools": [
         "Read",
         "Grep",
-        "Glob"
+        "Glob",
+        "mcp__studio__read_strategy",
+        "mcp__studio__list_runs"
       ],
       "model": "inherit",
       "format": {

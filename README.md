@@ -44,8 +44,10 @@ Only the Lead Quant talks to the trader. Each persona works from what the Lead Q
 hands back a finding, a proposal or a verdict in a short structured block, its report format, which
 the trader reads verbatim and the Lead Quant checks with `bin/check-report`. Every delegation runs
 in the foreground, inside the Lead Quant's turn, and is waited for, so each report is on the turn's
-record. None of them can read the Studio by itself, run research, or change a strategy; the Lead
-Quant proposes, the trader confirms.
+record. In a conversation Glitch opens with its tools, a persona reads and checks the Studio with
+the ones its `tools:` list names (`mcp__studio__<name>`); without them it sees only the Lead
+Quant's brief. None of them can run research or change a strategy, and none lists a proposal
+tool; the Lead Quant proposes, the trader confirms.
 
 ## How hq clones it
 
@@ -125,6 +127,10 @@ the control plane to a sandbox brought to the ref under test. Read that session'
   the teammate ran in the background and its report never reached the turn;
 - a Bash call that runs `bin/check-report skeptic` on that report before the reply;
 - a brief (`rawInput.prompt`) with no fence line of the note and no internal id.
+
+With Glitch's tools in the conversation (from 1.2.0), also expect a teammate's Studio call
+(`mcp__studio__check_script`, for the Skeptic) whose `_meta.claudeCode.parentToolUseId` is the
+teammate's `Agent` call, so the call is attributed to the teammate and not to the Lead Quant.
 
 ## Licence and attribution
 
