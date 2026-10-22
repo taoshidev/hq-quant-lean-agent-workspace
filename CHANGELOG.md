@@ -8,10 +8,10 @@ contents of `VERSION`.
 
 ## [1.2.0] - 2026-10-22
 
-The Studio's tools over the bridge (WD-bridge): in a conversation Glitch opens with its tools, the
-Lead Quant reads the Studio, checks before it proposes and proposes by tool, and each teammate
-reads and checks with the tools its `tools:` list names. No teammate can propose. Without the
-tools, everything works as in 1.1.0, through the note and the change block.
+The Studio's tools: in a conversation Glitch opens with its tools, the Lead Quant reads the
+Studio, checks before it proposes and proposes by tool, and each teammate reads and checks with
+the tools its `tools:` list names. No teammate's list holds a proposal tool. Without the tools,
+everything works as in 1.1.0, through the note and the change block.
 
 ### Added
 
@@ -25,7 +25,9 @@ tools, everything works as in 1.1.0, through the note and the change block.
 - `bin/check-release.mjs` refuses a release in which a persona lists one of the Studio's
   seventeen proposal tools (`author_strategy`, `revise_strategy`, the edit and wiring tools,
   `run_research`, `freeze`, `deploy`, `propose_change`, `test_change`, `confirm_rulebook`,
-  `adopt_candidate`), under either spelling.
+  `adopt_candidate`), under either spelling; a persona with no `tools:` line (Claude Code would
+  grant it every tool); or a grant of more than one tool (`*`, `mcp__<server>`,
+  `mcp__<server>__*`).
 - `docs/workflow.md`: the drafting rules for Describe and Own it, which hold in a drafting turn (a
   strategy with no rules yet); outside one, the Lead Quant may propose changing a value the trader
   stated, as a card that says so.
@@ -40,9 +42,12 @@ tools, everything works as in 1.1.0, through the note and the change block.
   are in-sample drafts, not results: you never quote them." The Signal Architect, which holds
   `dry_run_script`, carries the same sentence under its hard rules.
 - *The team*: a teammate with Studio tools reads and checks with them itself; its calls are the
-  turn's, under the Lead Quant's limits. Each persona's *What you are handed* says which tools it
-  reads with, and that without them the brief is all it sees; its figures rule names the same two
-  sources as hard rule 1.
+  turn's and count against the same limits as the Lead Quant's. The Lead Quant delegates only to the
+  six teammates, never to a general-purpose sub-agent, which would hold every Studio tool. With the
+  tools, every proposal the note lists goes by its tool.
+- Each persona's *What you are handed* says which tools it reads with, and that without them the
+  brief is all it sees; its figures rule names the same two sources as hard rule 1. The Research
+  Engineer is told `read_review` needs a note's id, which only a Studio result can give it.
 
 ## [1.1.0] - 2026-10-21
 

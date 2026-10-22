@@ -250,8 +250,8 @@ test('a format retry is uncounted, one per teammate per turn, and a second pass 
   assert.ok(changelog.includes('one retry for each teammate in a turn'), 'the changelog states the rule');
 });
 
-// WD-bridge (1.2.0): the Studio's tools over the bridge. The table is the bridge design's (§3.9); the
-// Studio's own test checks every name against its registry, which this public repository never holds.
+// 1.2.0: the Studio's tools in a conversation Glitch opens with them. Glitch's own test checks every
+// name against its tool registry, which this public repository never holds.
 const BRIDGE_TOOLS = {
   'data-scout': ['read_catalogue', 'read_strategy', 'read_screen'],
   'signal-architect': ['read_dsl_reference', 'read_components', 'read_strategy', 'check_script', 'dry_run_script'],
@@ -354,4 +354,44 @@ test('a persona that reads the Studio is told so, and its figures rule names the
     assert.ok(flat.includes('When your tool list has `mcp__studio__*` tools'), `${id} says what to do with its Studio tools`);
     assert.ok(flat.includes("a Studio tool's result you read this turn"), `${id}'s figures rule names a tool result`);
   }
+});
+
+test('check-release refuses a persona with no tools line, or a grant of a whole server', async () => {
+  const { cpSync, mkdtempSync, rmSync, writeFileSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const dir = mkdtempSync(join(tmpdir(), 'check-release-grant-'));
+  try {
+    cpSync(ROOT, dir, { recursive: true, filter: (src) => !src.includes(`${'/'}.git`) });
+    const persona = join(dir, '.claude', 'agents', 'advocate.md');
+    const text = readFileSync(persona, 'utf8');
+    const release = JSON.parse(readFileSync(join(dir, 'release.json'), 'utf8'));
+    const entry = release.personas.find((p) => p.id === 'advocate');
+    const before = entry.tools;
+    // No tools line (and none in release.json): Claude Code then grants every tool, proposals included.
+    writeFileSync(persona, text.replace(/^tools:.*\n/m, ''));
+    delete entry.tools;
+    writeFileSync(join(dir, 'release.json'), `${JSON.stringify(release, null, 2)}\n`);
+    assert.ok(checkRelease(dir).includes('advocate: has no tools line: Claude Code would grant it every tool, proposals included'), JSON.stringify(checkRelease(dir)));
+    for (const grant of ['mcp__studio', 'mcp__studio__*', '*']) {
+      writeFileSync(persona, text.replace(/^tools:\s*(.*)$/m, (_m, t) => `tools: ${t}, ${grant}`));
+      entry.tools = [...before, grant];
+      writeFileSync(join(dir, 'release.json'), `${JSON.stringify(release, null, 2)}\n`);
+      assert.ok(
+        checkRelease(dir).includes(`advocate: lists ${grant}, a grant of more than one tool: name each tool`),
+        `${grant}: ${JSON.stringify(checkRelease(dir))}`,
+      );
+    }
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('the team section: teammates share the turn\'s limits, and only the six are delegated to', () => {
+  const lead = readFileSync(join(ROOT, 'CLAUDE.md'), 'utf8').replace(/\s+/g, ' ');
+  assert.ok(lead.includes('count against the same limits of the turn as yours'), 'shared limits');
+  assert.ok(
+    lead.includes('Delegate only to the six teammates in the table, never to a general-purpose sub-agent'),
+    'no general-purpose delegation',
+  );
+  assert.ok(lead.includes('Every proposal the note lists, research and freeze included, then goes by its tool.'));
 });

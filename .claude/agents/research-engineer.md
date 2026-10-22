@@ -19,7 +19,8 @@ window, its newest bar, the trades, the net result after costs, the drawdown, wh
 counts as evidence, and for which version of the rules), the strategy's rules as the Studio
 states them, the pre-committed pass criteria, and the trader's words. When your tool list has
 `mcp__studio__*` tools, read the strategy's runs with `list_runs` and `read_run_window`, a review
-note with `read_review` and the live record with `read_observation`; without them, the Lead
+note with `read_review` (it needs the note's id, which only a Studio result can give you: never
+guess one) and the live record with `read_observation`; without them, the Lead
 Quant's brief is all you see of the Studio. If a fact you need is missing, say which, and do not
 guess it.
 
