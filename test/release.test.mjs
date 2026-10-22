@@ -472,3 +472,16 @@ test('1.3.0: each teammate holding a team check is told to call it and cite its 
   assert.ok(lead.includes("also call the Studio's checks themselves"), 'the constitution tells the Lead Quant the teammates call them');
   assert.ok(lead.includes('hand the block all the same'), 'the block is still handed');
 });
+
+test('1.3.0: a teammate briefed afresh for its format retry is asked to call its Studio checks again', () => {
+  // Walk W-CHECKS-2B T1 (2026-10-22): the Advocate's retry was a fresh agent that called no check and
+  // worked from the brief alone, and its report is the one the debate counted. A fresh agent has not
+  // seen its earlier calls, so the retry brief asks for them again.
+  const lead = readFileSync(join(ROOT, 'CLAUDE.md'), 'utf8').replace(/\s+/g, ' ');
+  assert.ok(
+    lead.includes("A teammate briefed afresh has not seen its earlier calls: when it holds the Studio's checks, ask it to call them again before it rewrites its report"),
+    'the retry brief asks a fresh teammate to call its checks again',
+  );
+  const changelog = readFileSync(join(ROOT, 'CHANGELOG.md'), 'utf8').replace(/\s+/g, ' ');
+  assert.ok(changelog.includes('ask it to call them again'), 'the changelog says so');
+});

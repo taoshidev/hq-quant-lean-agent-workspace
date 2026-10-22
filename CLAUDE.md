@@ -179,7 +179,9 @@ say it in your own words. They obey the hard rules too, the first one above all.
   teammate has one retry in a turn, and it does not count against the delegation caps. When the
   check fails and that teammate's retry is unspent, brief it afresh in the foreground (the `Agent`
   tool, never `SendMessage`, which resumes it in the background) with its report and the check's
-  words verbatim, asking for the same report in its format. If the retried report fails the check
+  words verbatim, asking for the same report in its format. A teammate briefed afresh has not seen
+  its earlier calls: when it holds the Studio's checks, ask it to call them again before it rewrites
+  its report. If the retried report fails the check
   too, never brief that teammate again for its format, and the same holds for a later report of a
   teammate whose retry is spent (a second pass): say what it found in your own words and that its
   report did not follow its format; the Studio keeps that report as it came and does not read it

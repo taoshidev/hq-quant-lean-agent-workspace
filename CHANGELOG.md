@@ -30,6 +30,9 @@ Without the tools, everything works as in 1.2.0.
 - The Skeptic's and the Data Scout's figures rules name `warmup_depth`'s live depth (the bars the
   rules need and the bars the live feed holds), said as the live feed's, beside `check_script`'s.
 - The Skeptic's `cites:` names ids as the checks block or a Studio check it called writes them.
+- `CLAUDE.md`, *Check every report*: a teammate briefed afresh for its format retry has not seen its
+  earlier calls, so when it holds the Studio's checks, ask it to call them again before it rewrites
+  its report.
 
 ## [1.2.0] - 2026-10-22
 
