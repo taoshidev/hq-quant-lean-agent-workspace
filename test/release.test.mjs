@@ -275,7 +275,8 @@ test("each persona's tools are its workspace reads plus its Studio tools under t
   assert.equal(proposalTool('mcp__studio__author_strategy'), 'author_strategy');
   assert.equal(proposalTool('revise_strategy'), 'revise_strategy');
   assert.equal(proposalTool('mcp__studio__read_strategy'), null);
-  assert.ok(PROPOSAL_TOOLS.includes('freeze') && PROPOSAL_TOOLS.includes('edit_markets'));
+  assert.equal(PROPOSAL_TOOLS.length, 17);
+  assert.ok(PROPOSAL_TOOLS.includes('freeze') && PROPOSAL_TOOLS.includes('adopt_candidate'));
 });
 
 test('check-release refuses a persona that lists a proposal tool', async () => {

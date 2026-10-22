@@ -22,9 +22,10 @@ tools, everything works as in 1.1.0, through the note and the change block.
   `check_script`, `check_change`; the Research Engineer `list_runs`, `read_run_window`,
   `read_review`, `read_observation`; the Skeptic `check_script`, `read_strategy`, `list_runs`,
   `read_run_window`; the Advocate `read_strategy`, `list_runs`. `release.json` lists the same.
-- `bin/check-release.mjs` refuses a release in which a persona lists a proposal tool
-  (`author_strategy`, `revise_strategy`, the edit tools, `run_research`, `freeze`), under either
-  spelling.
+- `bin/check-release.mjs` refuses a release in which a persona lists one of the Studio's
+  seventeen proposal tools (`author_strategy`, `revise_strategy`, the edit and wiring tools,
+  `run_research`, `freeze`, `deploy`, `propose_change`, `test_change`, `confirm_rulebook`,
+  `adopt_candidate`), under either spelling.
 - `docs/workflow.md`: the drafting rules for Describe and Own it, which hold in a drafting turn (a
   strategy with no rules yet); outside one, the Lead Quant may propose changing a value the trader
   stated, as a card that says so.

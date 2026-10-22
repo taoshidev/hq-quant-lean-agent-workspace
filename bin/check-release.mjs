@@ -42,6 +42,11 @@ export const PROPOSAL_TOOLS = [
   'set_component_gate',
   'run_research',
   'freeze',
+  'deploy',
+  'propose_change',
+  'test_change',
+  'confirm_rulebook',
+  'adopt_candidate',
 ];
 
 /** The proposal a tool name is, under either spelling; null for any other tool. */
