@@ -20,8 +20,8 @@ Without the tools, everything works as in 1.2.0.
   `advocate_answer`, `candidate_critique`; the Data Scout `warmup_depth`. `release.json` lists the
   same. No persona lists a proposal tool.
 - The Skeptic, the Advocate and the Data Scout are told to call them (*Call the Studio's checks
-  yourself*) and to cite the ids they return; the Skeptic that a refusing gate it does not report is
-  one the trader is told it left out.
+  yourself*) and to cite the ids they return. The Skeptic is also told that the trader hears of any
+  gate refusing at this step that it leaves out of its report.
 
 ### Changed
 
