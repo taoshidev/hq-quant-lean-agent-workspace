@@ -1,0 +1,7 @@
+VERDICT: marginal
+OBJECTIONS:
+  S-3 advisory — one window may hold one regime (cites: none; evidence: the rule's lengths 20 and 50, as handed)
+WITHDRAWN:
+  S-2 — the Advocate's answer A on S-2 holds: the trader agreed to run research before any verdict
+TRIPWIRES: lookahead: clear
+COULD NOT RULE OUT: regime dependence

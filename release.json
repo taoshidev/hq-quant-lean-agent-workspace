@@ -1,0 +1,125 @@
+{
+  "id": "hq-quant-lean-agent-workspace",
+  "version": "1.1.0",
+  "tag": "v1.1.0",
+  "lead": {
+    "id": "lead-quant",
+    "name": "Lead Quant",
+    "code": "LQ",
+    "file": "CLAUDE.md"
+  },
+  "checks": {
+    "report": "bin/check-report",
+    "release": "bin/check-release.mjs"
+  },
+  "personas": [
+    {
+      "id": "data-scout",
+      "name": "Data Scout",
+      "code": "DS",
+      "description": "Markets, timeframe, session and data coverage. Says which markets and bars the Studio offers for a strategy, where coverage is thin or stale, and what that means for research. Use when an idea names a market, a timeframe or a session, or when a run's window looks short. Reports to the Lead Quant only.",
+      "tools": [
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "model": "inherit",
+      "format": {
+        "id": "data-scout-report",
+        "version": 2,
+        "file": "formats/data-scout.json",
+        "sha256": "0fb6424ccce3c06c14bec04bb34b4caae96187a44275b2f9bb9afe10fbb7500e"
+      }
+    },
+    {
+      "id": "signal-architect",
+      "name": "Signal Architect",
+      "code": "SA",
+      "description": "Turns the trader's entry and exit idea into rules and components the Studio can hold today, drafted as proposals in the Studio's own terms, and says plainly which rules it cannot hold yet. Use at Own it and Build. Reports to the Lead Quant only.",
+      "tools": [
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "model": "inherit",
+      "format": {
+        "id": "signal-architect-report",
+        "version": 2,
+        "file": "formats/signal-architect.json",
+        "sha256": "033cb1d651da1663c3b07ef765134d8b86050a8647cf36d19f4595ac3ffb8a97"
+      }
+    },
+    {
+      "id": "risk-architect",
+      "name": "Risk Architect",
+      "code": "RA",
+      "description": "Design-time risk: stop, target, hold, risk per trade and exposure, drafted within the values the Studio offers. Distinct from the Studio's runtime Risk Governor, which it never overrides. Use at Own it, Build and before Freeze. Reports to the Lead Quant only.",
+      "tools": [
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "model": "inherit",
+      "format": {
+        "id": "risk-architect-report",
+        "version": 2,
+        "file": "formats/risk-architect.json",
+        "sha256": "d2114e1ee0bdd620de70d088dd2d2061c68551687d452d9e45c7804f3b3a08bc"
+      }
+    },
+    {
+      "id": "research-engineer",
+      "name": "Research Engineer",
+      "code": "RE",
+      "description": "What a research run measures and how to read it. Says what window and conditions a run covered, what its evidence state means, how its figures should be read, and what the next run should be. Use at See it trade and Stress-test, and whenever a run is quoted. Reports to the Lead Quant only.",
+      "tools": [
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "model": "inherit",
+      "format": {
+        "id": "research-engineer-report",
+        "version": 2,
+        "file": "formats/research-engineer.json",
+        "sha256": "7e387b418f0ad8cc5b08763e84653b880c08d2318354e579bc03deda524575de"
+      }
+    },
+    {
+      "id": "skeptic",
+      "name": "Skeptic",
+      "code": "SK",
+      "description": "The veto. Attacks a strategy design or a research result before it reaches the trader, under the criteria that were fixed before the result existed. Use before every verdict and before any proposal that changes the logic. Reports to the Lead Quant only.",
+      "tools": [
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "model": "inherit",
+      "format": {
+        "id": "skeptic-report",
+        "version": 2,
+        "file": "formats/skeptic.json",
+        "sha256": "308b33bb224c602c43c65be3b10e95545b286c7c43b040f86f440d3cefe94a9c"
+      }
+    },
+    {
+      "id": "advocate",
+      "name": "Advocate",
+      "code": "AD",
+      "description": "The steelman. States the case for a candidate at its strongest, answers each Skeptic objection by id or concedes it by id, and drafts the smallest change that would answer one. Use after the Skeptic has reported. Reports to the Lead Quant only.",
+      "tools": [
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "model": "inherit",
+      "format": {
+        "id": "advocate-report",
+        "version": 2,
+        "file": "formats/advocate.json",
+        "sha256": "0eee22374f571f313419b50d49d21ac29f43fcbcad02dc01f74ae44b1f47dc3e"
+      }
+    }
+  ]
+}

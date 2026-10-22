@@ -8,6 +8,7 @@ Copyright the Hyperquant framework authors. Licensed under the Apache License,
 Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0). A copy of the License is in
 LICENSE, which is also this repository's own licence.
 
-Modified for Vanta Strategy Studio: re-scoped from a single agent that writes and runs
-strategy code to the Lead Quant of a web product whose strategy lives in the Studio's
-database, is measured by the Studio, and is changed only by proposals the trader confirms.
+Modified for Glitch (Vanta Labs' strategy studio, formerly Vanta Strategy Studio):
+re-scoped from a single agent that writes and runs strategy code to the Lead Quant of a
+web product whose strategy lives in the Studio's database, is measured by the Studio,
+and is changed only by proposals the trader confirms.

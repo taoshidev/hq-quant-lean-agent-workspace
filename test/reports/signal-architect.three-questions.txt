@@ -1,0 +1,7 @@
+RULES (in order of proposal):
+  R-1 long entry — ta.crossover(ta.ema(close, 20), ta.ema(close, 50)) — placed: entry — from: trader "go long when the 20-period EMA crosses above the 50-period EMA"
+CANNOT HOLD TODAY (unbuilt): none
+QUESTIONS:
+  Q-1 stop — Should the stop sit 2 ATR below entry, or under the last swing low? [options: 2 ATR below entry | under the last swing low]
+  Q-2 timeframe — Do you want the 4h bars kept, or should daily bars be tried too? [options: keep 4h | try daily]
+  Q-3 target — Should a fixed target close the trade? [options: no target | 2R]

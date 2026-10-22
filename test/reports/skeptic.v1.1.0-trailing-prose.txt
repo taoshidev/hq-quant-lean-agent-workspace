@@ -1,0 +1,5 @@
+VERDICT: marginal
+OBJECTIONS:
+  S-1 protocol — one window only (cites: T-one-window; evidence: "No holdout declared"). The Advocate concedes this (its S-1 answer). Still stands.
+TRIPWIRES: one window: fired
+COULD NOT RULE OUT: regime dependence

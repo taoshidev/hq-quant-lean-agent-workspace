@@ -1,0 +1,5 @@
+VERDICT: veto
+OBJECTIONS:
+  S-1 hard blocker — the stop is a round number (cites: none; evidence: stop 1% below entry, as handed)
+TRIPWIRES: lookahead: clear
+COULD NOT RULE OUT: nothing further

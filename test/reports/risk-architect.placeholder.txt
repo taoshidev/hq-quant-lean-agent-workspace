@@ -1,0 +1,4 @@
+RISK DRAFT: <stop, target, hold, discipline, risk per trade, each as an offered value or a script value, with whose it is and the reason>
+NOT ENFORCED: none
+EXPOSURE: one position
+CONCERNS: none

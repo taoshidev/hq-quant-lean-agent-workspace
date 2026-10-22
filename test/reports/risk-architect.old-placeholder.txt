@@ -1,0 +1,5 @@
+RISK DRAFT: <stop, target, hold, risk per trade, each as an offered value, with the reason>
+I cannot draft a stop without the offered values.
+NOT ENFORCED: none
+EXPOSURE: one position
+CONCERNS: none

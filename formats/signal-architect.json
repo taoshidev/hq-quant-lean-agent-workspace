@@ -1,0 +1,105 @@
+{
+  "id": "signal-architect-report",
+  "version": 2,
+  "persona": "signal-architect",
+  "source": ".claude/agents/signal-architect.md — \"What you hand back\"",
+  "shown": "Your report is shown to the trader verbatim.",
+  "template": [
+    "RULES (in order of proposal):",
+    "  R-1 <what> — <the script rule, or the component or value exactly as offered> — placed: entry | exit | filter — from: trader \"<quote>\" | your choice (<why>)",
+    "      values: <each value> — from: trader \"<quote>\" | your choice (<why>) | changes the trader's <stated value>",
+    "  R-2 …",
+    "CANNOT HOLD TODAY (unbuilt): <the trader's rule, in their words> — <why, and the route if one was given> | none",
+    "QUESTIONS:",
+    "  Q-1 <about> — <the question> [options: <a> | <b> | <c>]"
+  ],
+  "sections": [
+    {
+      "key": "rules",
+      "label": "RULES",
+      "kind": "items",
+      "required": true,
+      "item": {
+        "id": "R-\\d+",
+        "pattern": "^(?<id>R-\\d+)\\s+(?<what>\\S[\\s\\S]*?)\\s+[—–-]+\\s+(?<component>\\S[\\s\\S]*?)\\s+[—–-]+\\s+placed:\\s*(?<placed>entry|exit|filter)\\b\\s*[—–-]+\\s*from:\\s*(?<from>trader|your choice)\\b(?<detail>[\\s\\S]*)$"
+      }
+    },
+    {
+      "key": "cannotHold",
+      "label": "CANNOT HOLD TODAY",
+      "kind": "lines",
+      "required": true
+    },
+    {
+      "key": "questions",
+      "label": "QUESTIONS",
+      "kind": "items",
+      "required": true,
+      "item": {
+        "id": "Q-\\d+",
+        "pattern": "^(?<id>Q-\\d+)\\s+(?<about>[A-Za-z][A-Za-z0-9_-]{0,31})\\s+[—–-]+\\s+(?<text>[^\\[\\]]*?\\S)\\s*(?:\\[options:\\s*(?<options>[^\\[\\]]*?)\\s*\\])?\\s*$",
+        "maxItems": 2
+      }
+    }
+  ],
+  "distinct": [
+    [
+      "rules"
+    ],
+    [
+      "questions"
+    ]
+  ],
+  "lints": [
+    {
+      "section": "questions",
+      "field": "about",
+      "notMatches": "^(?:posture|tone|strictness|strict|critical|criticism|harsh|lenient|team|skeptic|advocate)$",
+      "flags": "i",
+      "message": "a question is about the strategy (one of market, timeframe, session, entry, exit, stop, target, hold, risk, sizing, direction, filter, or a script rule's id); never ask how strict or critical the team should be"
+    },
+    {
+      "section": "questions",
+      "field": "text",
+      "optional": true,
+      "notMatches": "\\b(?:skeptic|advocate|strict(?:er|ly|ness)?|lenient|leniency|go(?:es)? easy|easier on|harder on|softer on|tone down|veto(?:es|ed)?|objections?)\\b",
+      "flags": "i",
+      "message": "never ask how strict or critical the team should be, nor about the Skeptic or the Advocate"
+    },
+    {
+      "section": "questions",
+      "field": "text",
+      "optional": true,
+      "notMatches": "\\b(?:G-[A-Za-z0-9][\\w-]*|F-\\d+|S-\\d+)\\b",
+      "message": "never offer a Studio check or an objection (G-…, F-n, S-n) in a question or as an answer"
+    },
+    {
+      "section": "questions",
+      "field": "options",
+      "optional": true,
+      "notMatches": "\\b(?:skeptic|advocate|strict(?:er|ly|ness)?|lenient|leniency|go(?:es)? easy|easier on|harder on|softer on|tone down|veto(?:es|ed)?|objections?)\\b",
+      "flags": "i",
+      "message": "never ask how strict or critical the team should be, nor about the Skeptic or the Advocate"
+    },
+    {
+      "section": "questions",
+      "field": "options",
+      "optional": true,
+      "notMatches": "\\b(?:G-[A-Za-z0-9][\\w-]*|F-\\d+|S-\\d+)\\b",
+      "message": "never offer a Studio check or an objection (G-…, F-n, S-n) in a question or as an answer"
+    },
+    {
+      "section": "questions",
+      "field": "text",
+      "matches": "^[\\s\\S]{1,280}$",
+      "message": "a question is 280 characters at most"
+    },
+    {
+      "section": "questions",
+      "field": "options",
+      "optional": true,
+      "matches": "^[^|]*(?:\\|[^|]*){0,3}$",
+      "message": "a question offers four options at most"
+    }
+  ]
+}

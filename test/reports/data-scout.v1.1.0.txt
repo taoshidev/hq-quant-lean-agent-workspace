@@ -1,0 +1,5 @@
+FIT: BTC-USD on 4h bars fits a trend idea that holds for days; the market trades around the clock, so no session rule applies.
+NOT OFFERED: none
+COVERAGE: as handed, the window's newest bar is current and the Studio counts it as evidence.
+RISKS:
+  - a window inside one trending regime is one regime's result

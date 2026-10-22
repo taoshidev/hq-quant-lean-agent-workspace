@@ -1,0 +1,19 @@
+#!/bin/sh
+':' //; exec node "$0" "$@"
+// Checks a teammate's report against its format: bin/check-report <persona> [file], the report on
+// standard input without a file. Runs as a shell script or under node (`node bin/check-report …`);
+// either way node runs this file, through any symlink to it or to its directory, and finds the
+// check beside the file's real path. Exit 0: it follows its format; 1: it does not; 2: the check
+// could not judge it (no format, an unreadable report, or the check itself failed).
+const { existsSync } = require('node:fs');
+const { join } = require('node:path');
+const check = join(__dirname, 'check-report.mjs');
+if (!existsSync(check)) {
+  process.stdout.write(`check-report: the check itself failed (no ${check}).\n`);
+  process.exitCode = 2;
+} else {
+  const run = require('node:child_process').spawnSync(process.execPath, [check, ...process.argv.slice(2)], {
+    stdio: 'inherit',
+  });
+  process.exitCode = run.status === 0 || run.status === 1 ? run.status : 2;
+}

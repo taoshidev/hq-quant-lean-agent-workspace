@@ -1,0 +1,8 @@
+CASE: Trend persistence on 4h bars is a documented effect in crypto majors; a slow EMA cross waits for it and stays out of chop, which is the thesis the trader gave.
+ANSWERS:
+  S-1 conceded — the exit is not held today, and nothing I was handed answers that
+  S-2 answered — the trader agreed to run research before any verdict, so no figure is being leaned on
+  S-3 conceded — one window can hold one regime; only a longer window settles it
+PROPOSAL: exit from "the opposite cross" to "close below the 50 EMA" — a rule the Studio holds today, and nearest to the trader's words
+CLOSE: none
+STILL OPEN: S-3 — a window that spans a second regime would settle it

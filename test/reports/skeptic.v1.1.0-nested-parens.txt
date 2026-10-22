@@ -1,0 +1,6 @@
+VERDICT: veto
+OBJECTIONS:
+  S-1 hard blocker — the stop was never stated by the trader (cites: G-freeze-confirmation; evidence: "Confirm the values you didn't state first: stop 3 × ATR (14) (required by the Studio)." and the stop (3 × ATR(14)) as handed)
+  S-2 advisory — the stop width is the Studio's choice (cites: none; evidence: "stop 3 × ATR(14) (platform-required)")
+TRIPWIRES: none
+COULD NOT RULE OUT: none

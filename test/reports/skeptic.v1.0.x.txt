@@ -1,0 +1,6 @@
+VERDICT: veto
+OBJECTIONS:
+  S-1 hard blocker — the exit rule is not held by the Studio (evidence: the rules as handed)
+  S-2 advisory — too few trades are likely (evidence: 4h bars)
+TRIPWIRES: lookahead: clear
+COULD NOT RULE OUT: nothing further

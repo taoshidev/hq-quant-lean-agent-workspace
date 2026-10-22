@@ -1,0 +1,90 @@
+{
+  "id": "skeptic-report",
+  "version": 2,
+  "persona": "skeptic",
+  "source": ".claude/agents/skeptic.md — \"What you hand back\"",
+  "shown": "Your report is shown to the trader verbatim.",
+  "template": [
+    "VERDICT: pass | marginal | veto",
+    "OBJECTIONS:",
+    "  S-1 <hard blocker | protocol | advisory> — <what> (cites: <the ids of the Studio checks it stands on, or none>; evidence: <the rule, value or figure you were handed>)",
+    "  S-2 …",
+    "WITHDRAWN (second pass only):",
+    "  S-1 — <why it no longer stands>",
+    "TRIPWIRES: <name>: fired | clear | unknown (why) … one line each",
+    "COULD NOT RULE OUT: …"
+  ],
+  "sections": [
+    {
+      "key": "verdict",
+      "label": "VERDICT",
+      "kind": "enum",
+      "required": true,
+      "values": [
+        "pass",
+        "marginal",
+        "veto"
+      ]
+    },
+    {
+      "key": "objections",
+      "label": "OBJECTIONS",
+      "kind": "items",
+      "required": true,
+      "item": {
+        "id": "S-\\d+",
+        "pattern": "^(?<id>S-\\d+)\\s*(?:(?:[—–-]+|[,:;])\\s*)?(?<kind>hard blocker|protocol|advisory)\\b\\s*[—–-]+\\s*(?<text>[\\s\\S]*?\\(cites:\\s*(?<cites>none|[A-Z]-[A-Za-z0-9-]+(?:\\s*,\\s*[A-Z]-[A-Za-z0-9-]+)*)\\s*;\\s*evidence:\\s*(?<evidence>[^\\s)][\\s\\S]*)\\)[^)]*)$"
+      }
+    },
+    {
+      "key": "withdrawn",
+      "label": "WITHDRAWN",
+      "kind": "items",
+      "required": false,
+      "item": {
+        "id": "S-\\d+",
+        "pattern": "^(?<id>S-\\d+)\\s*[—–-]+\\s*(?<why>\\S[\\s\\S]*)$"
+      }
+    },
+    {
+      "key": "tripwires",
+      "label": "TRIPWIRES",
+      "kind": "lines",
+      "required": true
+    },
+    {
+      "key": "couldNotRuleOut",
+      "label": "COULD NOT RULE OUT",
+      "kind": "lines",
+      "required": true
+    }
+  ],
+  "distinct": [
+    [
+      "objections",
+      "withdrawn"
+    ]
+  ],
+  "lints": [
+    {
+      "section": "objections",
+      "when": {
+        "field": "kind",
+        "matches": "^hard blocker$"
+      },
+      "enum": "verdict",
+      "equals": "veto",
+      "message": "a hard blocker ends it: with one standing, VERDICT is veto"
+    },
+    {
+      "section": "objections",
+      "when": {
+        "field": "kind",
+        "matches": "^hard blocker$"
+      },
+      "field": "cites",
+      "matches": "(?:^|,\\s*)G-[A-Za-z0-9-]+",
+      "message": "a hard blocker cites the Studio gate check that refuses it at this step (a G-… id from the Studio checks you were handed); anything else you would block on is a protocol rejection, reported in full"
+    }
+  ]
+}
