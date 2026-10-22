@@ -6,6 +6,31 @@ contents of `VERSION`.
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-10-22
+
+The team checks: in a conversation Glitch opens with its tools, the Skeptic, the Advocate and the
+Data Scout call the Studio's checks themselves, with the same ids, sentences and digests as the
+note's Studio checks block, so what they find does not depend on how the Lead Quant briefed them.
+Without the tools, everything works as in 1.2.0.
+
+### Added
+
+- Persona `tools:` lists gain the Studio's team checks, after their 1.2.0 tools: the Skeptic
+  `skeptic_findings`, `tripwires`, `warmup_depth`, `candidate_critique`; the Advocate
+  `advocate_answer`, `candidate_critique`; the Data Scout `warmup_depth`. `release.json` lists the
+  same. No persona lists a proposal tool.
+- The Skeptic, the Advocate and the Data Scout are told to call them (*Call the Studio's checks
+  yourself*) and to cite the ids they return; the Skeptic that a refusing gate it does not report is
+  one the trader is told it left out.
+
+### Changed
+
+- `CLAUDE.md`, *The Studio checks*: with the Studio's tools, those three teammates call the checks
+  themselves; the Lead Quant tells them to and still hands the block verbatim.
+- The Skeptic's and the Data Scout's figures rules name `warmup_depth`'s live depth (the bars the
+  rules need and the bars the live feed holds), said as the live feed's, beside `check_script`'s.
+- The Skeptic's `cites:` names ids as the checks block or a Studio check it called writes them.
+
 ## [1.2.0] - 2026-10-22
 
 The Studio's tools: in a conversation Glitch opens with its tools, the Lead Quant reads the

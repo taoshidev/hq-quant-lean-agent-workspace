@@ -1,7 +1,7 @@
 {
   "id": "hq-quant-lean-agent-workspace",
-  "version": "1.2.0",
-  "tag": "v1.2.0",
+  "version": "1.3.0",
+  "tag": "v1.3.0",
   "lead": {
     "id": "lead-quant",
     "name": "Lead Quant",
@@ -24,7 +24,8 @@
         "Glob",
         "mcp__studio__read_catalogue",
         "mcp__studio__read_strategy",
-        "mcp__studio__read_screen"
+        "mcp__studio__read_screen",
+        "mcp__studio__warmup_depth"
       ],
       "model": "inherit",
       "format": {
@@ -112,7 +113,11 @@
         "mcp__studio__check_script",
         "mcp__studio__read_strategy",
         "mcp__studio__list_runs",
-        "mcp__studio__read_run_window"
+        "mcp__studio__read_run_window",
+        "mcp__studio__skeptic_findings",
+        "mcp__studio__tripwires",
+        "mcp__studio__warmup_depth",
+        "mcp__studio__candidate_critique"
       ],
       "model": "inherit",
       "format": {
@@ -132,7 +137,9 @@
         "Grep",
         "Glob",
         "mcp__studio__read_strategy",
-        "mcp__studio__list_runs"
+        "mcp__studio__list_runs",
+        "mcp__studio__advocate_answer",
+        "mcp__studio__candidate_critique"
       ],
       "model": "inherit",
       "format": {
