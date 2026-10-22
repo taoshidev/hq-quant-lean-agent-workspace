@@ -352,8 +352,48 @@ test('a persona that reads the Studio is told so, and its figures rule names the
     const flat = body.replace(/\s+/g, ' ');
     assert.ok(!flat.includes('You see nothing of the Studio yourself'), `${id} no longer says it sees nothing of the Studio`);
     assert.ok(flat.includes('When your tool list has `mcp__studio__*` tools'), `${id} says what to do with its Studio tools`);
-    assert.ok(flat.includes("a Studio tool's result you read this turn"), `${id}'s figures rule names a tool result`);
   }
+});
+
+/**
+ * The Studio tools whose results the Studio's figure check accepts as a source (its catalogue's
+ * figure sources), and check_script, whose live depth alone is one. A teammate never sees the note
+ * that narrows hard rule 1's "a Studio tool's result", so its own figures rule names these and no
+ * other tool (review round 2).
+ */
+const FIGURE_SOURCES = new Set(['read_strategy', 'list_runs', 'read_run_window', 'read_review', 'read_observation']);
+const LIVE_DEPTH_TOOL = 'check_script';
+
+/** A persona's figures rule: the hard-rules bullet that says which figures it may quote. */
+function figuresRule(body) {
+  const bullets = body.split(/\n(?=- )/).map((b) => b.replace(/\s+/g, ' ').trim());
+  const rule = bullets.filter((b) => b.startsWith('- ') && /No figures but|\*\*No numbers you were not handed\.\*\*/.test(b));
+  assert.equal(rule.length, 1, `one figures rule, found ${rule.length}`);
+  return rule[0];
+}
+
+test("a persona's figures rule names, of its Studio tools, exactly its figure sources (check_script for its live depth)", () => {
+  for (const { id, body, fields } of personaFiles(ROOT)) {
+    const rule = figuresRule(body);
+    assert.ok(!rule.includes("a Studio tool's result"), `${id}: never "a Studio tool's result" (any tool), which the figure check does not accept`);
+    const studio = fields.tools.filter((t) => t.startsWith('mcp__')).map((t) => t.replace(/^mcp__[^_]+__/, ''));
+    const expected = studio.filter((t) => FIGURE_SOURCES.has(t) || t === LIVE_DEPTH_TOOL).sort();
+    const named = [...new Set([...rule.matchAll(/`([a-z_]+)`/g)].map((m) => m[1]))].sort();
+    if (studio.some((t) => !FIGURE_SOURCES.has(t))) {
+      assert.ok(rule.includes("no other tool's result is a figure you may quote"), `${id}: says its other tools' results are no figures to quote`);
+    }
+    assert.deepEqual(named, expected, `${id}'s figures rule names its figure sources and no other tool`);
+    if (expected.includes(LIVE_DEPTH_TOOL)) {
+      assert.ok(rule.includes("`check_script`'s live depth"), `${id}: check_script only for its live depth`);
+    }
+    assert.ok(/said as/.test(rule), `${id}: says each figure as whose it is`);
+  }
+});
+
+test('the Research Engineer is told read_review cannot be used in this release, never that a result gives the id', () => {
+  const body = personaFiles(ROOT).find((p) => p.id === 'research-engineer').body.replace(/\s+/g, ' ');
+  assert.ok(!body.includes('which only a Studio result can give you'), 'no promised id source');
+  assert.ok(body.includes('none of your tools gives one and no brief carries one, so leave it unused'), 'read_review left unused');
 });
 
 test('check-release refuses a persona with no tools line, or a grant of a whole server', async () => {
@@ -393,5 +433,10 @@ test('the team section: teammates share the turn\'s limits, and only the six are
     lead.includes('Delegate only to the six teammates in the table, never to a general-purpose sub-agent'),
     'no general-purpose delegation',
   );
-  assert.ok(lead.includes('Every proposal the note lists, research and freeze included, then goes by its tool.'));
+  assert.ok(
+    lead.includes(
+      'Without them, use the change block. With them, every proposal the note lists, research and freeze included, goes by its tool.',
+    ),
+    'the proposal sentence is said for a session with the tools, never after the one without them',
+  );
 });

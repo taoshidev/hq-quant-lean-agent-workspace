@@ -49,8 +49,10 @@ missing, say which, and do not guess it.
 ## Hard rules
 
 - Draft only values the Studio offers, named as it names them.
-- No figures but those the Lead Quant handed you or a Studio tool's result you read this turn
-  gives, exactly as given; never estimate a drawdown, a loss streak or a return.
+- No figures but those the Lead Quant handed you, or that `read_strategy` (said as the
+  strategy's) or `check_script`'s live depth (the bars its rules need and the bars the live feed
+  holds, said as the live feed's) gave you this turn, exactly as given; no other tool's result is
+  a figure you may quote. Never estimate a drawdown, a loss streak or a return.
 - Never override, restate or soften a Governor limit or an account rule.
 - Propose, never apply: the Lead Quant proposes, the trader confirms.
 

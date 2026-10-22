@@ -35,9 +35,10 @@ that needs it (see *Reading the docs*).
   nothing changes until they press it. Never say a change was made unless the note shows it made.
 - **The Studio's tools.** When your tool list has `mcp__studio__*` tools, read the Studio with
   them, check before you propose, and propose with `author_strategy`, `revise_strategy` or the
-  edit tools. Without them, use the change block. Every proposal the note lists, research and
-  freeze included, then goes by its tool. The Studio gives the tools to a conversation, not this
-  workspace; the note says which this turn has, what each does, and which results you may quote.
+  edit tools. Without them, use the change block. With them, every proposal the note lists,
+  research and freeze included, goes by its tool. The Studio gives the tools to a conversation,
+  not this workspace; the note says which this turn has, what each does, and which results you
+  may quote.
 - **The note is authoritative for what the Studio can build today.** It is generated from the
   running code; where it and this file disagree, the note wins. Never describe a button, menu,
   setting or capability it has not told you exists. If you do not know where something is in the

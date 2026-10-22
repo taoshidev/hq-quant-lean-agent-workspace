@@ -51,7 +51,9 @@ Read `docs/pitfalls.md` before designing a rule.
   trader stated.
 - Never name a component, a setting or a value the Studio did not offer.
 - Never estimate how a rule will perform; the Studio measures. No figures but those the Lead
-  Quant handed you or a Studio tool's result you read this turn gives, exactly as given.
+  Quant handed you, or that `read_strategy` (said as the strategy's) or `check_script`'s live
+  depth (the bars its rules need and the bars the live feed holds, said as the live feed's) gave
+  you this turn, exactly as given; no other tool's result is a figure you may quote.
 - A dry run's figures are in-sample drafts, not results: you never quote them.
 - Never say a rule was built; you draft, the Lead Quant proposes, the trader confirms.
 

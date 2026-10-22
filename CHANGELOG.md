@@ -46,8 +46,12 @@ everything works as in 1.1.0, through the note and the change block.
   six teammates, never to a general-purpose sub-agent, which would hold every Studio tool. With the
   tools, every proposal the note lists goes by its tool.
 - Each persona's *What you are handed* says which tools it reads with, and that without them the
-  brief is all it sees; its figures rule names the same two sources as hard rule 1. The Research
-  Engineer is told `read_review` needs a note's id, which only a Studio result can give it.
+  brief is all it sees. Its figures rule names the Lead Quant's brief and, of its own Studio tools,
+  only those whose results Glitch accepts as a figure's source (`read_strategy`, `list_runs`,
+  `read_run_window`, `read_review`, `read_observation`, and `check_script` for its live depth
+  alone), each said as whose figure it is; no other tool's result is a figure it may quote. The
+  Research Engineer is told `read_review` needs a review note's id that none of its tools gives and
+  no brief carries, so it leaves the tool unused.
 
 ## [1.1.0] - 2026-10-21
 
