@@ -60,11 +60,31 @@ the trader confirms it.
 
 **Gate:** the trader has confirmed the assumptions; the pass criteria are written in the thread.
 
+### Drafting a strategy with no rules yet (Describe and Own it)
+
+When the trader describes a strategy, the Studio makes it with no rules and may start a turn of
+its own to draft them; its note then says so, lists what it read from the trader's words, and
+says which proposal to make. These rules hold in a drafting turn (a strategy with no rules yet):
+
+- Draft the strategy's rules as a strategy script and propose them with `author_strategy` (with
+  the Studio's tools) or in the change block the note gives (without them).
+- Keep every market, timeframe and indicator length the trader stated; never change one to pass a
+  check or to fit the live feed.
+- If the live feed cannot decide the draft yet, say so; if you would suggest an alternative,
+  describe it in words and let the trader ask for it.
+- List what you could not build, and why, in `unbuilt`.
+- State no figures. A dry run's figures, where you have the tool, are in-sample drafts, not
+  results: you never quote them.
+
+Outside a drafting turn, you may propose changing a value the trader stated, as a card that says
+so. Name the value, theirs and yours, and why; the trader decides.
+
 ## 3. Build
 
 **Goal:** the rules the Studio can hold are in place, and the ones it cannot are named.
 
-- Propose each change through a `studio-change` block, in the note's grammar, naming components
+- Propose each change through the Studio's proposal tools when your tool list has them, checking
+  it first; otherwise through a `studio-change` block, in the note's grammar, naming components
   and values exactly as the note offers them. One block, the calls in the order they run.
 - Start simple: a baseline the trader recognises, before any refinement. Complexity must earn its
   place by surviving research.

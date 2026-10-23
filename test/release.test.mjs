@@ -7,7 +7,15 @@ import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 import { loadFormat, reasons } from '../bin/check-report.mjs';
-import { DRY_RUN_SENTENCE, checkRelease, handBackBlock, holdsDryRun, personaFiles } from '../bin/check-release.mjs';
+import {
+  DRY_RUN_SENTENCE,
+  PROPOSAL_TOOLS,
+  checkRelease,
+  handBackBlock,
+  holdsDryRun,
+  personaFiles,
+  proposalTool,
+} from '../bin/check-release.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const REPORTS = join(ROOT, 'test', 'reports');
@@ -122,7 +130,7 @@ test("every persona's hand-back block is its format's template, and says the tra
 
 test('the release is consistent: VERSION, CHANGELOG, release.json, formats digests, frontmatter, the dry-run sentence', () => {
   assert.deepEqual(checkRelease(ROOT), []);
-  assert.equal(readFileSync(join(ROOT, 'VERSION'), 'utf8').trim(), '1.1.0');
+  assert.equal(readFileSync(join(ROOT, 'VERSION'), 'utf8').trim(), '1.2.0');
 });
 
 test('the dry-run sentence is the one hard rule 1 carries', () => {
@@ -164,21 +172,19 @@ test('a persona holding the dry-run tool by its bridge name is held to the dry-r
   const dir = mkdtempSync(join(tmpdir(), 'check-release-'));
   try {
     cpSync(ROOT, dir, { recursive: true, filter: (src) => !src.includes(`${'/'}.git`) });
+    // The release's Signal Architect holds the tool by its bridge name; without the sentence in its
+    // body the release is refused, and with it back the release is consistent again.
     const persona = join(dir, '.claude', 'agents', 'signal-architect.md');
     const text = readFileSync(persona, 'utf8');
-    const tools = /^tools:\s*(.*)$/m.exec(text)[1];
-    const withTool = text.replace(/^tools:.*$/m, `tools: ${tools}, mcp__studio__dry_run_script`);
-    writeFileSync(persona, withTool);
-    const release = JSON.parse(readFileSync(join(dir, 'release.json'), 'utf8'));
-    const entry = release.personas.find((p) => p.id === 'signal-architect');
-    entry.tools = [...entry.tools, 'mcp__studio__dry_run_script'];
-    writeFileSync(join(dir, 'release.json'), `${JSON.stringify(release, null, 2)}\n`);
+    assert.ok(holdsDryRun(/^tools:\s*(.*)$/m.exec(text)[1].split(', ')), 'the release grants the tool');
+    assert.ok(text.includes(DRY_RUN_SENTENCE));
+    writeFileSync(persona, text.replace(`- ${DRY_RUN_SENTENCE}\n`, ''));
     const refused = checkRelease(dir);
     assert.ok(
       refused.some((p) => p.startsWith('signal-architect: holds dry_run_script')),
       JSON.stringify(refused),
     );
-    writeFileSync(persona, withTool.replace(/\n## What you hand back/, `\n${DRY_RUN_SENTENCE}\n\n## What you hand back`));
+    writeFileSync(persona, text);
     assert.deepEqual(checkRelease(dir), []);
   } finally {
     rmSync(dir, { recursive: true, force: true });
@@ -242,4 +248,195 @@ test('a format retry is uncounted, one per teammate per turn, and a second pass 
   const changelog = readFileSync(join(ROOT, 'CHANGELOG.md'), 'utf8').replace(/\s+/g, ' ');
   assert.ok(!changelog.includes('a retry counts against the turn'), 'the changelog no longer says a retry counts');
   assert.ok(changelog.includes('one retry for each teammate in a turn'), 'the changelog states the rule');
+});
+
+// 1.2.0: the Studio's tools in a conversation Glitch opens with them. Glitch's own test checks every
+// name against its tool registry, which this public repository never holds.
+const BRIDGE_TOOLS = {
+  'data-scout': ['read_catalogue', 'read_strategy', 'read_screen'],
+  'signal-architect': ['read_dsl_reference', 'read_components', 'read_strategy', 'check_script', 'dry_run_script'],
+  'risk-architect': ['read_strategy', 'check_script', 'check_change'],
+  'research-engineer': ['list_runs', 'read_run_window', 'read_review', 'read_observation'],
+  skeptic: ['check_script', 'read_strategy', 'list_runs', 'read_run_window'],
+  advocate: ['read_strategy', 'list_runs'],
+};
+
+test("each persona's tools are its workspace reads plus its Studio tools under the server's name, and none proposes", () => {
+  for (const { id, fields } of personaFiles(ROOT)) {
+    assert.deepEqual(
+      fields.tools,
+      ['Read', 'Grep', 'Glob', ...BRIDGE_TOOLS[id].map((name) => `mcp__studio__${name}`)],
+      `${id}'s tools`,
+    );
+    for (const tool of fields.tools) {
+      assert.equal(proposalTool(tool), null, `${id} lists ${tool}`);
+    }
+  }
+  assert.equal(proposalTool('mcp__studio__author_strategy'), 'author_strategy');
+  assert.equal(proposalTool('revise_strategy'), 'revise_strategy');
+  assert.equal(proposalTool('mcp__studio__read_strategy'), null);
+  assert.equal(PROPOSAL_TOOLS.length, 17);
+  assert.ok(PROPOSAL_TOOLS.includes('freeze') && PROPOSAL_TOOLS.includes('adopt_candidate'));
+});
+
+test('check-release refuses a persona that lists a proposal tool', async () => {
+  const { cpSync, mkdtempSync, rmSync, writeFileSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const dir = mkdtempSync(join(tmpdir(), 'check-release-propose-'));
+  try {
+    cpSync(ROOT, dir, { recursive: true, filter: (src) => !src.includes(`${'/'}.git`) });
+    const persona = join(dir, '.claude', 'agents', 'advocate.md');
+    const text = readFileSync(persona, 'utf8');
+    const tools = /^tools:\s*(.*)$/m.exec(text)[1];
+    writeFileSync(persona, text.replace(/^tools:.*$/m, `tools: ${tools}, mcp__studio__revise_strategy`));
+    const release = JSON.parse(readFileSync(join(dir, 'release.json'), 'utf8'));
+    const entry = release.personas.find((p) => p.id === 'advocate');
+    entry.tools = [...entry.tools, 'mcp__studio__revise_strategy'];
+    writeFileSync(join(dir, 'release.json'), `${JSON.stringify(release, null, 2)}\n`);
+    const refused = checkRelease(dir);
+    assert.ok(refused.includes('advocate: lists mcp__studio__revise_strategy, a proposal: only the Lead Quant proposes'), JSON.stringify(refused));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('hard rule 1 keeps its prohibition word for word, names its two sources, and carries the dry-run sentence', () => {
+  const lead = readFileSync(join(ROOT, 'CLAUDE.md'), 'utf8').replace(/\s+/g, ' ');
+  const rule = /1\. \*\*No figures the Studio has not measured\.\*\*(.*?) 2\. \*\*Propose, never apply/.exec(lead);
+  assert.ok(rule, 'hard rule 1 is where it was');
+  const text = rule[1];
+  for (const kept of [
+    'Never state, estimate or work out a backtest figure: a return, a win rate, a drawdown, a trade count, a ratio.',
+    'The Studio measures research itself, on its own bars.',
+    '"It should be profitable" is a figure too.',
+  ]) {
+    assert.ok(text.includes(kept), `hard rule 1 keeps "${kept}"`);
+  }
+  assert.ok(
+    text.includes(
+      "The only figures you may quote are the ones given by this turn's note, or a Studio tool's result this turn, exactly as given and said as the run's.",
+    ),
+    'its sources are the note and a Studio tool result this turn',
+  );
+  assert.ok(text.includes(DRY_RUN_SENTENCE), 'hard rule 1 carries the dry-run sentence');
+  assert.ok(!/stated|improve the figures/.test(text.slice(text.indexOf(DRY_RUN_SENTENCE))), 'the struck clause is gone');
+});
+
+test("'Where you are' says when to use the Studio's tools and when the change block", () => {
+  const lead = readFileSync(join(ROOT, 'CLAUDE.md'), 'utf8').replace(/\s+/g, ' ');
+  const where = lead.slice(lead.indexOf('## Where you are'), lead.indexOf('## Prime directive'));
+  assert.ok(
+    where.includes(
+      'When your tool list has `mcp__studio__*` tools, read the Studio with them, check before you propose, and propose with `author_strategy`, `revise_strategy` or the edit tools. Without them, use the change block.',
+    ),
+    where,
+  );
+});
+
+test('docs/workflow.md carries the drafting rules for Describe and Own it, and says where they hold', () => {
+  const flow = readFileSync(join(ROOT, 'docs', 'workflow.md'), 'utf8').replace(/\s+/g, ' ');
+  for (const needle of [
+    'a drafting turn (a strategy with no rules yet)',
+    'Keep every market, timeframe and indicator length the trader stated; never change one to pass a check or to fit the live feed.',
+    'If the live feed cannot decide the draft yet, say so; if you would suggest an alternative, describe it in words and let the trader ask for it.',
+    'List what you could not build, and why, in `unbuilt`.',
+    'State no figures.',
+    'Outside a drafting turn, you may propose changing a value the trader stated, as a card that says so.',
+  ]) {
+    assert.ok(flow.includes(needle), `workflow.md says "${needle}"`);
+  }
+});
+
+test('a persona that reads the Studio is told so, and its figures rule names the same two sources as hard rule 1', () => {
+  for (const { id, body } of personaFiles(ROOT)) {
+    const flat = body.replace(/\s+/g, ' ');
+    assert.ok(!flat.includes('You see nothing of the Studio yourself'), `${id} no longer says it sees nothing of the Studio`);
+    assert.ok(flat.includes('When your tool list has `mcp__studio__*` tools'), `${id} says what to do with its Studio tools`);
+  }
+});
+
+/**
+ * The Studio tools whose results the Studio's figure check accepts as a source (its catalogue's
+ * figure sources), and check_script, whose live depth alone is one. A teammate never sees the note
+ * that narrows hard rule 1's "a Studio tool's result", so its own figures rule names these and no
+ * other tool (review round 2).
+ */
+const FIGURE_SOURCES = new Set(['read_strategy', 'list_runs', 'read_run_window', 'read_review', 'read_observation']);
+const LIVE_DEPTH_TOOL = 'check_script';
+
+/** A persona's figures rule: the hard-rules bullet that says which figures it may quote. */
+function figuresRule(body) {
+  const bullets = body.split(/\n(?=- )/).map((b) => b.replace(/\s+/g, ' ').trim());
+  const rule = bullets.filter((b) => b.startsWith('- ') && /No figures but|\*\*No numbers you were not handed\.\*\*/.test(b));
+  assert.equal(rule.length, 1, `one figures rule, found ${rule.length}`);
+  return rule[0];
+}
+
+test("a persona's figures rule names, of its Studio tools, exactly its figure sources (check_script for its live depth)", () => {
+  for (const { id, body, fields } of personaFiles(ROOT)) {
+    const rule = figuresRule(body);
+    assert.ok(!rule.includes("a Studio tool's result"), `${id}: never "a Studio tool's result" (any tool), which the figure check does not accept`);
+    const studio = fields.tools.filter((t) => t.startsWith('mcp__')).map((t) => t.replace(/^mcp__[^_]+__/, ''));
+    const expected = studio.filter((t) => FIGURE_SOURCES.has(t) || t === LIVE_DEPTH_TOOL).sort();
+    const named = [...new Set([...rule.matchAll(/`([a-z_]+)`/g)].map((m) => m[1]))].sort();
+    if (studio.some((t) => !FIGURE_SOURCES.has(t))) {
+      assert.ok(rule.includes("no other tool's result is a figure you may quote"), `${id}: says its other tools' results are no figures to quote`);
+    }
+    assert.deepEqual(named, expected, `${id}'s figures rule names its figure sources and no other tool`);
+    if (expected.includes(LIVE_DEPTH_TOOL)) {
+      assert.ok(rule.includes("`check_script`'s live depth"), `${id}: check_script only for its live depth`);
+    }
+    assert.ok(/said as/.test(rule), `${id}: says each figure as whose it is`);
+  }
+});
+
+test('the Research Engineer is told read_review cannot be used in this release, never that a result gives the id', () => {
+  const body = personaFiles(ROOT).find((p) => p.id === 'research-engineer').body.replace(/\s+/g, ' ');
+  assert.ok(!body.includes('which only a Studio result can give you'), 'no promised id source');
+  assert.ok(body.includes('none of your tools gives one and no brief carries one, so leave it unused'), 'read_review left unused');
+});
+
+test('check-release refuses a persona with no tools line, or a grant of a whole server', async () => {
+  const { cpSync, mkdtempSync, rmSync, writeFileSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const dir = mkdtempSync(join(tmpdir(), 'check-release-grant-'));
+  try {
+    cpSync(ROOT, dir, { recursive: true, filter: (src) => !src.includes(`${'/'}.git`) });
+    const persona = join(dir, '.claude', 'agents', 'advocate.md');
+    const text = readFileSync(persona, 'utf8');
+    const release = JSON.parse(readFileSync(join(dir, 'release.json'), 'utf8'));
+    const entry = release.personas.find((p) => p.id === 'advocate');
+    const before = entry.tools;
+    // No tools line (and none in release.json): Claude Code then grants every tool, proposals included.
+    writeFileSync(persona, text.replace(/^tools:.*\n/m, ''));
+    delete entry.tools;
+    writeFileSync(join(dir, 'release.json'), `${JSON.stringify(release, null, 2)}\n`);
+    assert.ok(checkRelease(dir).includes('advocate: has no tools line: Claude Code would grant it every tool, proposals included'), JSON.stringify(checkRelease(dir)));
+    for (const grant of ['mcp__studio', 'mcp__studio__*', '*']) {
+      writeFileSync(persona, text.replace(/^tools:\s*(.*)$/m, (_m, t) => `tools: ${t}, ${grant}`));
+      entry.tools = [...before, grant];
+      writeFileSync(join(dir, 'release.json'), `${JSON.stringify(release, null, 2)}\n`);
+      assert.ok(
+        checkRelease(dir).includes(`advocate: lists ${grant}, a grant of more than one tool: name each tool`),
+        `${grant}: ${JSON.stringify(checkRelease(dir))}`,
+      );
+    }
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('the team section: teammates share the turn\'s limits, and only the six are delegated to', () => {
+  const lead = readFileSync(join(ROOT, 'CLAUDE.md'), 'utf8').replace(/\s+/g, ' ');
+  assert.ok(lead.includes('count against the same limits of the turn as yours'), 'shared limits');
+  assert.ok(
+    lead.includes('Delegate only to the six teammates in the table, never to a general-purpose sub-agent'),
+    'no general-purpose delegation',
+  );
+  assert.ok(
+    lead.includes(
+      'Without them, use the change block. With them, every proposal the note lists, research and freeze included, goes by its tool.',
+    ),
+    'the proposal sentence is said for a session with the tools, never after the one without them',
+  );
 });

@@ -6,6 +6,53 @@ contents of `VERSION`.
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-10-22
+
+The Studio's tools: in a conversation Glitch opens with its tools, the Lead Quant reads the
+Studio, checks before it proposes and proposes by tool, and each teammate reads and checks with
+the tools its `tools:` list names. No teammate's list holds a proposal tool. Without the tools,
+everything works as in 1.1.0, through the note and the change block.
+
+### Added
+
+- Persona `tools:` lists name the Studio's tools under the bridge's server name,
+  `mcp__studio__<name>`, after `Read`, `Grep` and `Glob`: the Data Scout `read_catalogue`,
+  `read_strategy`, `read_screen`; the Signal Architect `read_dsl_reference`, `read_components`,
+  `read_strategy`, `check_script`, `dry_run_script`; the Risk Architect `read_strategy`,
+  `check_script`, `check_change`; the Research Engineer `list_runs`, `read_run_window`,
+  `read_review`, `read_observation`; the Skeptic `check_script`, `read_strategy`, `list_runs`,
+  `read_run_window`; the Advocate `read_strategy`, `list_runs`. `release.json` lists the same.
+- `bin/check-release.mjs` refuses a release in which a persona lists one of the Studio's
+  seventeen proposal tools (`author_strategy`, `revise_strategy`, the edit and wiring tools,
+  `run_research`, `freeze`, `deploy`, `propose_change`, `test_change`, `confirm_rulebook`,
+  `adopt_candidate`), under either spelling; a persona with no `tools:` line (Claude Code would
+  grant it every tool); or a grant of more than one tool (`*`, `mcp__<server>`,
+  `mcp__<server>__*`).
+- `docs/workflow.md`: the drafting rules for Describe and Own it, which hold in a drafting turn (a
+  strategy with no rules yet); outside one, the Lead Quant may propose changing a value the trader
+  stated, as a card that says so.
+
+### Changed
+
+- `CLAUDE.md`, *Where you are*: when the tool list has `mcp__studio__*` tools, read the Studio with
+  them, check before proposing, and propose with `author_strategy`, `revise_strategy` or the edit
+  tools; without them, the change block.
+- Hard rule 1 keeps its prohibition word for word; its sources are this turn's note, or a Studio
+  tool's result this turn, exactly as given and said as the run's. It adds: "A dry run's figures
+  are in-sample drafts, not results: you never quote them." The Signal Architect, which holds
+  `dry_run_script`, carries the same sentence under its hard rules.
+- *The team*: a teammate with Studio tools reads and checks with them itself; its calls are the
+  turn's and count against the same limits as the Lead Quant's. The Lead Quant delegates only to the
+  six teammates, never to a general-purpose sub-agent, which would hold every Studio tool. With the
+  tools, every proposal the note lists goes by its tool.
+- Each persona's *What you are handed* says which tools it reads with, and that without them the
+  brief is all it sees. Its figures rule names the Lead Quant's brief and, of its own Studio tools,
+  only those whose results Glitch accepts as a figure's source (`read_strategy`, `list_runs`,
+  `read_run_window`, `read_review`, `read_observation`, and `check_script` for its live depth
+  alone), each said as whose figure it is; no other tool's result is a figure it may quote. The
+  Research Engineer is told `read_review` needs a review note's id that none of its tools gives and
+  no brief carries, so it leaves the tool unused.
+
 ## [1.1.0] - 2026-10-21
 
 The first release with report formats: every teammate's report has a grammar in `formats/`, the
