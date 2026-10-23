@@ -131,6 +131,8 @@ the control plane to a sandbox brought to the ref under test. Read that session'
 With Glitch's tools in the conversation (from 1.2.0), also expect a teammate's Studio call
 (`mcp__studio__check_script`, for the Skeptic) whose `_meta.claudeCode.parentToolUseId` is the
 teammate's `Agent` call, so the call is attributed to the teammate and not to the Lead Quant.
+From 1.3.0, a Skeptic asked to attack a strategy also calls `mcp__studio__skeptic_findings`,
+stamped the same way, and its report cites the ids that call returned.
 
 ## Licence and attribution
 

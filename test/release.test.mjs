@@ -130,7 +130,7 @@ test("every persona's hand-back block is its format's template, and says the tra
 
 test('the release is consistent: VERSION, CHANGELOG, release.json, formats digests, frontmatter, the dry-run sentence', () => {
   assert.deepEqual(checkRelease(ROOT), []);
-  assert.equal(readFileSync(join(ROOT, 'VERSION'), 'utf8').trim(), '1.2.0');
+  assert.equal(readFileSync(join(ROOT, 'VERSION'), 'utf8').trim(), '1.3.0');
 });
 
 test('the dry-run sentence is the one hard rule 1 carries', () => {
@@ -250,16 +250,28 @@ test('a format retry is uncounted, one per teammate per turn, and a second pass 
   assert.ok(changelog.includes('one retry for each teammate in a turn'), 'the changelog states the rule');
 });
 
+const TEAM_CHECKS = {
+  skeptic: ['skeptic_findings', 'tripwires', 'warmup_depth', 'candidate_critique'],
+  advocate: ['advocate_answer', 'candidate_critique'],
+  'data-scout': ['warmup_depth'],
+};
+
 // 1.2.0: the Studio's tools in a conversation Glitch opens with them. Glitch's own test checks every
 // name against its tool registry, which this public repository never holds.
 const BRIDGE_TOOLS = {
-  'data-scout': ['read_catalogue', 'read_strategy', 'read_screen'],
+  'data-scout': ['read_catalogue', 'read_strategy', 'read_screen', ...teamChecks('data-scout')],
   'signal-architect': ['read_dsl_reference', 'read_components', 'read_strategy', 'check_script', 'dry_run_script'],
   'risk-architect': ['read_strategy', 'check_script', 'check_change'],
   'research-engineer': ['list_runs', 'read_run_window', 'read_review', 'read_observation'],
-  skeptic: ['check_script', 'read_strategy', 'list_runs', 'read_run_window'],
-  advocate: ['read_strategy', 'list_runs'],
+  skeptic: ['check_script', 'read_strategy', 'list_runs', 'read_run_window', ...teamChecks('skeptic')],
+  advocate: ['read_strategy', 'list_runs', ...teamChecks('advocate')],
 };
+
+// 1.3.0: the team checks, the Studio checks the note carries as tools a teammate calls (swarm
+// design K-b): each answers with the same ids, sentences and digests as the note's block.
+function teamChecks(id) {
+  return TEAM_CHECKS[id] ?? [];
+}
 
 test("each persona's tools are its workspace reads plus its Studio tools under the server's name, and none proposes", () => {
   for (const { id, fields } of personaFiles(ROOT)) {
@@ -362,7 +374,7 @@ test('a persona that reads the Studio is told so, and its figures rule names the
  * other tool (review round 2).
  */
 const FIGURE_SOURCES = new Set(['read_strategy', 'list_runs', 'read_run_window', 'read_review', 'read_observation']);
-const LIVE_DEPTH_TOOL = 'check_script';
+const LIVE_DEPTH_TOOLS = ['check_script', 'warmup_depth'];
 
 /** A persona's figures rule: the hard-rules bullet that says which figures it may quote. */
 function figuresRule(body) {
@@ -377,14 +389,16 @@ test("a persona's figures rule names, of its Studio tools, exactly its figure so
     const rule = figuresRule(body);
     assert.ok(!rule.includes("a Studio tool's result"), `${id}: never "a Studio tool's result" (any tool), which the figure check does not accept`);
     const studio = fields.tools.filter((t) => t.startsWith('mcp__')).map((t) => t.replace(/^mcp__[^_]+__/, ''));
-    const expected = studio.filter((t) => FIGURE_SOURCES.has(t) || t === LIVE_DEPTH_TOOL).sort();
+    const expected = studio.filter((t) => FIGURE_SOURCES.has(t) || LIVE_DEPTH_TOOLS.includes(t)).sort();
     const named = [...new Set([...rule.matchAll(/`([a-z_]+)`/g)].map((m) => m[1]))].sort();
     if (studio.some((t) => !FIGURE_SOURCES.has(t))) {
       assert.ok(rule.includes("no other tool's result is a figure you may quote"), `${id}: says its other tools' results are no figures to quote`);
     }
     assert.deepEqual(named, expected, `${id}'s figures rule names its figure sources and no other tool`);
-    if (expected.includes(LIVE_DEPTH_TOOL)) {
-      assert.ok(rule.includes("`check_script`'s live depth"), `${id}: check_script only for its live depth`);
+    for (const tool of LIVE_DEPTH_TOOLS) {
+      if (expected.includes(tool)) {
+        assert.ok(rule.includes(`\`${tool}\`'s live depth`), `${id}: ${tool} only for its live depth`);
+      }
     }
     assert.ok(/said as/.test(rule), `${id}: says each figure as whose it is`);
   }
@@ -439,4 +453,35 @@ test('the team section: teammates share the turn\'s limits, and only the six are
     ),
     'the proposal sentence is said for a session with the tools, never after the one without them',
   );
+});
+
+test('1.3.0: each teammate holding a team check is told to call it and cite its ids; the constitution says so', () => {
+  for (const { id, body, fields } of personaFiles(ROOT)) {
+    const held = (TEAM_CHECKS[id] ?? []).filter((t) => fields.tools.includes(`mcp__studio__${t}`));
+    assert.deepEqual(held, TEAM_CHECKS[id] ?? [], `${id} holds its team checks`);
+    const flat = body.replace(/\s+/g, ' ');
+    if (held.length === 0) {
+      assert.ok(!/Call the Studio's (live-depth )?checks? yourself/.test(flat), `${id} holds no team check and is not told to call one`);
+      continue;
+    }
+    assert.ok(/\*\*Call the Studio's (live-depth )?checks? yourself\.\*\*/.test(flat), `${id} is told to call its checks`);
+    for (const tool of held) assert.ok(flat.includes(`\`${tool}\``), `${id} names ${tool}`);
+    assert.ok(flat.includes('Cite the ids'), `${id} cites the ids its checks return`);
+  }
+  const lead = readFileSync(join(ROOT, 'CLAUDE.md'), 'utf8').replace(/\s+/g, ' ');
+  assert.ok(lead.includes("also call the Studio's checks themselves"), 'the constitution tells the Lead Quant the teammates call them');
+  assert.ok(lead.includes('hand the block all the same'), 'the block is still handed');
+});
+
+test('1.3.0: a teammate briefed afresh for its format retry is asked to call its Studio checks again', () => {
+  // Walk W-CHECKS-2B T1 (2026-10-22): the Advocate's retry was a fresh agent that called no check and
+  // worked from the brief alone, and its report is the one the debate counted. A fresh agent has not
+  // seen its earlier calls, so the retry brief asks for them again.
+  const lead = readFileSync(join(ROOT, 'CLAUDE.md'), 'utf8').replace(/\s+/g, ' ');
+  assert.ok(
+    lead.includes("A teammate briefed afresh has not seen its earlier calls: when it holds the Studio's checks, ask it to call them again before it rewrites its report"),
+    'the retry brief asks a fresh teammate to call its checks again',
+  );
+  const changelog = readFileSync(join(ROOT, 'CHANGELOG.md'), 'utf8').replace(/\s+/g, ' ');
+  assert.ok(changelog.includes('ask it to call them again'), 'the changelog says so');
 });

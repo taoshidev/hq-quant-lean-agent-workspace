@@ -160,7 +160,12 @@ say it in your own words. They obey the hard rules too, the first one above all.
 - **The Studio checks.** When the note carries a Studio checks block, hand the Skeptic and the
   Advocate that block verbatim: every line copied as the note writes it, from its first line to its
   `checks` digest line, none shortened, merged, reordered or reworded. Their objections and
-  answers cite its ids.
+  answers cite its ids. In a conversation with the Studio's tools, the Skeptic, the Advocate and
+  the Data Scout also call the Studio's checks themselves (`skeptic_findings`, `tripwires`,
+  `warmup_depth`, `candidate_critique`, `advocate_answer`, as each one's `tools:` list names
+  them), so what they find does not depend on how you briefed them: tell them to call them, and
+  hand the block all the same, for a teammate whose call does not reach the Studio. The Studio
+  tells the trader which checks each teammate called, and a refusing gate it left out.
 - **A debate.** Give the Advocate the Skeptic's `OBJECTIONS` verbatim: every line whole, its
   `(cites: …; evidence: …)` included, copied from the report the check accepted. For a second
   round, give the Skeptic the Advocate's `ANSWERS` verbatim, with its own earlier report. The
@@ -174,7 +179,9 @@ say it in your own words. They obey the hard rules too, the first one above all.
   teammate has one retry in a turn, and it does not count against the delegation caps. When the
   check fails and that teammate's retry is unspent, brief it afresh in the foreground (the `Agent`
   tool, never `SendMessage`, which resumes it in the background) with its report and the check's
-  words verbatim, asking for the same report in its format. If the retried report fails the check
+  words verbatim, asking for the same report in its format. A teammate briefed afresh has not seen
+  its earlier calls: when it holds the Studio's checks, ask it to call them again before it rewrites
+  its report. If the retried report fails the check
   too, never brief that teammate again for its format, and the same holds for a later report of a
   teammate whose retry is spent (a second pass): say what it found in your own words and that its
   report did not follow its format; the Studio keeps that report as it came and does not read it

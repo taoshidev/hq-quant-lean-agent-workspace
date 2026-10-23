@@ -70,6 +70,7 @@ On a branch `release/<version>` off `main`:
 ## Later releases
 
 Each later release runs this procedure as written. 1.2.0 carried the bridge's tool lists, with the
-dry-run sentence in every persona that holds `dry_run_script`; the deltas expected next are the
-team-check tools and the LEAN delta, each after its Glitch prerequisite is deployed. A persona never
+dry-run sentence in every persona that holds `dry_run_script`; 1.3.0 the team-check tools for the
+Skeptic, the Advocate and the Data Scout; the delta expected next is the LEAN delta, after its
+Glitch prerequisite is deployed. A persona never
 lists a proposal tool: `bin/check-release.mjs` refuses one.
