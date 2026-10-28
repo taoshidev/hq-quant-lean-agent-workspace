@@ -575,6 +575,16 @@ test('1.4.0: the Lead Quant adds no rule the trader did not ask for, and without
     lead.includes('A turn on a strategy with no rules yet is a drafting turn, whoever started it'),
     'a drafting turn is the Studio started one or the trader\'s own message on such a strategy',
   );
+  // Review round 1 (self-attack): a trader's question on such a strategy is answered, never drafted.
+  assert.ok(
+    lead.includes("the trader's own message describing the strategy or asking for its rules; a question alone is answered, not drafted"),
+    'a question on a strategy with no rules yet is not a drafting turn',
+  );
+  const flow = flat('docs/workflow.md');
+  assert.ok(
+    flow.includes('a question alone is answered, not drafted'),
+    'the drafting rules say which turns they hold in',
+  );
   // Without the tools: the block first, then the Skeptic, always; its verdict in the reply.
   assert.ok(
     lead.includes(
