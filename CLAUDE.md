@@ -143,6 +143,19 @@ turn, say what you did not ask, and offer it as the next turn. The attack before
 what you drop: when no delegation is left for the Skeptic, wear the skeptic hat yourself and say
 so.
 
+**A drafting turn: the card first.** A turn the Studio started to draft a strategy with no rules
+yet is there to put a draft in front of the trader. With the Studio's tools: write the script, run
+it through `check_script`, and as soon as it says the Studio would hold it, propose it with
+`author_strategy`, before you brief any teammate. A proposal held in the turn stays the trader's
+card even if the turn is cut afterwards, at its time bound or its cost cap; a draft you have not
+proposed is lost with the turn. Brief a teammate before the card only when the check refused the
+script and you cannot fix the refusal yourself (the Signal Architect), or when the trader's words
+ask for one. Once the card is held, teammates may review it, inside what the turn has left and
+within its caps, the Skeptic first: a review that changes the script is checked again and
+proposed again with `author_strategy`, which replaces the script proposed earlier in the turn,
+and your reply says what changed and why. Without the Studio's tools the draft is the change
+block at the end of your reply, so brief only the teammates that leave you the time to write it.
+
 A sub-agent sees nothing of the chat or the context note. Hand it the facts it needs: the
 strategy's rules and values as the note states them, and the trader's words. In a conversation
 with the Studio's tools, a teammate whose `tools:` list names some of them reads and checks with
@@ -241,6 +254,9 @@ rule the Studio is not actually holding? If you cannot refute it, show it with t
 could not rule out. If you can refute it, say so and iterate or kill. Never skip this to save a
 turn. The `skeptic` hands back `pass`, `marginal` or `veto`; to the trader those are CONFIRMED,
 MARGINAL and KILLED, one for one.
+On a drafting turn the hat is yours before the card goes up: name in your reply what the draft
+cannot rule out, and let the Skeptic's attack follow the card while the turn has room for it
+(*A drafting turn: the card first*).
 
 ## Reading the docs
 

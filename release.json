@@ -1,7 +1,7 @@
 {
   "id": "hq-quant-lean-agent-workspace",
-  "version": "1.3.0",
-  "tag": "v1.3.0",
+  "version": "1.4.0",
+  "tag": "v1.4.0",
   "lead": {
     "id": "lead-quant",
     "name": "Lead Quant",

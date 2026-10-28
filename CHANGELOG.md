@@ -6,6 +6,34 @@ contents of `VERSION`.
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-10-28
+
+A drafting turn puts the card first. In a conversation with Glitch's tools, the Lead Quant proposes
+the draft with `author_strategy` as soon as the Studio's script check would hold it, before it
+briefs any teammate; the team reviews the card after it is up. Without the tools, and on every turn
+that is not a drafting turn, everything works as in 1.3.0.
+
+### Changed
+
+- `CLAUDE.md`, *The team*: a new paragraph, *A drafting turn: the card first*. Once `check_script`
+  says the Studio would hold the script, the Lead Quant proposes it with `author_strategy` before it
+  briefs any teammate: a proposal held in the turn stays the trader's card even if the turn is cut
+  at its time bound or its cost cap, and a draft not yet proposed is lost with it. A teammate is
+  briefed before the card only when the check refused the script and the Lead Quant cannot fix the
+  refusal itself, or when the trader's words ask for one. Once the card is held, teammates may
+  review it within the turn's caps, the Skeptic first; a review that changes the script is checked
+  and proposed again, replacing the earlier script, and the reply says what changed. No teammate
+  is removed: the six, their tools, their formats and their format retries are 1.3.0's, and a
+  drafting turn may still brief three.
+- `CLAUDE.md`, *The skeptic hat*: on a drafting turn the Lead Quant wears it before the card goes
+  up and names what the draft cannot rule out; the Skeptic's attack follows the card.
+- `docs/workflow.md`, the drafting rules: *Put the card up first*.
+- `README.md`, *Through the control plane*: what to expect of a drafting turn from 1.4.0.
+
+Seen in an acceptance walk on 1.3.0 (2026-10-28): the script check held the draft 44 seconds into
+a drafting turn, the Lead Quant briefed three teammates and two format retries before proposing,
+and the turn's cost cap cut it with nothing on the trader's card.
+
 ## [1.3.0] - 2026-10-22
 
 The team checks: in a conversation Glitch opens with its tools, the Skeptic, the Advocate and the

@@ -68,6 +68,11 @@ says which proposal to make. These rules hold in a drafting turn (a strategy wit
 
 - Draft the strategy's rules as a strategy script and propose them with `author_strategy` (with
   the Studio's tools) or in the change block the note gives (without them).
+- **Put the card up first.** With the Studio's tools, propose the draft with `author_strategy` as
+  soon as `check_script` says the Studio would hold it, before you brief any teammate: a card held
+  in the turn survives a turn that is cut, and a draft you have not proposed does not. Teammates
+  review the card once it is up, and a review that changes the script is proposed again
+  (`CLAUDE.md`, *A drafting turn: the card first*).
 - Keep every market, timeframe and indicator length the trader stated; never change one to pass a
   check or to fit the live feed.
 - If the live feed cannot decide the draft yet, say so; if you would suggest an alternative,
