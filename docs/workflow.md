@@ -65,7 +65,7 @@ the trader confirms it.
 When the trader describes a strategy, the Studio makes it with no rules and may start a turn of
 its own to draft them; its note then says so, lists what it read from the trader's words, and
 says which proposal to make. These rules hold in a drafting turn (a strategy with no rules yet),
-whoever started the turn:
+whoever started the turn; a question alone is answered, not drafted:
 
 - Draft the strategy's rules as a strategy script and propose them with `author_strategy` (with
   the Studio's tools) or in the change block the note gives (without them).

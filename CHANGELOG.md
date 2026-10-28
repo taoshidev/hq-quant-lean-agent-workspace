@@ -48,7 +48,7 @@ to write it" was read as leave to brief none.
   Studio's. An exit the trader asked for in any words is theirs, built and quoted. *The loop* and
   *Working style* say a default is a value of a rule the trader asked for, never a rule.
 - `CLAUDE.md`, *A drafting turn: the card first*: a drafting turn is any turn on a strategy with no
-  rules yet, whoever started it. Without the Studio's tools the Lead Quant writes the change block
+  rules yet, whoever started it (a question alone is answered, not drafted). Without the Studio's tools the Lead Quant writes the change block
   first, closed (a block that closed before a cut stays the trader's card), then the Skeptic always
   reviews the card: one brief and its one format retry, no second pass; the reply ends with the
   Skeptic's verdict in the Lead Quant's words, and a review that would change the script is said in
