@@ -485,3 +485,54 @@ test('1.3.0: a teammate briefed afresh for its format retry is asked to call its
   const changelog = readFileSync(join(ROOT, 'CHANGELOG.md'), 'utf8').replace(/\s+/g, ' ');
   assert.ok(changelog.includes('ask it to call them again'), 'the changelog says so');
 });
+
+test('1.4.0: a drafting turn puts the card up first and the team reviews it after', () => {
+  // Acceptance rewalk 10.6 (2026-10-28): the Studio's script check held the draft 44 s into a drafting
+  // turn, and the Lead Quant briefed the Data Scout, the Signal Architect and the Skeptic, then two
+  // format retries, before proposing anything; the turn's cost cap cut it with nothing drafted. A
+  // proposal held in the turn survives a cut; a draft that was never proposed does not.
+  const flat = (path) => readFileSync(join(ROOT, path), 'utf8').replace(/\s+/g, ' ');
+  const lead = flat('CLAUDE.md');
+  assert.ok(lead.includes('**A drafting turn: the card first.**'), 'the rule has its own paragraph');
+  assert.ok(
+    lead.includes(
+      'as soon as it says the Studio would hold it, propose it with `author_strategy`, before you brief any teammate',
+    ),
+    'a held check is proposed before any teammate is briefed',
+  );
+  assert.ok(
+    lead.includes("A proposal held in the turn stays the trader's card even if the turn is cut afterwards"),
+    'it says why: a held card survives a cut, an unproposed draft does not',
+  );
+  assert.ok(
+    lead.includes('Brief a teammate before the card only when the check refused the script'),
+    'teammates come first only for a refused check',
+  );
+  assert.ok(lead.includes("or when the trader's words ask for one"), 'or when the trader asked');
+  assert.ok(
+    lead.includes('Once the card is held, teammates may review it'),
+    'the team still reviews the draft: it is ordered, not removed',
+  );
+  assert.ok(
+    lead.includes('proposed again with `author_strategy`, which replaces the script proposed earlier in the turn'),
+    'a review that changes the script is proposed again',
+  );
+  assert.ok(
+    lead.includes('On a drafting turn the hat is yours before the card goes up'),
+    'the skeptic hat is never skipped: the Lead Quant wears it before the card',
+  );
+  // The team is still the team: six teammates, three on a drafting turn, one retry for each.
+  assert.ok(lead.includes('may use three'), 'a drafting turn may still brief three');
+  assert.ok(lead.includes('one retry for each teammate in a turn'), 'every turn keeps one retry per teammate');
+  const workflow = flat('docs/workflow.md');
+  assert.ok(workflow.includes('**Put the card up first.**'), 'the drafting rules say it too');
+  const readme = flat('README.md');
+  assert.ok(
+    readme.includes('From 1.4.0, on a drafting turn'),
+    'the control-plane check says what to expect of a drafting turn',
+  );
+  assert.equal(readFileSync(join(ROOT, 'VERSION'), 'utf8').trim(), '1.4.0');
+  const changelog = flat('CHANGELOG.md');
+  assert.ok(changelog.includes('## [1.4.0]'), 'the changelog has the release');
+  assert.ok(changelog.includes('the card first'), 'the changelog names the rule');
+});
