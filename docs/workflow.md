@@ -64,7 +64,8 @@ the trader confirms it.
 
 When the trader describes a strategy, the Studio makes it with no rules and may start a turn of
 its own to draft them; its note then says so, lists what it read from the trader's words, and
-says which proposal to make. These rules hold in a drafting turn (a strategy with no rules yet):
+says which proposal to make. These rules hold in a drafting turn (a strategy with no rules yet),
+whoever started the turn:
 
 - Draft the strategy's rules as a strategy script and propose them with `author_strategy` (with
   the Studio's tools) or in the change block the note gives (without them).
@@ -72,7 +73,14 @@ says which proposal to make. These rules hold in a drafting turn (a strategy wit
   soon as `check_script` says the Studio would hold it, before you brief any teammate: a card held
   in the turn survives a turn that is cut, and a draft you have not proposed does not. Teammates
   review the card once it is up, and a review that changes the script is proposed again
-  (`CLAUDE.md`, *A drafting turn: the card first*).
+  (`CLAUDE.md`, *A drafting turn: the card first*). Without the Studio's tools, write the change
+  block first, then brief the Skeptic to review it (one brief and its one format retry), and end
+  your reply with the Skeptic's verdict in your own words; a block that closed before the turn is
+  cut stays the trader's card.
+- **Write only the rules the trader asked for.** No exit, filter or rule their words do not ask
+  for, not even the mirror of their entry: left out, the Studio's default applies (no exit rules:
+  a trade closes on its stop, its target or its time limit), and the card says it is the
+  Studio's. If you think one is needed, say so in words and let the trader ask for it.
 - Keep every market, timeframe and indicator length the trader stated; never change one to pass a
   check or to fit the live feed.
 - If the live feed cannot decide the draft yet, say so; if you would suggest an alternative,

@@ -34,6 +34,29 @@ Seen in an acceptance walk on 1.3.0 (2026-10-28): the script check held the draf
 a drafting turn, the Lead Quant briefed three teammates and two format retries before proposing,
 and the turn's cost cap cut it with nothing on the trader's card.
 
+### Changed after review (2026-10-28, still 1.4.0, before its tag)
+
+Opus on this release's first cut (eight fenced drafting turns, the unbuilt-honesty tasks
+0039–0046): three drafts were given a stop and no exit, and the Lead Quant added the mirror of the
+entry as an exit, labelled as its own choice; the trader had asked for no exit. And none of the
+eight fenced drafting turns briefed a teammate: "brief only the teammates that leave you the time
+to write it" was read as leave to brief none.
+
+- `CLAUDE.md`, *Authoring the strategy script*: **Write only the rules the trader asked for.** No
+  exit, filter or other rule the trader did not ask for, not even the mirror of their entry and not
+  as a labelled choice: left out, the Studio's default applies and the card says it is the
+  Studio's. An exit the trader asked for in any words is theirs, built and quoted. *The loop* and
+  *Working style* say a default is a value of a rule the trader asked for, never a rule.
+- `CLAUDE.md`, *A drafting turn: the card first*: a drafting turn is any turn on a strategy with no
+  rules yet, whoever started it. Without the Studio's tools the Lead Quant writes the change block
+  first, closed (a block that closed before a cut stays the trader's card), then the Skeptic always
+  reviews the card: one brief and its one format retry, no second pass; the reply ends with the
+  Skeptic's verdict in the Lead Quant's words, and a review that would change the script is said in
+  words, never a second block. With the tools, as before. *Where you are* and *The skeptic hat* say
+  so.
+- `docs/workflow.md`, the drafting rules, and `README.md`, *Through the control plane*, say both.
+- The six persona files, their tools, formats and caps are unchanged.
+
 ## [1.3.0] - 2026-10-22
 
 The team checks: in a conversation Glitch opens with its tools, the Skeptic, the Advocate and the

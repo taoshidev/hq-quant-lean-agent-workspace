@@ -136,7 +136,9 @@ stamped the same way, and its report cites the ids that call returned.
 From 1.4.0, on a drafting turn (a strategy with no rules yet), expect the Lead Quant's own
 `mcp__studio__author_strategy` call (no `parentToolUseId`) after the first `check_script` that says
 the Studio would hold the script, and before any `Agent` call, unless an earlier check refused the
-script or the trader asked for a teammate.
+script or the trader asked for a teammate; and without the Studio's tools, expect the change
+block before the first `Agent` call, then one Skeptic delegation (and at most its one format
+retry) before the reply ends.
 
 ## Licence and attribution
 

@@ -614,7 +614,7 @@ test('1.4.0: the Lead Quant adds no rule the trader did not ask for, and without
   );
   // The change block's place says so, and the skeptic hat points at the rule.
   assert.ok(
-    lead.includes('on a drafting turn without them, before the Skeptic\'s review (*A drafting turn: the card first*)'),
+    lead.includes("on a drafting turn without the Studio's tools, before the Skeptic's review: *A drafting turn: the card first*"),
     "'Where you are' says where the block goes on a fenced drafting turn",
   );
   assert.ok(
