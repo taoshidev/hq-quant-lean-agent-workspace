@@ -646,3 +646,83 @@ test('1.4.0: the Lead Quant adds no rule the trader did not ask for, and without
     'the control-plane check says what to expect of a fenced drafting turn',
   );
 });
+
+test("1.4.0: the Skeptic's review of a drafted card is bounded — a short brief carrying the script, the script reviewed as written, one report and its one retry", () => {
+  // D14 r5 (2026-10-28, opus, fenced, 1.4.0 @ e97e1877, tasks 0010 0012 0041 0043 0045): the card was up
+  // 56-80 s into each turn, and the review then took the rest: p50 344 s, p90 805 s. The Lead Quant
+  // spent 31-44 s writing a brief of 1,135-1,493 words (the draft retold in prose, the engine retold,
+  // "what I already told the trader", a list of questions, then the checks block); the Skeptic took
+  // 152-203 s and handed back 1,271-2,156 words, and two of the five read the workspace beyond its two
+  // docs (check-report's source, formats/skeptic.json, persona files) to learn its own format; 0045's
+  // format retry re-sent the whole report in a 2,112-word brief and the fresh Skeptic re-read both
+  // docs and rewrote every line (about 150 s). Lucas, 2026-10-29: bounded — the script and a short
+  // brief, no rebuild, one report and its one format retry, still a real independent review.
+  const flat = (path) => readFileSync(join(ROOT, path), 'utf8').replace(/\s+/g, ' ');
+  const lead = flat('CLAUDE.md');
+  assert.ok(lead.includes("**The Skeptic's review of a draft.**"), 'the bound has its own paragraph');
+  assert.ok(
+    lead.includes('On a drafting turn, with the Studio\'s tools or without them, the Skeptic reviews the script as written'),
+    'on both transports',
+  );
+  // The brief: short, the script itself, nothing retold.
+  assert.ok(
+    lead.includes(
+      "Brief it short, with these and nothing else: one line saying it reviews the drafted card, the trader's words verbatim, the script whole as the card holds it",
+    ),
+    'a short brief carrying the script',
+  );
+  assert.ok(lead.includes('copied, never retold in prose'), 'the script is copied, not paraphrased');
+  assert.ok(
+    lead.includes('Leave out what you told the trader, your own view of the draft, a retelling of the engine and a list of questions'),
+    'nothing that steers or pads the review',
+  );
+  // The review: as written, no rebuild, read-only checks only.
+  assert.ok(
+    lead.includes('Ask it to review the script as written: read it, reason about it, and run the read-only checks it holds'),
+    'it reads, reasons and may run its read-only checks',
+  );
+  assert.ok(
+    lead.includes('never to rebuild, re-draft or rewrite the strategy, write another script'),
+    'no rebuild and no second script',
+  );
+  assert.ok(
+    lead.includes('or read the workspace beyond `docs/pitfalls.md` and `docs/validation.md`'),
+    'no exploring the workspace for its own format',
+  );
+  // One report and its one retry; the retry changes only what the check named.
+  assert.ok(lead.includes('It hands back one report, in its format, each finding said once.'), 'one report');
+  assert.ok(
+    lead.includes('ask it to change only the lines the check names, with no new review'),
+    'a format retry rewrites the refused lines, never the review',
+  );
+  assert.ok(lead.includes('No second pass on a drafting turn.'), 'no second pass');
+  // Still the Skeptic's own verdict, and the veto stands; the card stays for the trader.
+  assert.ok(
+    lead.includes('Never tell it what verdict to reach or which findings to leave out: the verdict is its own.'),
+    'an independent review',
+  );
+  assert.ok(
+    lead.includes('A veto stands: say it to the trader as KILLED, with its reasons, and leave the card up for the trader to decide.'),
+    'a veto is said as KILLED and the card stays',
+  );
+  // Without the tools: the Skeptic alone, as the note says (no "up to three" there).
+  assert.ok(
+    lead.includes('no second pass, and no other teammate on this turn'),
+    'a fenced drafting turn briefs the Skeptic alone',
+  );
+  // The persona is unchanged: its charter already forbids changing the candidate.
+  const skeptic = flat('.claude/agents/skeptic.md');
+  assert.ok(skeptic.includes('Never modify the candidate: you object; the `signal-architect` and the `advocate` propose.'));
+  const workflow = flat('docs/workflow.md');
+  assert.ok(
+    workflow.includes('The Skeptic reviews the script as written, from a short brief that carries it'),
+    'the drafting rules say the bound',
+  );
+  const changelog = flat('CHANGELOG.md');
+  assert.ok(changelog.includes("The Skeptic's review of a draft"), 'the changelog names the bound');
+  const readme = flat('README.md');
+  assert.ok(
+    readme.includes('a Skeptic brief that carries the script whole and no retelling'),
+    'the control-plane check says what a drafting turn\'s brief looks like',
+  );
+});
