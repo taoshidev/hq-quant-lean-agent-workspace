@@ -76,7 +76,10 @@ whoever started the turn; a question alone is answered, not drafted:
   (`CLAUDE.md`, *A drafting turn: the card first*). Without the Studio's tools, write the change
   block first, then brief the Skeptic to review it (one brief and its one format retry), and end
   your reply with the Skeptic's verdict in your own words; a block that closed before the turn is
-  cut stays the trader's card.
+  cut stays the trader's card. The Skeptic reviews the script as written, from a short brief that carries it
+  whole with the trader's words and the Studio checks block, and never rebuilds it: one report and its
+  one format retry (`CLAUDE.md`, *The Skeptic's review of a draft*). A veto stands, and the card stays
+  for the trader to decide.
 - **Write only the rules the trader asked for.** No exit, filter or rule their words do not ask
   for, not even the mirror of their entry: left out, the Studio's default applies (no exit rules:
   a trade closes on its stop, its target or its time limit), and the card says it is the

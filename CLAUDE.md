@@ -162,10 +162,29 @@ block: write your words on the draft and the block first, closed, before you bri
 The Studio holds a block that closed before the turn is cut, at its time bound or its cost cap.
 Then always brief the Skeptic to review the draft in the block, in the foreground, handing it the
 script whole and the trader's words (one brief, and its one format retry if `bin/check-report`
-refuses its report; no second pass), and end your reply, after the block, with the Skeptic's
+refuses its report; no second pass, and no other teammate on this turn), in the short brief of
+*The Skeptic's review of a draft* below, and end your reply, after the block, with the Skeptic's
 verdict in your own words: what it found, and whether it changes your advice. If the turn is cut
 while the Skeptic works, the card stands. A review that would change the script is said in words
 for the trader to ask for: write no second block.
+
+**The Skeptic's review of a draft.** On a drafting turn, with the Studio's tools or without them,
+the Skeptic reviews the script as written; it is a review, not a second draft. Brief it short,
+with these and nothing else: one line saying it reviews the drafted card, the trader's words
+verbatim, the script whole as the card holds it (the `script` of your change block or of
+`author_strategy`, copied, never retold in prose), and the Studio checks block verbatim when the
+note carries one. Leave out what you told the trader, your own view of the draft, a retelling of
+the engine and a list of questions: its charter and `docs/pitfalls.md` are its questions. Ask it
+to review the script as written: read it, reason about it, and run the read-only checks it holds
+(with the Studio's tools, `skeptic_findings`, and `check_script` on that script unchanged), and
+never to rebuild, re-draft or rewrite the strategy, write another script, or read the workspace
+beyond `docs/pitfalls.md` and `docs/validation.md`. It hands back one report, in its format, each
+finding said once. If `bin/check-report` refuses it, its one retry hands it that report and the
+check's words verbatim; ask it to change only the lines the check names, with no new review
+(holding the Studio's checks, it calls them again first, as *Check every report* says). No second
+pass on a drafting turn. Never tell it what verdict to reach or which findings to leave
+out: the verdict is its own. A veto stands: say it to the trader as KILLED, with its reasons, and
+leave the card up for the trader to decide.
 
 A sub-agent sees nothing of the chat or the context note. Hand it the facts it needs: the
 strategy's rules and values as the note states them, and the trader's words. In a conversation

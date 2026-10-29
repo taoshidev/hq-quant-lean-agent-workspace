@@ -57,6 +57,32 @@ to write it" was read as leave to brief none.
 - `docs/workflow.md`, the drafting rules, and `README.md`, *Through the control plane*, say both.
 - The six persona files, their tools, formats and caps are unchanged.
 
+### Changed after the live re-check (2026-10-29, still 1.4.0, before its tag)
+
+Opus on the fenced drafting turns of this release (five tasks, 2026-10-28): the card was up 56 to
+80 seconds into each turn, and the Skeptic's review then took most of the turn (p50 344 s, p90
+805 s, about four to five times the turns before it). The Lead Quant's brief ran to 1,135 to 1,493
+words, retelling the draft in prose, the engine and what it had told the trader, with a list of
+questions, before the checks block; the Skeptic took 152 to 203 seconds and handed back 1,271 to
+2,156 words, two of the five read the workspace beyond its two docs to learn its own format, and a
+format retry re-sent the whole report and was reviewed afresh (about 150 seconds).
+
+- `CLAUDE.md`, *The team*: **The Skeptic's review of a draft.** On a drafting turn, on either
+  transport, the Skeptic reviews the script as written, from a short brief: one line saying it
+  reviews the drafted card, the trader's words, the script whole as the card holds it (copied,
+  never retold) and the Studio checks block. Nothing that retells the engine, says what the Lead
+  Quant told the trader or thinks of the draft, or lists questions. It reads, reasons and runs only
+  the read-only checks it holds; it never rebuilds, re-drafts or rewrites the strategy, writes
+  another script or reads the workspace beyond its two docs. One report, each finding said once;
+  its one format retry changes only the lines the check names. No second pass. The verdict is its
+  own, and a veto stands: said to the trader as KILLED, with the card left up for the trader to
+  decide.
+- `CLAUDE.md`, *A drafting turn: the card first*: without the Studio's tools the Skeptic is the
+  only teammate briefed on the turn, as the Studio's note says.
+- `docs/workflow.md` and `README.md`, *Through the control plane*, say so.
+- The six persona files, their tools, formats and caps are unchanged: the Skeptic's charter
+  already says it never modifies the candidate, and its format is the same.
+
 ## [1.3.0] - 2026-10-22
 
 The team checks: in a conversation Glitch opens with its tools, the Skeptic, the Advocate and the

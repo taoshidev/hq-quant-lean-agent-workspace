@@ -138,7 +138,10 @@ From 1.4.0, on a drafting turn (a strategy with no rules yet), expect the Lead Q
 the Studio would hold the script, and before any `Agent` call, unless an earlier check refused the
 script or the trader asked for a teammate; and without the Studio's tools, expect the change
 block before the first `Agent` call, then one Skeptic delegation (and at most its one format
-retry) before the reply ends.
+retry) before the reply ends. On either transport the drafting turn's review is a Skeptic
+brief that carries the script whole and no retelling (the trader's words, the script as the card
+holds it, the Studio checks block), and a retry's brief carries the refused report and the
+check's words; the Skeptic's own calls are reads and checks, never a second script.
 
 ## Licence and attribution
 
