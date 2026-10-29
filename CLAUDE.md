@@ -171,9 +171,10 @@ for the trader to ask for: write no second block.
 **The Skeptic's review of a draft.** On a drafting turn, with the Studio's tools or without them,
 the Skeptic reviews the script as written; it is a review, not a second draft. Brief it short,
 with these and nothing else: one line saying it reviews the drafted card, the trader's words
-verbatim, the script whole as the card holds it (the `script` of your change block or of
-`author_strategy`, copied, never retold in prose), and the Studio checks block verbatim when the
-note carries one. Leave out what you told the trader, your own view of the draft, a retelling of
+verbatim, the strategy's assumptions as the note states them in one line, the script whole as the
+card holds it (the `script` of your change block or of `author_strategy`, with its markets and
+timeframe, copied, never retold in prose), and the Studio checks block verbatim when the note
+carries one. Leave out what you told the trader, your own view of the draft, a retelling of
 the engine and a list of questions: its charter and `docs/pitfalls.md` are its questions. Ask it
 to review the script as written: read it, reason about it, and run the read-only checks it holds
 (with the Studio's tools, `skeptic_findings`, and `check_script` on that script unchanged), and
@@ -182,8 +183,8 @@ beyond `docs/pitfalls.md` and `docs/validation.md`. It hands back one report, in
 finding said once. If `bin/check-report` refuses it, its one retry hands it that report and the
 check's words verbatim; ask it to change only the lines the check names, with no new review
 (holding the Studio's checks, it calls them again first, as *Check every report* says). No second
-pass on a drafting turn. Never tell it what verdict to reach or which findings to leave
-out: the verdict is its own. A veto stands: say it to the trader as KILLED, with its reasons, and
+pass on a drafting turn. Never tell it what verdict to reach or which findings to leave out: the
+verdict is its own. A veto stands: say it to the trader as KILLED, with its reasons, and
 leave the card up for the trader to decide.
 
 A sub-agent sees nothing of the chat or the context note. Hand it the facts it needs: the

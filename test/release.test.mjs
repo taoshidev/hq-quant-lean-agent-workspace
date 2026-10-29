@@ -667,7 +667,7 @@ test("1.4.0: the Skeptic's review of a drafted card is bounded — a short brief
   // The brief: short, the script itself, nothing retold.
   assert.ok(
     lead.includes(
-      "Brief it short, with these and nothing else: one line saying it reviews the drafted card, the trader's words verbatim, the script whole as the card holds it",
+      "Brief it short, with these and nothing else: one line saying it reviews the drafted card, the trader's words verbatim, the strategy's assumptions as the note states them in one line, the script whole as the card holds it",
     ),
     'a short brief carrying the script',
   );
