@@ -130,7 +130,7 @@ test("every persona's hand-back block is its format's template, and says the tra
 
 test('the release is consistent: VERSION, CHANGELOG, release.json, formats digests, frontmatter, the dry-run sentence', () => {
   assert.deepEqual(checkRelease(ROOT), []);
-  assert.equal(readFileSync(join(ROOT, 'VERSION'), 'utf8').trim(), '1.3.0');
+  assert.equal(readFileSync(join(ROOT, 'VERSION'), 'utf8').trim(), '1.4.0');
 });
 
 test('the dry-run sentence is the one hard rule 1 carries', () => {
@@ -484,4 +484,245 @@ test('1.3.0: a teammate briefed afresh for its format retry is asked to call its
   );
   const changelog = readFileSync(join(ROOT, 'CHANGELOG.md'), 'utf8').replace(/\s+/g, ' ');
   assert.ok(changelog.includes('ask it to call them again'), 'the changelog says so');
+});
+
+test('1.4.0: a drafting turn puts the card up first and the team reviews it after', () => {
+  // Acceptance rewalk 10.6 (2026-10-28): the Studio's script check held the draft 44 s into a drafting
+  // turn, and the Lead Quant briefed the Data Scout, the Signal Architect and the Skeptic, then two
+  // format retries, before proposing anything; the turn's cost cap cut it with nothing drafted. A
+  // proposal held in the turn survives a cut; a draft that was never proposed does not.
+  const flat = (path) => readFileSync(join(ROOT, path), 'utf8').replace(/\s+/g, ' ');
+  const lead = flat('CLAUDE.md');
+  assert.ok(lead.includes('**A drafting turn: the card first.**'), 'the rule has its own paragraph');
+  assert.ok(
+    lead.includes(
+      'as soon as it says the Studio would hold it, propose it with `author_strategy`, before you brief any teammate',
+    ),
+    'a held check is proposed before any teammate is briefed',
+  );
+  assert.ok(
+    lead.includes("A proposal held in the turn stays the trader's card even if the turn is cut afterwards"),
+    'it says why: a held card survives a cut, an unproposed draft does not',
+  );
+  assert.ok(
+    lead.includes('Brief a teammate before the card only when the check refused the script'),
+    'teammates come first only for a refused check',
+  );
+  assert.ok(lead.includes("or when the trader's words ask for one"), 'or when the trader asked');
+  assert.ok(
+    lead.includes('Once the card is held, teammates may review it'),
+    'the team still reviews the draft: it is ordered, not removed',
+  );
+  assert.ok(
+    lead.includes('proposed again with `author_strategy`, which replaces the script proposed earlier in the turn'),
+    'a review that changes the script is proposed again',
+  );
+  assert.ok(
+    lead.includes('On a drafting turn the hat is yours before the card goes up'),
+    'the skeptic hat is never skipped: the Lead Quant wears it before the card',
+  );
+  // The team is still the team: six teammates, three on a drafting turn, one retry for each.
+  assert.ok(lead.includes('may use three'), 'a drafting turn may still brief three');
+  assert.ok(lead.includes('one retry for each teammate in a turn'), 'every turn keeps one retry per teammate');
+  const workflow = flat('docs/workflow.md');
+  assert.ok(workflow.includes('**Put the card up first.**'), 'the drafting rules say it too');
+  const readme = flat('README.md');
+  assert.ok(
+    readme.includes('From 1.4.0, on a drafting turn'),
+    'the control-plane check says what to expect of a drafting turn',
+  );
+  assert.equal(readFileSync(join(ROOT, 'VERSION'), 'utf8').trim(), '1.4.0');
+  const changelog = flat('CHANGELOG.md');
+  assert.ok(changelog.includes('## [1.4.0]'), 'the changelog has the release');
+  assert.ok(changelog.includes('the card first'), 'the changelog names the rule');
+});
+
+test('1.4.0: the Lead Quant adds no rule the trader did not ask for, and without the Studio\'s tools the Skeptic reviews the drafted card', () => {
+  // Opus on 1.4.0 (2026-10-28, eight fenced drafting turns, unbuilt-honesty tasks 0039-0046): three
+  // drafts were given a stop and no exit, and the Lead Quant added the mirror of the entry as an exit,
+  // labelled as its own choice ("You gave a stop but no exit … the smallest exit I can assume"). With
+  // `exits` left out the Studio's default applies (no exit rules), and the card says it is the
+  // Studio's. And none of the eight fenced drafting turns briefed a teammate: "brief only the
+  // teammates that leave you the time to write it" read as leave to brief none.
+  const flat = (path) => readFileSync(join(ROOT, path), 'utf8').replace(/\s+/g, ' ');
+  const lead = flat('CLAUDE.md');
+  // The unasked rule: a bullet of its own under the authoring rules, the loop's default bounded.
+  assert.ok(lead.includes('**Write only the rules the trader asked for.**'), 'the rule has its own bullet');
+  assert.ok(
+    lead.includes(
+      'Never add an exit, a filter or any other rule the trader did not ask for, not even the mirror of their entry and not as your labelled choice: leave it out.',
+    ),
+    'no exit, filter or rule the trader did not ask for, labelled or not',
+  );
+  assert.ok(
+    lead.includes("Left out, the Studio's default applies and the card says it is the Studio's"),
+    "what runs instead is the Studio's default, said as the Studio's",
+  );
+  assert.ok(
+    lead.includes('say so in your words and let the trader ask for it'),
+    'an exit the Lead Quant thinks is needed is said in words, never built',
+  );
+  assert.ok(
+    lead.includes('An exit the trader asked for in any words is theirs'),
+    'an exit asked for in other words is built and quoted',
+  );
+  assert.ok(
+    lead.includes('A default is a value of a rule the trader asked for, never a rule they did not ask for.'),
+    "the loop's 'decide on a default' never adds a rule",
+  );
+  // A drafting turn is any turn on a strategy with no rules yet, whoever started it.
+  assert.ok(
+    lead.includes('A turn on a strategy with no rules yet is a drafting turn, whoever started it'),
+    'a drafting turn is the Studio started one or the trader\'s own message on such a strategy',
+  );
+  // Review round 1 (self-attack): a trader's question on such a strategy is answered, never drafted.
+  assert.ok(
+    lead.includes("the trader's own message describing the strategy or asking for its rules; a question alone is answered, not drafted"),
+    'a question on a strategy with no rules yet is not a drafting turn',
+  );
+  const flow = flat('docs/workflow.md');
+  assert.ok(
+    flow.includes('a question alone is answered, not drafted'),
+    'the drafting rules say which turns they hold in',
+  );
+  // Without the tools: the block first, then the Skeptic, always; its verdict in the reply.
+  assert.ok(
+    lead.includes(
+      'Without the Studio\'s tools the card is your change block: write your words on the draft and the block first, closed, before you brief any teammate.',
+    ),
+    'the change block is written before any teammate',
+  );
+  assert.ok(
+    lead.includes('The Studio holds a block that closed before the turn is cut, at its time bound or its cost cap.'),
+    'a closed block survives a cut',
+  );
+  assert.ok(
+    lead.includes('Then always brief the Skeptic to review the draft in the block'),
+    'the Skeptic always reviews a fenced draft once the block is written',
+  );
+  assert.ok(
+    lead.includes('one brief, and its one format retry if `bin/check-report` refuses its report'),
+    'bounded: one brief and its one retry',
+  );
+  assert.ok(
+    lead.includes("end your reply, after the block, with the Skeptic's verdict in your own words"),
+    "the Skeptic's verdict is said in the reply",
+  );
+  assert.ok(
+    lead.includes('If the turn is cut while the Skeptic works, the card stands.'),
+    'the time bound and the cost cap still apply, and the card is already up',
+  );
+  assert.ok(lead.includes('write no second block'), 'a review that would change the script is said, not proposed twice');
+  assert.ok(
+    !lead.includes('brief only the teammates that leave you the time to write it'),
+    'the sentence read as leave to brief no one is gone',
+  );
+  // With the tools, as 1.4.0 was: the card first, the team after.
+  assert.ok(
+    lead.includes('as soon as it says the Studio would hold it, propose it with `author_strategy`, before you brief any teammate'),
+    'with the tools, unchanged',
+  );
+  // The change block's place says so, and the skeptic hat points at the rule.
+  assert.ok(
+    lead.includes("on a drafting turn without the Studio's tools, before the Skeptic's review: *A drafting turn: the card first*"),
+    "'Where you are' says where the block goes on a fenced drafting turn",
+  );
+  assert.ok(
+    lead.includes("without the Studio's tools it always does"),
+    "the skeptic hat: the Skeptic's attack always follows a fenced card",
+  );
+  const workflow = flat('docs/workflow.md');
+  assert.ok(workflow.includes('**Write only the rules the trader asked for.**'), 'the drafting rules say it too');
+  assert.ok(
+    workflow.includes('Without the Studio\'s tools, write the change block first, then brief the Skeptic to review it'),
+    'the drafting rules say the fenced order',
+  );
+  const changelog = flat('CHANGELOG.md');
+  assert.ok(changelog.includes('Write only the rules the trader asked for'), 'the changelog names the rule');
+  assert.ok(changelog.includes('the Skeptic always reviews the card'), 'the changelog names the fenced review');
+  const readme = flat('README.md');
+  assert.ok(
+    readme.includes('without the Studio\'s tools, expect the change block before the first `Agent` call'),
+    'the control-plane check says what to expect of a fenced drafting turn',
+  );
+});
+
+test("1.4.0: the Skeptic's review of a drafted card is bounded — a short brief carrying the script, the script reviewed as written, one report and its one retry", () => {
+  // D14 r5 (2026-10-28, opus, fenced, 1.4.0 @ e97e1877, tasks 0010 0012 0041 0043 0045): the card was up
+  // 56-80 s into each turn, and the review then took the rest: p50 344 s, p90 805 s. The Lead Quant
+  // spent 31-44 s writing a brief of 1,135-1,493 words (the draft retold in prose, the engine retold,
+  // "what I already told the trader", a list of questions, then the checks block); the Skeptic took
+  // 152-203 s and handed back 1,271-2,156 words, and two of the five read the workspace beyond its two
+  // docs (check-report's source, formats/skeptic.json, persona files) to learn its own format; 0045's
+  // format retry re-sent the whole report in a 2,112-word brief and the fresh Skeptic re-read both
+  // docs and rewrote every line (about 150 s). Lucas, 2026-10-29: bounded — the script and a short
+  // brief, no rebuild, one report and its one format retry, still a real independent review.
+  const flat = (path) => readFileSync(join(ROOT, path), 'utf8').replace(/\s+/g, ' ');
+  const lead = flat('CLAUDE.md');
+  assert.ok(lead.includes("**The Skeptic's review of a draft.**"), 'the bound has its own paragraph');
+  assert.ok(
+    lead.includes('On a drafting turn, with the Studio\'s tools or without them, the Skeptic reviews the script as written'),
+    'on both transports',
+  );
+  // The brief: short, the script itself, nothing retold.
+  assert.ok(
+    lead.includes(
+      "Brief it short, with these and nothing else: one line saying it reviews the drafted card, the trader's words verbatim, the strategy's assumptions as the note states them in one line, the script whole as the card holds it",
+    ),
+    'a short brief carrying the script',
+  );
+  assert.ok(lead.includes('copied, never retold in prose'), 'the script is copied, not paraphrased');
+  assert.ok(
+    lead.includes('Leave out what you told the trader, your own view of the draft, a retelling of the engine and a list of questions'),
+    'nothing that steers or pads the review',
+  );
+  // The review: as written, no rebuild, read-only checks only.
+  assert.ok(
+    lead.includes('Ask it to review the script as written: read it, reason about it, and run the read-only checks it holds'),
+    'it reads, reasons and may run its read-only checks',
+  );
+  assert.ok(
+    lead.includes('never to rebuild, re-draft or rewrite the strategy, write another script'),
+    'no rebuild and no second script',
+  );
+  assert.ok(
+    lead.includes('or read the workspace beyond `docs/pitfalls.md` and `docs/validation.md`'),
+    'no exploring the workspace for its own format',
+  );
+  // One report and its one retry; the retry changes only what the check named.
+  assert.ok(lead.includes('It hands back one report, in its format, each finding said once.'), 'one report');
+  assert.ok(
+    lead.includes('ask it to change only the lines the check names, with no new review'),
+    'a format retry rewrites the refused lines, never the review',
+  );
+  assert.ok(lead.includes('No second pass on a drafting turn.'), 'no second pass');
+  // Still the Skeptic's own verdict, and the veto stands; the card stays for the trader.
+  assert.ok(
+    lead.includes('Never tell it what verdict to reach or which findings to leave out: the verdict is its own.'),
+    'an independent review',
+  );
+  assert.ok(
+    lead.includes('A veto stands: say it to the trader as KILLED, with its reasons, and leave the card up for the trader to decide.'),
+    'a veto is said as KILLED and the card stays',
+  );
+  // Without the tools: the Skeptic alone, as the note says (no "up to three" there).
+  assert.ok(
+    lead.includes('no second pass, and no other teammate on this turn'),
+    'a fenced drafting turn briefs the Skeptic alone',
+  );
+  // The persona is unchanged: its charter already forbids changing the candidate.
+  const skeptic = flat('.claude/agents/skeptic.md');
+  assert.ok(skeptic.includes('Never modify the candidate: you object; the `signal-architect` and the `advocate` propose.'));
+  const workflow = flat('docs/workflow.md');
+  assert.ok(
+    workflow.includes('The Skeptic reviews the script as written, from a short brief that carries it'),
+    'the drafting rules say the bound',
+  );
+  const changelog = flat('CHANGELOG.md');
+  assert.ok(changelog.includes("The Skeptic's review of a draft"), 'the changelog names the bound');
+  const readme = flat('README.md');
+  assert.ok(
+    readme.includes('a Skeptic brief that carries the script whole and no retelling'),
+    'the control-plane check says what a drafting turn\'s brief looks like',
+  );
 });

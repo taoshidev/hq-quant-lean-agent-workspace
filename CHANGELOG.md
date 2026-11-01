@@ -6,6 +6,83 @@ contents of `VERSION`.
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-10-28
+
+A drafting turn puts the card first. In a conversation with Glitch's tools, the Lead Quant proposes
+the draft with `author_strategy` as soon as the Studio's script check would hold it, before it
+briefs any teammate; the team reviews the card after it is up. Without the tools, and on every turn
+that is not a drafting turn, everything works as in 1.3.0.
+
+### Changed
+
+- `CLAUDE.md`, *The team*: a new paragraph, *A drafting turn: the card first*. Once `check_script`
+  says the Studio would hold the script, the Lead Quant proposes it with `author_strategy` before it
+  briefs any teammate: a proposal held in the turn stays the trader's card even if the turn is cut
+  at its time bound or its cost cap, and a draft not yet proposed is lost with it. A teammate is
+  briefed before the card only when the check refused the script and the Lead Quant cannot fix the
+  refusal itself, or when the trader's words ask for one. Once the card is held, teammates may
+  review it within the turn's caps, the Skeptic first; a review that changes the script is checked
+  and proposed again, replacing the earlier script, and the reply says what changed. No teammate
+  is removed: the six, their tools, their formats and their format retries are 1.3.0's, and a
+  drafting turn may still brief three.
+- `CLAUDE.md`, *The skeptic hat*: on a drafting turn the Lead Quant wears it before the card goes
+  up and names what the draft cannot rule out; the Skeptic's attack follows the card.
+- `docs/workflow.md`, the drafting rules: *Put the card up first*.
+- `README.md`, *Through the control plane*: what to expect of a drafting turn from 1.4.0.
+
+Seen in an acceptance walk on 1.3.0 (2026-10-28): the script check held the draft 44 seconds into
+a drafting turn, the Lead Quant briefed three teammates and two format retries before proposing,
+and the turn's cost cap cut it with nothing on the trader's card.
+
+### Changed after review (2026-10-28, still 1.4.0, before its tag)
+
+Opus on this release's first cut (eight fenced drafting turns, the unbuilt-honesty tasks
+0039–0046): three drafts were given a stop and no exit, and the Lead Quant added the mirror of the
+entry as an exit, labelled as its own choice; the trader had asked for no exit. And none of the
+eight fenced drafting turns briefed a teammate: "brief only the teammates that leave you the time
+to write it" was read as leave to brief none.
+
+- `CLAUDE.md`, *Authoring the strategy script*: **Write only the rules the trader asked for.** No
+  exit, filter or other rule the trader did not ask for, not even the mirror of their entry and not
+  as a labelled choice: left out, the Studio's default applies and the card says it is the
+  Studio's. An exit the trader asked for in any words is theirs, built and quoted. *The loop* and
+  *Working style* say a default is a value of a rule the trader asked for, never a rule.
+- `CLAUDE.md`, *A drafting turn: the card first*: a drafting turn is any turn on a strategy with no
+  rules yet, whoever started it (a question alone is answered, not drafted). Without the Studio's tools the Lead Quant writes the change block
+  first, closed (a block that closed before a cut stays the trader's card), then the Skeptic always
+  reviews the card: one brief and its one format retry, no second pass; the reply ends with the
+  Skeptic's verdict in the Lead Quant's words, and a review that would change the script is said in
+  words, never a second block. With the tools, as before. *Where you are* and *The skeptic hat* say
+  so.
+- `docs/workflow.md`, the drafting rules, and `README.md`, *Through the control plane*, say both.
+- The six persona files, their tools, formats and caps are unchanged.
+
+### Changed after the live re-check (2026-10-29, still 1.4.0, before its tag)
+
+Opus on the fenced drafting turns of this release (five tasks, 2026-10-28): the card was up 56 to
+80 seconds into each turn, and the Skeptic's review then took most of the turn (p50 344 s, p90
+805 s, about four to five times the turns before it). The Lead Quant's brief ran to 1,135 to 1,493
+words, retelling the draft in prose, the engine and what it had told the trader, with a list of
+questions, before the checks block; the Skeptic took 152 to 203 seconds and handed back 1,271 to
+2,156 words, two of the five read the workspace beyond its two docs to learn its own format, and a
+format retry re-sent the whole report and was reviewed afresh (about 150 seconds).
+
+- `CLAUDE.md`, *The team*: **The Skeptic's review of a draft.** On a drafting turn, on either
+  transport, the Skeptic reviews the script as written, from a short brief: one line saying it
+  reviews the drafted card, the trader's words, the script whole as the card holds it (copied,
+  never retold) and the Studio checks block. Nothing that retells the engine, says what the Lead
+  Quant told the trader or thinks of the draft, or lists questions. It reads, reasons and runs only
+  the read-only checks it holds; it never rebuilds, re-drafts or rewrites the strategy, writes
+  another script or reads the workspace beyond its two docs. One report, each finding said once;
+  its one format retry changes only the lines the check names. No second pass. The verdict is its
+  own, and a veto stands: said to the trader as KILLED, with the card left up for the trader to
+  decide.
+- `CLAUDE.md`, *A drafting turn: the card first*: without the Studio's tools the Skeptic is the
+  only teammate briefed on the turn, as the Studio's note says.
+- `docs/workflow.md` and `README.md`, *Through the control plane*, say so.
+- The six persona files, their tools, formats and caps are unchanged: the Skeptic's charter
+  already says it never modifies the candidate, and its format is the same.
+
 ## [1.3.0] - 2026-10-22
 
 The team checks: in a conversation Glitch opens with its tools, the Skeptic, the Advocate and the
